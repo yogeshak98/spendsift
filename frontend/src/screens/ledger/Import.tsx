@@ -571,7 +571,7 @@ export function LedgerImport() {
               />
               <div className="big" aria-hidden="true">↓</div>
               <div className="dz-main">Drop a bank or card statement, or browse</div>
-              <div className="dz-sub">CSV exports from HDFC · ICICI · IDFC · Groww · Kite, and PDF card statements — we detect the format</div>
+              <div className="dz-sub">CSV exports from HDFC · ICICI · IDFC · Groww, and PDF card statements — we detect the format</div>
               <span className="dz-btn">Choose a file</span>
             </label>
             )}

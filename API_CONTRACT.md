@@ -1111,7 +1111,7 @@ Response:
   "depth": "detailed",
   "totals": { "income": "90000.00", "expenses": "35000.00" },
   "nodes": [
-    { "id": "Income:Salary:314E", "label": "314E", "kind": "income", "role": "payer", "amount": "100000.00", "folded": [] },
+    { "id": "Income:Salary:Acme", "label": "Acme", "kind": "income", "role": "payer", "amount": "100000.00", "folded": [] },
     { "id": "Income:Salary", "label": "Salary", "kind": "income", "role": "income", "amount": "100000.00", "folded": [] },
     { "id": "Tax withheld", "label": "Tax withheld", "kind": "expense", "role": "tax", "amount": "10000.00", "folded": [] },
     { "id": "Assets:Checking:HDFC", "label": "Checking:HDFC", "kind": "asset", "role": "account", "amount": "90000.00", "folded": [] },
@@ -1123,7 +1123,7 @@ Response:
     { "id": "Expenses:Bike:Servicing", "label": "Servicing", "kind": "expense", "role": "sub", "amount": "9000.00", "folded": [] }
   ],
   "links": [
-    { "source": "Income:Salary:314E", "target": "Income:Salary", "value": "100000.00", "back": false },
+    { "source": "Income:Salary:Acme", "target": "Income:Salary", "value": "100000.00", "back": false },
     { "source": "Income:Salary", "target": "Tax withheld", "value": "10000.00", "back": false },
     { "source": "Income:Salary", "target": "Assets:Checking:HDFC", "value": "90000.00", "back": false },
     { "source": "Assets:Checking:HDFC", "target": "Liabilities:CreditCard:Axis", "value": "10000.00", "back": false },
@@ -1145,7 +1145,7 @@ full precision) and use each posting's INR value (`inr_amount`), never commodity
   | Postings | `id` | `label` | `kind` | `role` |
   |---|---|---|---|---|
   | `Income:*` with a `TDS` segment (tax withheld, e.g. `Income:Salary:TDS`) | `Tax withheld` | `Tax withheld` | `expense` | `tax` |
-  | other `Income:*` (detailed only) | first 3 segments, e.g. `Income:Salary:314E`; a posting on the type itself: `"<type> (direct)"`, e.g. `Income:Interest (direct)` | `314E`, `Interest` | `income` | `payer` |
+  | other `Income:*` (detailed only) | first 3 segments, e.g. `Income:Salary:Acme`; a posting on the type itself: `"<type> (direct)"`, e.g. `Income:Interest (direct)` | `Acme`, `Interest` | `income` | `payer` |
   | other `Income:*` | `top_category`, e.g. `Income:Salary` | `Salary` | `income` | `income` |
   | `Assets:*` (banks, cash, broker, investments, FD, NPS, receivables …) | first 3 segments, e.g. `Assets:Checking:HDFC`, `Assets:Investment:MutualFund`, `Assets:NPS` | path without `Assets:` | `asset` | `account` |
   | `Liabilities:*` (each card, loans, people …) | first 3 segments, e.g. `Liabilities:CreditCard:Axis8765` | path without `Liabilities:` | `liability` | `account` |

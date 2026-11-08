@@ -22,7 +22,7 @@ Consult before product or architecture decisions:
 - Snapshot the beancount journal (`<storage_dir>/journal/`) before every write.
 - Tax planning is a first-class product surface.
 - Long-term UI shell is a local browser web app (React/TS served by FastAPI on 127.0.0.1). Tauri/Streamlit are retired.
-- **No stray files in the repo.** Before staging, committing, or pushing — *even when explicitly told to push* — confirm every changed/added file exists in service of a SpendSift goal. Personal notes, scratch plans, unrelated docs (e.g. a relocation plan) must never be tracked. If a file's relevance to the project is unclear, stop and confirm with the user before including it. Temporary working files belong in the scratchpad, not the repo.
+- **No stray files in the repo.** Before staging, committing, or pushing — *even when explicitly told to push* — confirm every changed/added file exists in service of a SpendSift goal. Personal notes, scratch plans, unrelated docs must never be tracked. If a file's relevance to the project is unclear, stop and confirm with the user before including it. Temporary working files belong in the scratchpad, not the repo.
 
 ## Product Priorities
 

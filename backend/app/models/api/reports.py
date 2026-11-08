@@ -61,7 +61,7 @@ class SankeyNode(BaseModel):
     over its links. `folded` is empty except on `Other`."""
 
     id: str  # stable id used by `links`, the contributions and rows routes
-    label: str  # display name, e.g. "Checking:HDFC", "Salary", "314E", "Food"
+    label: str  # display name, e.g. "Checking:HDFC", "Salary", "Acme", "Food"
     kind: SankeyNodeKind
     role: SankeyNodeRole
     amount: str

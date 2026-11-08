@@ -5,8 +5,12 @@ import { resetInvestmentsTabsCache } from "./features/networth/investmentsTabsCa
 // forget it after every test so no test or file sees another's tabs.
 afterEach(() => resetInvestmentsTabsCache());
 
-// jsdom in this toolchain does not ship a functional localStorage; provide a minimal one.
-if (typeof localStorage === "undefined" || typeof localStorage.getItem !== "function") {
+// Always use this minimal in-memory localStorage. Depending on the Node
+// version, the environment otherwise has none, a non-functional one, or jsdom's
+// Storage, where vi.spyOn(localStorage, "getItem") stores an item named
+// "getItem" instead of replacing the method; a plain object behaves the same
+// everywhere.
+{
   const store = new Map<string, string>();
   const mock: Storage = {
     get length() {

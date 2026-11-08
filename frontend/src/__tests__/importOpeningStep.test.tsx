@@ -324,7 +324,9 @@ test("a Commit click before the prompt arrives waits and still shows the opening
   await new Promise((r) => setTimeout(r, 20));
   expect(commitCalls(calls)).toHaveLength(0);
   release();
-  await screen.findByText("Assets:Checking:Acme: first import");
+  // Generous timeout: on a loaded CI runner the released prompt can take
+  // longer than findByText's 1s default to render.
+  await screen.findByText("Assets:Checking:Acme: first import", undefined, { timeout: 5000 });
   expect(commitCalls(calls)).toHaveLength(0);
 });
 

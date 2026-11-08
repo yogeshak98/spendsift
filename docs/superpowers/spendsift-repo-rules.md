@@ -3,13 +3,13 @@
 The concrete rules the loop-engineering harness agents must follow in this repo.
 This file makes the generic architect/builder/critiq/code-reviewer concrete.
 On conflict: **user instructions > this file > the generic agent definitions.**
-Ground-truth product docs (`CLAUDE.md`, `VISION/PRODUCT/TRD/ARCHITECTURE/SCHEMA/API_CONTRACT/RUNBOOK`) override this file on product/architecture questions.
+Ground-truth product docs (`CLAUDE.md`, `VISION/PRODUCT/TRD/SCHEMA/API_CONTRACT/RUNBOOK`) override this file on product/architecture questions.
 
 ## Stack
 
 - Backend: Python, managed by `uv`. FastAPI app via `create_app()` in
   `backend/app/server/main.py`, bound to `127.0.0.1:8765`, also serves `frontend/dist`.
-- Frontend: React 18 + TypeScript + Vite + vitest, in `frontend/`.
+- Frontend: React 19 + TypeScript + Vite + vitest, in `frontend/`.
 - Ledger: Beancount-style double-entry; canonical account taxonomy.
 
 ## Where things live (build a dashboard = touch these, in this order)
@@ -34,11 +34,13 @@ Ground-truth product docs (`CLAUDE.md`, `VISION/PRODUCT/TRD/ARCHITECTURE/SCHEMA/
 
 ## Reusable frontend kit (use these; do not reinvent)
 
-- `Panel` (title, right, children, glow, fill), `StatBlock` (label, value, delta,
-  tone, deltaTone; Tone = green|red|amber|blue|dim|text).
+- `frontend/src/components/`: `Panel` (title, right, children, glow, fill),
+  `StatBlock` (label, value, delta, tone, deltaTone; Tone = green|red|amber|blue|dim|text),
+  `DataTable` (+ `cell()` in `cell.ts`), `TreeTable`, `Callout`, `Pill`.
 - `useReport<T>(url)` → `{data, error}`; `usePeriod()` → `{year, month, setPeriod}`.
-- Charts in `frontend/src/charts/` (AreaSeries, MonthlyCombo, CalendarHeatmap,
-  Pies, RankedBars, Sankey, Waterfall). Inline a chart only when no shared one fits.
+- Charts in `frontend/src/charts/` (AreaSeries, StackedAreaSeries, MonthlyCombo,
+  Pies, RankedBars, Waterfall) and `frontend/src/shared/charts/` (PeriodHeatmap,
+  PeriodBars, Sankey, Segmented, ChartSwitches). Inline a chart only when no shared one fits.
 
 ## Theme (midnight)
 
@@ -46,8 +48,8 @@ Ground-truth product docs (`CLAUDE.md`, `VISION/PRODUCT/TRD/ARCHITECTURE/SCHEMA/
   (`--bg #0f0f0f, --surface #1a1a1a, --border #2e2e2e, --text #e8e8e8,
   --green #4ade80, --amber #fbbf24, --red #f87171, --blue #60a5fa,
   --violet #a78bfa, --teal #2dd4bf, --pink #f472b6`; fonts IBM Plex Sans/Mono).
-- Component styles in `frontend/src/components/components.css`. Match existing
-  selectors; watch specificity collisions.
+- Component styles live next to their screens/components (e.g. `shared/charts/charts.css`,
+  `screens/tax/tax.css`). Match existing selectors; watch specificity collisions.
 
 ## Verification baseline (done-gates)
 
@@ -59,6 +61,7 @@ uv run ty check
 ```
 Frontend (run from `frontend/`):
 ```
+npm run lint     # eslint
 npm run test     # vitest run
 npm run build    # tsc -b && vite build
 ```
@@ -72,7 +75,7 @@ green with reproducible evidence.
   returns or the sanctioned demo persona produces. If data is missing, build the
   endpoint to derive it or flag BLOCKED — never fabricate numbers.
 - No silent import of ambiguous data; review-before-import on low confidence.
-- Snapshot `journal.ledger` before every write.
+- Snapshot the beancount journal (`<storage_dir>/journal/`) before every write.
 - **Demo persona: Jane Doe / fictional names only.** The real `storage/`
   and the real ledger backup are sensitive and off-limits to demo work.
 - **No real PII anywhere** (code, demo, fixtures, tests, reports, docs): the
@@ -83,15 +86,12 @@ green with reproducible evidence.
 
 ## Workflow / docs
 
-- Desired-state specs: `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`.
-- Build plans: `docs/superpowers/plans/YYYY-MM-DD-<topic>.md`.
-- Ledger (harness progress): `docs/superpowers/dashboard-suite-ledger.md`.
+- Specs, build plans and harness progress are local working files and are never
+  committed (`docs/` holds usage docs only; see `.gitignore`).
 
 ## Commit policy
 
 - Commit **per unit**, conventional messages (e.g. `feat(frontend): ...`,
-  `feat(reports): ...`). End commit messages with:
-  `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
-- Pre-commit hooks run ruff / ruff-format / detect-secrets / ty (Python-only
-  triggers; frontend-only commits skip ruff).
-- **Never push.** Current branch: `feat/import`.
+  `feat(reports): ...`).
+- Pre-commit hooks run ruff / ruff-format / gitleaks / ty.
+- **Agents never push**; the owner pushes.

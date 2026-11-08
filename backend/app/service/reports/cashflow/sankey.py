@@ -11,7 +11,7 @@ Its output is `SankeyResponse` (`backend/app/models/api/reports.py`).
   `expense`); `Expenses:Investment:*` -> `Expenses:Investment` ("Investment
   charges", an asset `account`); every other `Assets:*` / `Liabilities:*` ->
   its first three segments (role `account`). `Equity:*` maps to nothing.
-  Detailed depth adds the payer column (`Income:Salary:314E`, the first three
+  Detailed depth adds the payer column (`Income:Salary:Acme`, the first three
   segments, or `"<type> (direct)"` for a posting on the type itself) and the
   sub-account column (`Expenses:Bike:Servicing`, first three segments).
 - **Columns** (`COLUMN`): payer 0, income 1, tax 2, account 3, expense 4,
