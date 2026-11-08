@@ -1,0 +1,11 @@
+Statement of account,,,,
+Account,XXXXXXXX1234,,,
+Opening Balance,,,,10000.00
+Date,Narration,Amount,Balance,Ref
+15/03/2026,SALARY ACME,50000.00,58000.00 Cr,R5
+14/03/2026,ELECTRICITY BILL,-1500.00,8000.00 Cr,R4
+12/03/2026,SWIGGY BANGALORE,-500.00,9500.00 Cr,R3
+10/03/2026,Opening Balance,10000.00,10000.00 Cr,R2
+,,,,
+Total Debits,,2000.00,,
+Total Credits,,50000.00,,

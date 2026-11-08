@@ -1,0 +1,10 @@
+option "operating_currency" "INR"
+option "title" "Fictive Journal"
+
+2000-01-01 commodity INR
+
+2000-01-01 open Assets:Bank:FictiveBank INR
+2000-01-01 open Expenses:Food INR
+2000-01-01 open Income:Salary INR
+include "2025.beancount"
+include "2026.beancount"

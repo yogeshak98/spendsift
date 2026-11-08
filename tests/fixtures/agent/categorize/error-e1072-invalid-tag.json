@@ -1,0 +1,10 @@
+{
+  "status": 422,
+  "body": {
+    "detail": "'café' is not a valid tag. A tag may hold only letters, digits and - _ / . (spaces become -).",
+    "code": "E1072",
+    "description": "'café' is not a valid tag. A tag may hold only letters, digits and - _ / . (spaces become -).",
+    "resolution": "Rename the tag, e.g. travel/madikeri-oct-2026.",
+    "resolvedByRefresh": false
+  }
+}

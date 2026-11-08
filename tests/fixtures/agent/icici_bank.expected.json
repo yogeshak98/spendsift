@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-03-10",
+    "amount": "2500.00",
+    "direction": "debit",
+    "raw_narration": "NEFT TO SAVINGS",
+    "source_account": "Assets:Checking:ICICI"
+  },
+  {
+    "date": "2026-03-11",
+    "amount": "75000.00",
+    "direction": "credit",
+    "raw_narration": "SALARY ACME",
+    "source_account": "Assets:Checking:ICICI"
+  }
+]

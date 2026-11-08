@@ -1,0 +1,80 @@
+/* ───── VERTICAL RAIL ───── (lifted from the mockup) */
+.rail{width:14.4615rem;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);
+  position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.brand{padding:1.3846rem 1.3846rem 1.0769rem;border-bottom:1px solid var(--border)}
+.brand .logo{font-size:1.2308rem;font-weight:600;letter-spacing:-0.02em}
+.brand .logo span{color:var(--blue)}
+.brand .tag{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;margin-top:3px}
+.nav{flex:1;overflow-y:auto;padding:0.6154rem 0.7692rem}
+.nav-item{display:flex;align-items:center;gap:0.7692rem;padding:0.5385rem 0.9231rem;
+  font-size:0.9615rem;color:var(--text2);border-radius:0.5385rem;
+  cursor:pointer;text-decoration:none}
+.nav-item:hover{color:var(--text);background:rgba(127,127,127,0.07)}
+.nav-item.active{color:var(--text);background:rgba(96,165,250,0.12)}
+.nav-item .ic{width:1.1538rem;text-align:center;font-size:0.9231rem;color:var(--text3)}
+.nav-item.active .ic{color:var(--blue)}
+.nav-sub{display:none;flex-direction:column;gap:1px;margin:1px 0 0.4615rem 1.6923rem}
+.nav-sub.show{display:flex}
+.nav-subitem{display:block;padding:0.3077rem 0.7692rem;font-size:0.8846rem;color:var(--text3);border-radius:0.4615rem;cursor:pointer;text-decoration:none}
+.nav-subitem:hover{color:var(--text);background:rgba(127,127,127,0.06)}
+.nav-subitem.active{color:var(--blue)}
+.rail-foot{padding:0.9231rem 1.3846rem;border-top:1px solid var(--border)}
+.rail-foot select{width:100%;background:var(--surface2);color:var(--text);border:1px solid var(--border);
+  border-radius:0.4615rem;padding:0.4615rem 0.6154rem;font-size:0.8462rem;font-family:var(--mono)}
+
+/* ───── CONTENT ───── */
+.content{flex:1;min-width:0}
+.cbar{display:flex;align-items:center;gap:0.7692rem;padding:0.7692rem 1.8462rem;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--bg);z-index:20}
+.crumb{font-family:var(--mono);font-size:0.8462rem;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase}
+.crumb b{color:var(--text2)}
+.cbar .right{margin-left:auto;display:flex;gap:0.6154rem;align-items:center}
+.seg{display:flex;border:1px solid var(--border);border-radius:0.4615rem;overflow:hidden}
+.seg b{padding:0.3077rem 0.6923rem;font-family:var(--mono);font-size:0.7692rem;color:var(--text2);cursor:pointer;border-right:1px solid var(--border);font-weight:400}
+.seg b:last-child{border-right:none}
+.seg b.on{background:var(--blue-border);color:#fff}
+.picker{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:0.4615rem;padding:0.3846rem 0.6923rem;font-size:0.8462rem;font-family:var(--mono)}
+
+/* FY period control. The preset dropdown is a plain .picker; the custom-range
+   edges + shift arrows are ONE bordered shell with hairline dividers (same
+   idiom as .seg) so they read as a single range instrument rather than four
+   loose controls parked in a panel header. */
+.fy-range{display:inline-flex;align-items:center;gap:0.6154rem}
+.fy-range-group{display:inline-flex;align-items:stretch;border:1px solid var(--border);border-radius:0.4615rem;overflow:hidden;background:var(--surface2)}
+.fy-range-group>*{border:none;border-right:1px solid var(--border);background:transparent;color:var(--text);font-family:var(--mono);font-size:0.8462rem;padding:0.3846rem 0.6923rem}
+/* The group carries its own ◂ ▸; the selects' native chevrons would make five
+   arrow glyphs in one control, so they lose theirs. */
+.fy-range-group select{appearance:none;cursor:pointer;text-align:center}
+.fy-range-group>*:last-child{border-right:none}
+.fy-range-group button{cursor:pointer;color:var(--text2);line-height:1}
+.fy-range-group button:hover:not(:disabled){color:var(--text);background:var(--line)}
+.fy-range-group button:disabled{color:var(--text3);cursor:default}
+.fy-range-dash{display:flex;align-items:center;color:var(--text3);padding:0.3846rem 0.3077rem}
+
+/* Padded content shell for layout-wrapped screens (Settings, Tax). Sub-nav
+   lives in the main rail, so there is no longer a within-screen sub-rail. */
+.screen-main{padding:1.5385rem 1.6923rem}
+
+/* Compact month stepper (MonthPicker): ‹ Nov 2025 ⌄ ›. One pill; the arrows
+   step a month, the label opens a year stepper + month grid. */
+.mpick{position:relative;display:inline-flex;align-items:center;gap:2px;padding:3px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:0.6923rem}
+.mpick button{border:none;background:transparent;color:var(--text2);cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;border-radius:0.4615rem;font:inherit}
+.mpick button:hover:not(:disabled){color:var(--text);background:var(--line)}
+.mpick button:disabled{color:var(--text3);opacity:.45;cursor:default}
+.mpick button:focus-visible{outline:2px solid var(--blue);outline-offset:-1px}
+.mpick .mpick-arrow{width:2.1538rem;height:2.1538rem}
+.mpick .mpick-label{gap:0.4615rem;height:2.1538rem;padding:0 0.6154rem 0 0.7692rem;min-width:8rem;
+  font-size:1rem;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums}
+.mpick-label svg{color:var(--text3)}
+.mpick-label[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mpick-pop{position:absolute;top:calc(100% + 0.4615rem);right:0;z-index:40;width:17.8462rem;padding:0.7692rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;box-shadow:0 0.7692rem 2.3077rem rgba(0,0,0,.35)}
+.mpick-year{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.6154rem}
+.mpick-year span{font-weight:600;font-size:1rem;font-variant-numeric:tabular-nums}
+.mpick .mpick-year button{width:2.1538rem;height:2.1538rem}
+.mpick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.3077rem}
+.mpick .mpick-month{height:2.3077rem;font-size:0.9231rem}
+.mpick .mpick-month[aria-pressed="true"]{background:var(--blue-border);color:#fff}
+@media (prefers-reduced-motion:no-preference){.mpick-label svg{transition:transform .15s}}

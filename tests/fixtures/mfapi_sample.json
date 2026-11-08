@@ -1,0 +1,14 @@
+{
+  "status": "SUCCESS",
+  "meta": {
+    "scheme_code": 122639,
+    "scheme_name": "Parag Parikh Flexi Cap Fund Direct Growth"
+  },
+  "data": [
+    {"date": "30-06-2026", "nav": "11.5000"},
+    {"date": "27-06-2026", "nav": "11.4000"},
+    {"date": "01-01-2025", "nav": "10.0000"},
+    {"date": "15-03-2024", "nav": "9.0000"},
+    {"date": "N/A", "nav": "N/A"}
+  ]
+}

@@ -1,0 +1,25 @@
+# IDFC FIRST Bank savings statement (.xlsx). Header at row 21; a Total row,
+# the debit/credit counts and End of Statement follow the transactions.
+fingerprint: 13c59937f9abda2c
+institution: IDFC
+header_row_index: 21
+date_column: Transaction Date
+date_format: '%d-%b-%Y'
+narration_column: Particulars
+delimiter: ','
+debit_column: Debit
+credit_column: Credit
+balance_column: Balance
+account_marker_pattern: '^ACCOUNT NUMBER\s+\d{6,}(\d{4})\b'
+account_marker_map:
+  '5519': Assets:Checking:IDFC-5519
+  '2937': Assets:Checking:IDFC-2937
+  '1265': Assets:Checking:IDFC-1265
+  '0834': Assets:Checking:IDFC-0834
+stop_pattern: '^Total\b'
+# The ACCOUNT SUMMARY above the header prints the opening under its label,
+# one row below.
+opening_balance:
+  label: '^Opening Balance$'
+  row_offset: 1
+origin: user

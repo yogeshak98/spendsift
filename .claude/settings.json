@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv run *)",
+      "Bash(.venv/bin/pytest *)",
+      "Bash(PYTHONPATH=. .venv/bin/pytest *)",
+      "Bash(ty check *)",
+      "Bash(PYTHONPATH=. .venv/bin/python *)",
+      "Bash(.venv/bin/python *)",
+      "Bash(cp *)",
+      "Bash(mkdir *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git status *)",
+      "Bash(git status)"
+    ],
+    "ask": [
+      "Bash(.venv/bin/python scripts/ingest_cli.py stage*)",
+      "Bash(.venv/bin/python scripts/ingest_cli.py commit*)",
+      "Bash(PYTHONPATH=. .venv/bin/python scripts/ingest_cli.py stage*)",
+      "Bash(PYTHONPATH=. .venv/bin/python scripts/ingest_cli.py commit*)",
+      "Bash(uv run *ingest_cli.py stage*)",
+      "Bash(uv run *ingest_cli.py commit*)"
+    ],
+    "deny": [
+      "Bash(*unlock_pdf.py*)",
+      "Bash(uv run *unlock_pdf*)"
+    ]
+  }
+}

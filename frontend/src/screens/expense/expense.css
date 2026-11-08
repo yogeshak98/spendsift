@@ -1,0 +1,30 @@
+/* Expense · Tags: groups and children share the cat-row grid */
+.tag-list .cat-row{cursor:default}
+.tag-row .nm{width:16.9231rem;min-width:0}
+.tag-row .tag-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag-row .tag-prefix{color:var(--text3)}
+.tag-row .cnt{width:4.3077rem;text-align:right;font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.tag-row.child{padding-left:2.3846rem;background:rgba(127,127,127,0.025)}
+.tag-row.child .barwrap{height:0.7692rem}
+.tag-group{border-bottom:1px solid var(--line)}
+.tag-group:last-child{border-bottom:none}
+.tag-group>summary{list-style:none;cursor:pointer}
+.tag-group>summary::-webkit-details-marker{display:none}
+.tag-group>summary:focus-visible{outline:1px solid var(--blue);outline-offset:-1px}
+.tag-group>summary .cat-row{cursor:pointer;border-bottom:none}
+.tag-group .chev{display:inline-block;transition:transform .15s}
+.tag-group[open] .chev{transform:rotate(90deg)}
+.tag-group[open]>summary .cat-row{border-bottom:1px solid var(--line)}
+.tag-group .tag-row.child:last-child{border-bottom:none}
+.day-tip:has(.day-tip-cats.two-col){max-width:49.2308rem}
+.day-tip-cats.two-col{display:grid;grid-template-columns:1fr 1fr;column-gap:1.5385rem;grid-auto-flow:column;grid-template-rows:repeat(var(--rows,8),auto)}
+.via{font-family:var(--mono);font-size:0.7692rem;border-radius:0.3077rem;padding:0 0.3846rem;text-align:center;white-space:nowrap}
+.via-card{color:var(--amber);background:rgba(251,191,36,0.12)}
+.via-bank{color:var(--blue);background:rgba(96,165,250,0.12)}
+.via-other{color:var(--text3);background:var(--surface2)}
+.via-none{display:none}
+.via-filter{display:flex;gap:0.3077rem}
+.via-filter button{font-family:var(--mono);font-size:0.7692rem;padding:2px 0.6154rem;border-radius:0.3077rem;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer}
+.via-filter button[aria-pressed="true"]{color:var(--text);background:var(--surface2)}
+.day-tip-split{color:var(--text3);font-size:0.7692rem}
+.day-tip-row .a.refund{color:var(--green)}

@@ -1,0 +1,23 @@
+{
+  "committed": 11,
+  "uncategorized": 2,
+  "unexplained": 0,
+  "statement_recorded": true,
+  "learned": [
+    {
+      "pattern": "FICTIVEAI",
+      "category": "Expenses:Subscriptions",
+      "replaces": null
+    },
+    {
+      "pattern": "FICTIVEBIKES",
+      "category": "Expenses:Travel",
+      "replaces": "Expenses:Travel:Bike"
+    }
+  ],
+  "opened": [
+    "Expenses:Food:Cafe",
+    "Expenses:Household:Appliances",
+    "Expenses:Subscriptions"
+  ]
+}

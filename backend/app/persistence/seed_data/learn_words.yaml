@@ -1,0 +1,20 @@
+# Words that decide whether a narration may teach a rule. Data, not code.
+fee_phrases:
+  [IGST, CGST, SGST, GST, MARKUP, MARK UP, DCC, CROSS CURRENCY, FX FEE, FOREIGN CURRENCY, CURRENCY CONVERSION]
+generic:
+  [IGST, CGST, SGST, GST, MARKUP, MARK, UP, DCC, CROSS, CURRENCY, FX, FOREIGN, CONVERSION,
+   EMI, OFFUS, PAYMENT, PAYMENTS, THANK, YOU, AUTOPAY, AUTO, DEBIT, CREDIT, CARD, TRANSFER, TRF,
+   UPI, NEFT, IMPS, RTGS, POS, ECOM, PURCHASE, REFUND, REVERSAL, CASHBACK, INTEREST, CHARGE,
+   CHARGES, FEE, FEES, TAX, LOAN, PRINCIPAL, ATM, CASH, WITHDRAWAL, BANK, ONLINE, INTERNATIONAL,
+   TXN, TRANSACTION, BILL, BILLDESK, PAYU, RAZORPAY, CCAVENUE, REF]
+places:
+  [IN, IND, INDIA, US, USA, GB, SG, AE, KA, MH, DL, BANGALORE, BENGALURU, MUMBAI, DELHI, GURGAON,
+   GURUGRAM, NOIDA, HYDERABAD, CHENNAI, PUNE, KOLKATA, SAN, FRANCISCO]
+# UPI payees that are payment apps or aggregators, not shops: one name -- and
+# often one collective VPA (AMAZONUPI@APL, CRED.CLUB@AXISB) -- covers many
+# merchants and bills, so a row of one never spreads its category and never
+# learns a rule, whatever its VPA. Matched as the whole payee or its first
+# words ("CRED" covers "CRED CLUB").
+upi_aggregators:
+  [PAYTM, BHARATPE, GOOGLE PAY, GPAY, PHONEPE, RAZORPAY, AMAZON PAY, CRED, MOBIKWIK, FREECHARGE,
+   PAYU, CASHFREE, BILLDESK, CCAVENUE, INSTAMOJO, EASEBUZZ, PINE LABS, MSWIPE, MERCHANT]

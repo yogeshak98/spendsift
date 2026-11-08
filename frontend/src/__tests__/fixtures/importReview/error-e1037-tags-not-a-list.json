@@ -1,0 +1,10 @@
+{
+  "status": 422,
+  "body": {
+    "detail": "The edit could not be applied: tags must be a list of strings",
+    "code": "E1037",
+    "description": "The edit could not be applied: tags must be a list of strings",
+    "resolution": "Check the values you're submitting for this candidate and try again.",
+    "resolvedByRefresh": false
+  }
+}

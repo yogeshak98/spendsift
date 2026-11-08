@@ -1,0 +1,123 @@
+"""Hand-checked reference drafts for each acceptance fixture: the known-good
+template each statement fixture must prove with.
+
+Row numbers are load_frame row indices (measured: blank lines count).
+"""
+
+REFERENCE = {
+    "hdfc_bank": {
+        "account": "Assets:Checking:HDFC",
+        "open": [],
+        "draft": {
+            "institution": "HDFC",
+            "header_row_index": 0,
+            "date_column": "Date",
+            "date_format": "%Y-%m-%d",
+            "narration_column": "Narration",
+            "debit_column": "Withdrawal Amt.",
+            "credit_column": "Deposit Amt.",
+            "default_account": "Assets:Checking:HDFC",
+        },
+        "claims": {"first_data_row": 1, "last_data_row": 2},
+    },
+    "icici_bank": {
+        "account": "Assets:Checking:ICICI",
+        "open": [],
+        "draft": {
+            "institution": "ICICI",
+            "header_row_index": 0,
+            "date_column": "Txn Date",
+            "date_format": "%Y-%m-%d",
+            "narration_column": "Particulars",
+            "debit_column": "Debit",
+            "credit_column": "Credit",
+            "default_account": "Assets:Checking:ICICI",
+        },
+        "claims": {"first_data_row": 1, "last_data_row": 2},
+    },
+    "idfc_bank": {
+        "account": "Assets:Checking:IDFC",
+        "open": [],
+        "draft": {
+            "institution": "IDFC",
+            "header_row_index": 0,
+            "date_column": "Date",
+            "date_format": "%d/%m/%Y",
+            "narration_column": "Description",
+            "debit_column": "Dr",
+            "credit_column": "Cr",
+            "default_account": "Assets:Checking:IDFC",
+        },
+        "claims": {"first_data_row": 1, "last_data_row": 2},
+    },
+    "hdfc_card": {
+        "account": "Liabilities:CreditCard:HDFC",
+        "open": [],
+        "draft": {
+            "institution": "HDFC Credit Card",
+            "header_row_index": 25,
+            "date_column": "DATE",
+            "date_format": "%d/%m/%Y %H:%M:%S",
+            "narration_column": "Description",
+            "amount_column": "AMT",
+            "sign_column": "Debit /Credit",
+            "account_marker_pattern": "Card No:.*XXXX (\\d{4})",
+            "account_marker_map": {"0001": "Liabilities:CreditCard:HDFC"},
+        },
+        "claims": {"first_data_row": 26, "last_data_row": 27},
+    },
+    "icici_card": {
+        "account": "Liabilities:CreditCard:ICICI",
+        "open": ["Liabilities:CreditCard:ICICI"],
+        "draft": {
+            "institution": "ICICI Credit Card",
+            "header_row_index": 7,
+            "date_column": "Date",
+            "date_format": "%d/%m/%Y",
+            "narration_column": "Transaction Details",
+            "amount_column": "Amount(in Rs)",
+            "sign_column": "BillingAmountSign",
+            "account_marker_pattern": "\\d{4}XXXXXXXX(\\d{4})",
+            "account_marker_map": {"0001": "Liabilities:CreditCard:ICICI"},
+        },
+        "claims": {"first_data_row": 9, "last_data_row": 10},
+    },
+    "idfc_card": {
+        "account": "Liabilities:CreditCard:IDFC",
+        "open": ["Liabilities:CreditCard:IDFC"],
+        "draft": {
+            "institution": "IDFC Credit Card",
+            "header_row_index": 0,
+            "date_column": "Transaction Date",
+            "date_format": "%d/%m/%Y",
+            "narration_column": "Description",
+            "debit_column": "Debit",
+            "credit_column": "Credit",
+            "default_account": "Liabilities:CreditCard:IDFC",
+        },
+        "claims": {"first_data_row": 1, "last_data_row": 2},
+    },
+    "sample_bank_running_balance": {
+        "account": "Assets:Checking:HDFC",
+        "open": [],
+        "draft": {
+            "institution": "Sample Bank",
+            "header_row_index": 3,
+            "date_column": "Date",
+            "date_format": "%d/%m/%Y",
+            "narration_column": "Narration",
+            "amount_column": "Amount",
+            "amount_sign": "signed",
+            "balance_column": "Balance",
+            "stop_pattern": "^Total Debits",
+            "skip_exact_narrations": ["Opening Balance"],
+            "default_account": "Assets:Checking:HDFC",
+        },
+        "claims": {
+            "first_data_row": 4,
+            "last_data_row": 7,
+            "opening_balance": "10000.00",
+            "closing_balance": "58000.00",
+        },
+    },
+}

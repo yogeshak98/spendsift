@@ -1,0 +1,10 @@
+{
+  "status": 422,
+  "body": {
+    "detail": "expenses travel is not a valid account name.",
+    "code": "E1017",
+    "description": "expenses travel is not a valid account name.",
+    "resolution": "Use Type:Component:... where Type is one of Assets, Liabilities, Equity, Income, Expenses and each component starts with an uppercase letter or digit (letters, digits, hyphens only; no spaces).",
+    "resolvedByRefresh": false
+  }
+}

@@ -1,0 +1,12 @@
+charge_stamp_duty_account: Expenses:Investment:Charges:FictiveStamp
+charge_stt_account: Expenses:Investment:Charges:FictiveSTT
+charge_tolerance: '25'
+charge_tolerance_pct: '0.0007'
+charge_unexplained_account: Expenses:Investment:Charges:FictiveOther
+charges_account: Expenses:Investment:Charges:Fictive
+ltcg_account: Income:Gains:FictiveLT
+ltcg_min_holding_days: 400
+stamp_duty_rate: '0.00006'
+stcg_account: Income:Gains:FictiveST
+stt_rate_sell: '0.001'
+version: 1

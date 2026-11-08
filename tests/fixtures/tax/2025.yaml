@@ -1,0 +1,48 @@
+# TEST FIXTURE ONLY — Indian income-tax rules for FY2025-26 (Apr 2025 – Mar 2026).
+# The product no longer ships tax rules; users add their own config/tax/<fy>.yaml.
+# This fixture exists solely to exercise the tax engine in tests.
+# All numeric values are quoted strings; the loader parses them via Decimal(str(v)).
+fy: 2025
+new_regime:
+  slabs: # ordered, non-overlapping; `upto: null` = top (open-ended) band
+    - { upto: "400000", rate: "0.0" }
+    - { upto: "800000", rate: "0.05" }
+    - { upto: "1200000", rate: "0.10" }
+    - { upto: "1600000", rate: "0.15" }
+    - { upto: "2000000", rate: "0.20" }
+    - { upto: "2400000", rate: "0.25" }
+    - { upto: null, rate: "0.30" }
+  standard_deduction: "75000"
+  rebate_ceiling: "1200000" # 87A: taxable income at/below -> tax 0 (marginal relief above)
+  rebate_max: "60000"
+  allowed_deductions: [80ccd_2] # new regime: essentially only employer NPS
+  allows_exemptions: false # s.115BAC withdraws HRA s.10(13A) / LTA s.10(5)
+old_regime:
+  slabs:
+    - { upto: "250000", rate: "0.0" }
+    - { upto: "500000", rate: "0.05" }
+    - { upto: "1000000", rate: "0.20" }
+    - { upto: null, rate: "0.30" }
+  standard_deduction: "50000"
+  rebate_ceiling: "500000"
+  rebate_max: "12500"
+  allowed_deductions: [80c, 80ccd_1b, 80ccd_2, 80d]
+  allows_exemptions: true
+deductions: # section caps only — amounts are user-declared, not derived
+  - { section: 80c, cap: "150000" }
+  - { section: 80ccd_1b, cap: "50000" }
+  - { section: 80ccd_2, cap: null } # %-of-salary cap not modelled v1
+  - { section: 80d, cap: "25000" }
+surcharge:
+  marginal_relief: true
+  bands:
+    - { over: "5000000", rate: "0.10" }
+    - { over: "10000000", rate: "0.15" }
+    - { over: "20000000", rate: "0.25" }
+cess_rate: "0.04"
+capital_gains:
+  ltcg_rate: "0.125" # §112A equity LTCG
+  ltcg_exemption: "125000" # §112A: first 1.25L exempt
+  stcg_rate: "0.20" # §111A equity STCG
+  crypto_rate: "0.30" # §115BBH flat, no exemption, no set-off
+  # Debt capital gains are NOT estimated v1 (post-2023 slab treatment varies).

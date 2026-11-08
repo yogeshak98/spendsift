@@ -1,0 +1,23 @@
+[
+  {
+    "date": "2026-03-15",
+    "amount": "50000.00",
+    "direction": "credit",
+    "raw_narration": "SALARY ACME",
+    "source_account": "Assets:Checking:HDFC"
+  },
+  {
+    "date": "2026-03-14",
+    "amount": "1500.00",
+    "direction": "debit",
+    "raw_narration": "ELECTRICITY BILL",
+    "source_account": "Assets:Checking:HDFC"
+  },
+  {
+    "date": "2026-03-12",
+    "amount": "500.00",
+    "direction": "debit",
+    "raw_narration": "SWIGGY BANGALORE",
+    "source_account": "Assets:Checking:HDFC"
+  }
+]

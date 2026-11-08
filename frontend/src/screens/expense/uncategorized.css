@@ -1,0 +1,133 @@
+/* Expense -> Uncategorized backlog: scoped to this screen's own class names
+   so it cannot bleed into other screens. */
+.uncat-page {
+  padding: 1.6923rem;
+}
+
+.uncat-summary {
+  font-size: 0.9231rem;
+  color: var(--text3);
+  margin: -0.3077rem 0 0.9231rem;
+}
+
+.uncat-classify {
+  display: flex;
+  align-items: center;
+  gap: 0.6154rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.uncat-classify input[type="text"] {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 0.3846rem;
+  padding: 0.3077rem 0.6154rem;
+  font-size: 0.9231rem;
+  color: var(--text);
+  max-width: 16.9231rem;
+}
+
+.uncat-row-error {
+  flex: 1 0 100%;
+  text-align: right;
+  font-size: 0.8462rem;
+  color: var(--red);
+}
+
+.uncat-row-note {
+  flex: 1 0 100%;
+  text-align: right;
+  font-size: 0.8462rem;
+  color: var(--text2);
+}
+
+/* "this name is new" hint: same right-aligned slot as the row's error/note,
+   in the warn hue -- creating a category should read as a deliberate act. */
+.uncat-row-new {
+  flex: 1 0 100%;
+  text-align: right;
+  font-size: 0.8462rem;
+  color: var(--amber);
+}
+
+/* The one-paste bulk panel: collapsed by default, so its own fetch is a
+   deliberate open, not a mount-time cost on top of the per-row path. */
+.uncat-bulk {
+  margin: 0 0 1.2308rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4615rem;
+  background: var(--surface2);
+  padding: 0.7692rem 1.0769rem;
+}
+
+.uncat-bulk > summary {
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.uncat-bulk-body {
+  margin-top: 0.7692rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6154rem;
+}
+
+.uncat-bulk-help {
+  font-size: 0.9231rem;
+  color: var(--text3);
+  margin: 0;
+}
+
+.uncat-bulk-count {
+  font-size: 0.9231rem;
+  color: var(--text3);
+}
+
+/* Plain, no alarm styling -- a snapshot that can go stale mid-session just
+   says so, the same way the merchant count itself is plainly stated. */
+.uncat-bulk-caption {
+  font-size: 0.8462rem;
+  color: var(--text3);
+  margin: -0.3077rem 0 0;
+}
+
+.uncat-bulk-loading {
+  font-size: 0.9231rem;
+  color: var(--text3);
+}
+
+.uncat-bulk-textarea {
+  width: 100%;
+  min-height: 6.9231rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.3846rem;
+  padding: 0.4615rem 0.6154rem;
+  font-size: 0.9231rem;
+  font-family: ui-monospace, monospace;
+  color: var(--text);
+  resize: vertical;
+}
+
+/* The result reads as a result, not an error -- even when nothing applied,
+   it uses the same muted note style the per-row path uses. */
+.uncat-bulk-result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3077rem;
+}
+
+.uncat-bulk-ignored {
+  font-size: 0.8462rem;
+  color: var(--text3);
+}
+
+.uncat-bulk-rejects {
+  margin: 0.3077rem 0 0;
+  padding-left: 1.3846rem;
+  font-size: 0.8462rem;
+  color: var(--text3);
+}

@@ -1,0 +1,99 @@
+/* Net Worth screen (mock networth-balance v2). Lengths are rem on the fluid
+   13px root: px / 13 = rem. */
+
+/* Tab bar: Overview · Investments · Liabilities · Allocation, with the open
+   tab's own control on the right. Replaces the app's crumb bar here. */
+.nw-top{display:flex;align-items:center;gap:0.4615rem;border-bottom:1px solid var(--border);padding:0 1.8462rem;flex-wrap:wrap}
+.nw-tabs{display:flex;gap:2px}
+.nw-tab{border-bottom:2px solid transparent;padding:0.9231rem 1.0769rem;color:var(--text2);font-size:1.0769rem;text-decoration:none;margin-bottom:-1px;white-space:nowrap}
+.nw-tab:hover{color:var(--text)}
+.nw-tab.on{color:var(--text);border-bottom-color:var(--blue-border);font-weight:500}
+.nw-top-right{margin-left:auto;display:flex;align-items:center;gap:0.6154rem;padding:0.4615rem 0}
+.nw-asof{font-family:var(--mono);font-size:0.8462rem;color:var(--text3);display:flex;gap:0.6154rem;align-items:center;flex-wrap:wrap}
+.nw-badge{font-family:var(--mono);font-size:0.7692rem;border-radius:76.85rem;padding:1px 0.6154rem;border:1px solid;text-decoration:none;white-space:nowrap}
+.nw-badge.ok{color:var(--green);border-color:color-mix(in srgb,var(--green) 50%,transparent)}
+.nw-badge.warn{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 50%,transparent)}
+.nw-badge.bad{color:var(--red);border-color:color-mix(in srgb,var(--red) 50%,transparent)}
+.nw-quiet{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+/* Views inside a tab (Liabilities): the shared chip strip, bled to the edges. */
+.nw-subwrap{padding:1.6923rem 1.6923rem 0}
+.nw-subwrap .itabs{margin-bottom:0}
+
+/* Benchmark on the Investments tab */
+.nw-bench{display:flex;align-items:center;gap:0.9231rem;font-family:var(--mono);font-size:0.8462rem;color:var(--text3)}
+.nw-bench label{display:flex;align-items:center;gap:0.4615rem}
+.nw-bench select{font-family:var(--mono);font-size:0.8462rem;padding:0.2308rem 0.6154rem}
+.nw-bench-read b{font-weight:500}
+.nw-after-hub{padding:0 1.6923rem 1.6923rem}
+.nw-returns .meta{color:var(--text3);font-size:0.8462rem}
+.nw-returns .nw-tag{margin-left:0.4615rem}
+.nw-foot{padding:0.7692rem 1.1538rem;font-size:0.8462rem;color:var(--text3);border-top:1px solid var(--line)}
+
+/* Overview */
+.nw-wrap{padding:1.2308rem 1.8462rem 2.1538rem;display:flex;flex-direction:column;gap:1.0769rem}
+.nw-loading{color:var(--text3)}
+.nw-empty{padding:3.6923rem;text-align:center;color:var(--text2)}
+.nw-sumrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(16.1538rem,1fr));gap:0.9231rem}
+.nw-stat{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;padding:0.9231rem 1.2308rem}
+.nw-stat.hero{border-color:var(--blue-border)}
+.nw-stat .k{font-family:var(--mono);font-size:0.7692rem;letter-spacing:.12em;color:var(--text3);text-transform:uppercase}
+.nw-stat .v{font-family:var(--mono);font-size:1.8462rem;font-weight:600;margin-top:2px}
+.nw-stat .s{font-family:var(--mono);font-size:0.8462rem;color:var(--text3)}
+.nw-stat .s>span{white-space:nowrap}
+.nw-mix{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;padding:0.7692rem 1.0769rem;display:flex;align-items:center;gap:1.0769rem;flex-wrap:wrap}
+.nw-mix .bar{display:flex;height:0.7692rem;border-radius:0.3846rem;overflow:hidden;gap:2px;flex:1;min-width:20rem}
+.nw-mix .bar button{border:0;border-radius:0;padding:0;min-width:2px;cursor:pointer}
+.nw-mix .lg{display:flex;gap:0.9231rem;flex-wrap:wrap;font-size:0.8462rem;color:var(--text2)}
+.nw-mix .lg i{display:inline-block;width:0.6923rem;height:0.6923rem;border-radius:2px;margin-right:0.3846rem;vertical-align:-1px}
+.nw-mix .lg b{font-family:var(--mono);color:var(--text3);font-weight:500;margin-left:3px}
+.nw-mix .excl{font-size:0.8462rem;color:var(--text3)}
+.nw-mix .excl b{color:var(--amber);font-weight:500;font-family:var(--mono)}
+.nw-sec{display:flex;align-items:baseline;gap:0.7692rem}
+.nw-sec h2{font-size:1rem;font-weight:600}
+.nw-sec .tot{font-family:var(--mono);font-size:1rem;color:var(--text2)}
+
+/* Cards: as many per row as fit at 240px (18.4615rem) each -- 4 on a 13"
+   laptop, 5 on a 1920 monitor. Each always lists its top accounts. */
+.nw-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(18.4615rem,1fr));gap:0.9231rem}
+.nw-card{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;display:flex;flex-direction:column;cursor:pointer;text-align:left;width:100%;padding:0;font:inherit;color:inherit;min-width:0}
+.nw-card:hover{background:var(--surface);border-color:color-mix(in srgb,var(--blue-border) 60%,var(--border))}
+.nw-card.flash{border-color:var(--blue-border);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue-border) 30%,transparent)}
+.nw-card .hd{display:flex;align-items:center;gap:0.7692rem;padding:0.8462rem 1.0769rem 0.4615rem;width:100%}
+.nw-card .ico{width:2.1538rem;height:2.1538rem;border-radius:0.5385rem;background:var(--surface2);display:grid;place-items:center;font-size:1rem;flex:none}
+.nw-card .name{display:block;font-weight:600}
+.nw-card .cnt{display:block;font-family:var(--mono);font-size:0.8462rem;color:var(--text3)}
+.nw-card .chev{margin-left:auto;color:var(--text3)}
+.nw-card .val{font-family:var(--mono);font-size:1.5385rem;font-weight:600;padding:0 1.0769rem;display:flex;align-items:baseline;gap:0.6154rem;flex-wrap:wrap}
+.nw-card .facts{padding:2px 1.0769rem 0.6154rem;font-size:0.8462rem;color:var(--text3);display:flex;gap:0.7692rem;flex-wrap:wrap}
+.nw-card .facts b{font-family:var(--mono);font-weight:500;color:var(--text2)}
+.nw-card ul{list-style:none;border-top:1px solid var(--line);margin-top:auto;width:100%}
+.nw-card li{display:flex;justify-content:space-between;gap:0.6154rem;padding:0.4615rem 1.0769rem;font-size:0.9231rem;border-bottom:1px solid var(--line)}
+.nw-card li:last-child{border-bottom:0}
+.nw-card li>span:first-child{color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nw-card li>span:last-child{font-family:var(--mono);white-space:nowrap}
+.nw-card li .meta{color:var(--text3)}
+.nw-tag{font-family:var(--mono);font-size:0.7692rem;border-radius:0.3846rem;padding:1px 0.4615rem;font-weight:500;white-space:nowrap}
+.nw-tag.t-blue{color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,transparent)}
+.nw-tag.t-grey{color:var(--text3);background:var(--surface2)}
+.nw-tag.t-amber{color:var(--amber);background:color-mix(in srgb,var(--amber) 12%,transparent)}
+.nw-tag.t-green{color:var(--green);background:color-mix(in srgb,var(--green) 12%,transparent)}
+.nw-tag.t-red{color:var(--red);background:color-mix(in srgb,var(--red) 12%,transparent)}
+
+/* Tones for figures on this screen */
+.nw-top .t-green,.nw-wrap .t-green,.nw-returns .t-green,.nw-bench .t-green{color:var(--green)}
+.nw-top .t-red,.nw-wrap .t-red,.nw-returns .t-red,.nw-bench .t-red{color:var(--red)}
+.nw-wrap .t-amber{color:var(--amber)}
+.nw-wrap .t-violet{color:var(--violet)}
+.nw-wrap .t-dim{color:var(--text3)}
+
+.data-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.5385rem 1.1538rem;border-bottom:1px solid var(--line);font-size:0.9231rem}
+.data-row:last-child{border-bottom:none}
+
+/* net worth screen: date-range chips (in panel head), timeline chart, toggle legend */
+.chips{display:inline-flex;border:1px solid var(--border);border-radius:0.6154rem;overflow:hidden}
+.chips button{background:none;border:none;color:var(--text2);font-family:var(--mono);font-size:0.8462rem;padding:0.3077rem 0.8462rem;cursor:pointer}
+.chips button:hover{color:var(--text)}
+.chips button.active{background:var(--surface2);color:var(--text)}
+.legend i{display:inline-block;width:0.8462rem;height:3px;border-radius:2px;margin-right:0.4615rem;vertical-align:middle}
+.legend [role="button"]{cursor:pointer;display:inline-flex;align-items:center}
+.legend .off{opacity:.4;text-decoration:line-through}

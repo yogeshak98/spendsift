@@ -1,0 +1,228 @@
+/* ───── CAT BARS / BREAKDOWN ───── */
+.cat-row{display:flex;align-items:center;gap:0.9231rem;padding:0.6154rem 1.1538rem;border-bottom:1px solid var(--line);cursor:pointer}
+.cat-row:last-child{border-bottom:none}
+.cat-row:hover{background:rgba(127,127,127,0.05)}
+.cat-row .nm{width:10rem;font-size:0.9231rem;color:var(--text);display:flex;align-items:center;gap:0.4615rem}
+.cat-row .tw{color:var(--text3);font-family:var(--mono);font-size:0.7692rem;width:0.7692rem}
+.cat-row .barwrap{flex:1;height:1.2308rem;background:var(--surface2);border-radius:0.3077rem;overflow:hidden}
+.cat-row .barfill{height:100%;border-radius:0.3077rem}
+.cat-row .amt{width:6rem;text-align:right;font-family:var(--mono);font-size:0.8462rem}
+.cat-row .pct{width:3.6923rem;text-align:right;font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.sub-row{display:flex;align-items:center;gap:0.9231rem;padding:0.4615rem 1.1538rem 0.4615rem 3.0769rem;border-bottom:1px solid var(--line);font-size:0.8462rem}
+.sub-row .nm{flex:1;color:var(--text2);font-family:var(--mono)}
+.sub-row .amt{font-family:var(--mono);color:var(--text2)}
+
+/* ───── CALENDAR ───── */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:0.4615rem;padding:1.0769rem 1.2308rem}
+.cal .dow{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);text-align:center;text-transform:uppercase;letter-spacing:0.08em}
+.cal .day{aspect-ratio:1;border-radius:0.4615rem;background:var(--surface2);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 2px 0.3846rem;font-size:0.7692rem;color:var(--text3);position:relative;cursor:pointer;min-width:0;overflow:hidden;container-type:inline-size}
+.cal .day:hover{outline:1px solid var(--blue)}
+.cal .day .dn{position:absolute;top:0.3077rem;left:0.3846rem;font-family:var(--mono);font-size:0.6154rem;line-height:1}
+
+/* the day number sits top-left, the amount at the bottom, so the two never overlap */
+.cal .day .amt{font-family:var(--mono);font-size:clamp(0.5385rem,20cqi,0.7692rem);font-weight:600;line-height:1;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:clip}
+
+/* Year heatmap: 6×2 grid of months — overrides the default 7-column day grid */
+.cal.year{grid-template-columns:repeat(6,1fr)}
+
+/* ───── COMBO ───── */
+.combo{position:relative;height:18.4615rem;padding:1.2308rem 1.2308rem 0}
+.combo .bars{display:flex;align-items:flex-end;gap:0.7692rem;height:15.3846rem}
+
+/* each column is wrapped by <Tip> in a span; an inline span has no height,
+   so .col's height:100% would resolve to zero and the bars vanish. Make the
+   wrapper a full-height flex item so the percentage heights have something
+   to resolve against. */
+.combo .bars>span{flex:1;height:100%;display:flex}
+.combo .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;cursor:pointer;border-radius:0.3077rem 0.3077rem 0 0}
+.combo .col:hover{background:rgba(127,127,127,0.08)}
+
+/* height:100% is REQUIRED: the .seg children set `height: X%`, which only
+   resolves against a definite parent height. Without it the segments collapse
+   to zero and the stacked bars vanish (mirrors .group, which has it). */
+.combo .stack{width:60%;height:100%;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden}
+.combo .seg{width:100%}
+.combo .group{display:flex;align-items:flex-end;justify-content:center;gap:3px;width:80%;height:100%}
+.combo .bar{flex:1;min-width:0.4615rem;border-radius:3px 3px 0 0}
+.combo .m{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);margin-top:0.4615rem}
+.legend{display:flex;gap:1.0769rem;padding:0.6154rem 1.2308rem 1.0769rem;font-family:var(--mono);font-size:0.7692rem;color:var(--text3);flex-wrap:wrap}
+.legend .dot{display:inline-block;width:0.6154rem;height:0.6154rem;border-radius:2px;margin-right:0.3846rem;vertical-align:middle}
+.combo.stacked-flow{position:relative}
+
+/* SVG is a replaced element: `width:auto` with left+right does NOT stretch to
+   the insets (it falls back to the intrinsic ~300px and the line is squished
+   into the left of a wider chart). Give it an explicit stretched width. */
+.stacked-flow-line{position:absolute;left:1.2308rem;top:1.2308rem;height:15.3846rem;width:calc(100% - 2.4615rem);pointer-events:none}
+.stacked-flow-line polyline{fill:none;stroke:var(--blue);stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round}
+
+/* Diverging cash flow: income grows UP from a centred zero baseline, the
+   stacked outflows grow DOWN. The bar zone (.dz) splits into equal up/down
+   halves sharing one scale, so a full income half and a full outflow half are
+   directly comparable. The baseline is the border between the two halves. */
+.combo.diverge .col{justify-content:stretch}
+.combo.diverge .dz{flex:1;width:80%;display:flex;flex-direction:column;min-height:0}
+.combo.diverge .up{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;border-bottom:1px solid var(--border)}
+.combo.diverge .down{flex:1;display:flex;flex-direction:column;justify-content:flex-start;align-items:center}
+.combo.diverge .upbar{width:100%;border-radius:3px 3px 0 0}
+.combo.diverge .down .dseg{width:100%}
+.combo.diverge .down .dseg:last-child{border-radius:0 0 3px 3px}
+
+/* ───── WATERFALL ───── */
+.wf{padding:1.3846rem 1.2308rem}
+.wf-row{display:flex;align-items:center;gap:0.9231rem;height:2.6154rem}
+.wf-row .nm{width:8.4615rem;font-size:0.9231rem;text-align:right;color:var(--text2)}
+.wf-track{flex:1;position:relative;height:1.6923rem}
+.wf-bar{position:absolute;height:1.6923rem;border-radius:3px;display:flex;align-items:center;padding:0 0.5385rem;font-family:var(--mono);font-size:0.7692rem;color:#fff;cursor:pointer}
+
+/* ───── PIES ───── */
+.pies{display:grid;grid-template-columns:repeat(4,1fr);gap:1.0769rem;padding:1.2308rem}
+.pie-cell{text-align:center;cursor:pointer}
+.pie{width:4.9231rem;height:4.9231rem;border-radius:50%;margin:0 auto 0.4615rem}
+.pie.empty{background:var(--surface2)}
+.pie-cell .ml{font-family:var(--mono);font-size:0.7692rem;color:var(--text2)}
+.pie-cell .mv{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+
+/* ───── SANKEY ───── */
+.sankey-wrap{padding:0.6154rem}
+.sankey-wrap svg{width:100%;height:29.2308rem}
+
+/* Links are STROKED centerlines (stroke-width = d3-sankey link width), the
+   standard d3-sankey idiom — not filled, which collapses flat links to zero area. */
+.sankey-link{fill:none;stroke-opacity:0.45;transition:stroke-opacity .15s ease}
+.sankey-link:hover{stroke-opacity:0.8}
+.sankey-link.is-clickable{cursor:pointer}
+.snode{font-family:var(--mono);font-size:0.7692rem;fill:var(--text2)}
+.snode-v{font-family:var(--mono);font-size:0.6923rem;fill:var(--text3)}
+
+/* ───── AREA SERIES (SIP / Lumpsum growth chart) ───── */
+.area-series{padding:1.0769rem 1.2308rem}
+.area-series svg{width:100%;height:15.3846rem}
+.area-series-fill{fill:rgba(96,165,250,0.12);stroke:none}
+.area-series-total{fill:none;stroke:var(--blue);stroke-width:2}
+.area-series-invested{fill:none;stroke:var(--text3);stroke-width:1.5;stroke-dasharray:4 3}
+
+/* ───── CALENDAR DAY HOVER DETAIL ───── */
+.day-tip{min-width:23.0769rem;max-width:33.8462rem}
+.day-tip-head{color:var(--text);margin-bottom:0.3077rem;padding-bottom:0.3077rem;border-bottom:1px solid var(--border)}
+.day-tip-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto 4.9231rem;gap:0.6154rem;align-items:baseline}
+.day-tip-row .m{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.day-tip-row .c{color:var(--text3)}
+.day-tip-row .a{color:var(--red);text-align:right}
+.day-tip-more{color:var(--text3);margin-top:2px}
+
+/* Range heatmap (PeriodHeatmap): one titled month grid per calendar month */
+.pheat{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));gap:0.3077rem 0.9231rem}
+.pheat-title{font-family:var(--mono);font-size:0.7692rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:0.7692rem 1.2308rem 0}
+.pheat-month .cal{padding-top:0.6154rem}
+.cal .day.out{opacity:.3;cursor:default;background:transparent;border:1px dashed var(--line)}
+.cal .day.out:hover{outline:none}
+
+/* RankedBars expandable rows (category → merchants) */
+.bar-group{border-bottom:1px solid var(--line)}
+.bar-group:last-child{border-bottom:none}
+.bar-group>summary{list-style:none;cursor:pointer}
+.bar-group>summary::-webkit-details-marker{display:none}
+.bar-group>summary:focus-visible{outline:1px solid var(--blue);outline-offset:-1px}
+.bar-group>summary .cat-row{border-bottom:none}
+.bar-group .chev{display:inline-block;transition:transform .15s}
+.bar-group[open] .chev{transform:rotate(90deg)}
+.bar-group[open]>summary .cat-row{border-bottom:1px solid var(--line)}
+.bar-group .sub-row:last-child{border-bottom:none}
+.sub-row .cnt{width:4.3077rem;text-align:right;font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.day-tip-row.item{grid-template-columns:minmax(0,1fr) auto auto}
+
+/* ───── CHARTS REWORK (mock v5): switches, period heatmap/bars, account Sankey, detail modal ───── */
+.chart-switches{display:inline-flex;gap:0.6154rem;align-items:center;flex-wrap:wrap}
+.chart-seg{display:inline-flex;border:1px solid var(--border);border-radius:0.5385rem;overflow:hidden}
+.chart-seg button{font-family:var(--mono);font-size:0.7692rem;font-weight:400;background:transparent;border:0;color:var(--text2);padding:3px 0.6923rem;cursor:pointer}
+.chart-seg button[aria-pressed="true"]{background:var(--blue-border);color:#fff}
+.chart-seg button:focus-visible{outline:1px solid var(--blue);outline-offset:-2px}
+.panel-head .chart-hint{font-weight:400}
+
+/* Full-width calendar: seven equal columns that always fill the panel */
+.hm{padding:0.9231rem 1.2308rem 1.2308rem;display:flex;flex-direction:column;gap:0.9231rem}
+.hm-title{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:0.7692rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:0.6154rem}
+.hm-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0.4615rem;width:100%}
+.hm-grid.year{grid-template-columns:repeat(6,minmax(0,1fr))}
+.hm-dow{font-family:var(--mono);font-size:0.7692rem;color:var(--text3);text-align:center;padding-bottom:2px}
+.hm-day{height:4rem;border-radius:0.4615rem;background:var(--surface2);border:0;display:flex;align-items:flex-end;justify-content:flex-end;padding:0 0.6154rem 0.4615rem;position:relative;min-width:0;overflow:hidden;font:inherit;color:inherit;cursor:pointer}
+.hm-grid.year .hm-day{height:4.9231rem}
+.hm-day .dn{position:absolute;top:0.3846rem;left:0.5385rem;font-family:var(--mono);font-size:0.7692rem;color:var(--text3);line-height:1}
+.hm-day .amt{font-family:var(--mono);font-size:0.9231rem;font-weight:600;color:var(--text);line-height:1;white-space:nowrap}
+.hm-day[data-dir] .dn{color:var(--text);opacity:.7}
+.hm-day.blank{background:transparent;cursor:default}
+.hm-day.out,.hm-day.future{background:transparent;border:1px dashed var(--border);cursor:default}
+.hm-day.out{opacity:.45}
+button.hm-day:hover,button.hm-day:focus-visible{outline:1px solid var(--blue)}
+.hm-key{display:inline-flex;align-items:center;gap:0.4615rem;text-transform:none;letter-spacing:0}
+.hm-ramp{display:inline-block;width:6.9231rem;height:0.6154rem;border-radius:0.3077rem}
+
+/* Bars: the box height is set here in rem; the SVG draws at the measured size */
+.pbars{height:17.6923rem;padding:0 0.3077rem}
+.pbars svg{display:block}
+.pbars text{font-family:var(--mono);font-size:0.7692rem;fill:var(--text3)}
+.pbars .pbars-v{fill:var(--text2)}
+.pbars .pbars-tag{font-size:0.6923rem}
+.pbars line.axis{stroke:var(--text3)}
+.pbars line.grid{stroke:var(--line)}
+.pbars .pbars-hit.is-clickable{cursor:pointer}
+.pbars .pbars-hit:hover{fill:rgba(127,127,127,0.08)}
+.pbars-hint{padding:0 1.2308rem 0.6154rem;font-size:0.8462rem;color:var(--text3)}
+.pbars-hint b{color:var(--text2)}
+
+/* Category rows that open the detail modal */
+button.cat-row{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);font:inherit;color:inherit;text-align:left}
+button.cat-row:focus-visible{outline:1px solid var(--blue);outline-offset:-1px}
+
+/* Account-graph Sankey */
+.sk-wrap{padding:0.9231rem 0.6154rem 0.3077rem}
+.sk-wrap svg{display:block}
+.sk-labels text{font-family:var(--mono);font-size:0.7692rem;fill:var(--text2);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+.sk-labels text tspan.v{fill:var(--text3)}
+.sk-node rect.is-clickable{cursor:pointer}
+.sk-node rect:focus-visible{outline:none;stroke:var(--text);stroke-width:1.5}
+.sk-link{stroke-opacity:.3;transition:stroke-opacity .15s}
+.sk-back{stroke-opacity:.22;transition:stroke-opacity .15s}
+.sk-link:hover,.sk-back:hover{stroke-opacity:.65}
+.sk-link.is-clickable,.sk-back.is-clickable{cursor:pointer}
+.sk-arrows path{fill:var(--text2);opacity:.7;pointer-events:none}
+.sk-tip-h{color:var(--text2);margin-bottom:0.3077rem}
+.sk-tip-row{display:flex;justify-content:space-between;gap:1.0769rem}
+.sk-legend{padding-top:0.3077rem}
+
+/* Detail modal */
+.dmodal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:60;padding:1.8462rem}
+.dmodal-box{background:var(--surface);border:1px solid var(--border);border-radius:0.9231rem;width:min(70.7692rem,100%);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1.5385rem 3.8462rem rgba(0,0,0,.5)}
+.dmodal-head{display:flex;align-items:flex-start;gap:0.9231rem;padding:1.0769rem 1.3846rem;border-bottom:1px solid var(--border)}
+.dmodal-head h3{font-size:1.1538rem;font-weight:600;margin:0}
+.dmodal-sub{font-family:var(--mono);font-size:0.8462rem;color:var(--text3);margin-top:2px}
+.dmodal-x{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--text2);border-radius:0.4615rem;padding:3px 0.6923rem;cursor:pointer;font-family:var(--mono);font-size:0.8462rem}
+.dmodal-x:focus-visible{outline:1px solid var(--blue)}
+.dmodal-loading{padding:1.3846rem;color:var(--text3)}
+.dmodal-tot{display:flex;gap:1.6923rem;padding:0.9231rem 1.3846rem;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:0.9231rem;color:var(--text2);flex-wrap:wrap}
+.dmodal-tot b{font-size:1.2308rem;display:block;color:var(--text)}
+.dmodal-tot b.v-green{color:var(--green)}
+.dmodal-tot b.v-red{color:var(--red)}
+.dmodal-tot b.v-blue{color:var(--blue)}
+.dmodal-body{display:grid;grid-template-columns:21.5385rem 1fr;min-height:0;flex:1}
+.dmodal-cats{border-right:1px solid var(--line);overflow-y:auto;padding:0.4615rem 0;display:flex;flex-direction:column}
+.dmodal-cat{display:grid;grid-template-columns:1fr auto;gap:0.3077rem 0.7692rem;padding:0.5385rem 1.2308rem;cursor:pointer;background:transparent;border:0;color:var(--text);font:inherit;text-align:left}
+.dmodal-cat:hover,.dmodal-cat[aria-pressed="true"]{background:var(--surface2)}
+.dmodal-cat:focus-visible{outline:1px solid var(--blue);outline-offset:-1px}
+.dmodal-cat .a{font-family:var(--mono);color:var(--text2);font-size:0.9231rem}
+.dmodal-cat .bar{grid-column:1/-1;height:0.4615rem;background:var(--surface2);border-radius:3px;overflow:hidden;display:block}
+.dmodal-cat .bar span{display:block;height:100%;border-radius:3px}
+.dmodal-rows{overflow-y:auto}
+.dmodal-row{display:grid;grid-template-columns:5.3846rem minmax(0,1fr) 9.2308rem 6.9231rem;gap:0.7692rem;padding:0.6154rem 1.2308rem;border-bottom:1px solid var(--line);align-items:center;font-size:0.9231rem}
+.dmodal-row.empty{display:block;color:var(--text3)}
+.dmodal-row .d{font-family:var(--mono);color:var(--text3);font-size:0.8462rem}
+.dmodal-row .m{overflow:hidden;text-overflow:ellipsis}
+.dmodal-row .m small{display:block;color:var(--text3);font-family:var(--mono);font-size:0.7692rem}
+.dmodal-row .c{color:var(--text2);font-size:0.8462rem}
+.dmodal-row .amt{font-family:var(--mono);text-align:right}
+@media (max-width:760px){.dmodal-body{grid-template-columns:1fr}.dmodal-cats{border-right:0;border-bottom:1px solid var(--line);max-height:13.8462rem}}
+.pbars .pbars-hit:focus-visible{outline:none;stroke:var(--blue);stroke-width:1.5}
+.sk-link:focus-visible,.sk-back:focus-visible{outline:none;stroke-opacity:.7}
+/* Optional dashed outline on a cell / bar (Expense · Overview: holds a one-off) */
+.hm-day.outlined{border:1.5px dashed var(--text)}
+.pbars .pbars-outline{stroke-width:1.5}

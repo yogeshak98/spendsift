@@ -1,0 +1,3 @@
+Scheme Code;Scheme Name;Net Asset Value;Date
+900001;Fictive Flexi Cap Fund;123.4567;24-Jun-2026
+900002;Fictive Liquid Fund;1012.0001;24-Jun-2026

@@ -1,0 +1,28 @@
+# HDFC Bank savings statement (.xls). Header at row 20, framed by rows of
+# asterisks; a STATEMENT SUMMARY block follows the transactions.
+fingerprint: 1433a732dc427c19
+institution: HDFC
+header_row_index: 20
+date_column: Date
+date_format: '%d/%m/%y'
+narration_column: Narration
+delimiter: ','
+debit_column: Withdrawal Amt.
+credit_column: Deposit Amt.
+balance_column: Closing Balance
+account_marker_pattern: 'Account No :\s+\d{10}(\d{4})\b'
+account_marker_map:
+  '2651': Assets:Checking:HDFC-2651
+  '7462': Assets:Checking:HDFC-7462
+  '1468': Assets:Checking:HDFC-1468
+  '1157': Assets:Checking:HDFC-1157
+  '0942': Assets:Checking:HDFC-0942
+stop_pattern: '^STATEMENT SUMMARY\b'
+skip_row_patterns:
+- '^\*+(\s+\*+)*$'
+# The STATEMENT SUMMARY block after the rows prints the opening under its
+# label, one row below.
+opening_balance:
+  label: '^Opening Balance$'
+  row_offset: 1
+origin: user

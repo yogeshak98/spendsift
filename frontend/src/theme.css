@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+html { font-size: clamp(13px, calc(7px + 0.42vw), 19px); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root, [data-theme="midnight"] {
+  --bg:#0f0f0f; --surface:#1a1a1a; --surface2:#222; --border:#2e2e2e; --line:#1e1e1e;
+  --text:#e8e8e8; --text2:#b0b0b0; --text3:#8a8a8a;
+  --green:#4ade80; --amber:#fbbf24; --red:#f87171; --blue:#60a5fa; --blue-border:#3b82f6;
+  --violet:#a78bfa; --teal:#2dd4bf; --pink:#f472b6;
+  --sans:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+[data-theme="carbon"] {
+  --bg:#0e1116; --surface:#161b22; --surface2:#1c232c; --border:#2a323d; --line:#222a33;
+  --text:#e6edf3; --text2:#8b949e; --text3:#5a626c;
+  --green:#3fb950; --amber:#d29922; --red:#f85149; --blue:#58a6ff; --blue-border:#1f6feb;
+  --violet:#bc8cff; --teal:#39c5cf; --pink:#f778ba;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+[data-theme="daylight"] {
+  --bg:#f5f3ee; --surface:#fff; --surface2:#efece4; --border:#dcd7cc; --line:#e8e4da;
+  --text:#1f1d1a; --text2:#6b6658; --text3:#9c968a;
+  --green:#1f9d55; --amber:#b7791f; --red:#d64545; --blue:#2b6cb0; --blue-border:#2b6cb0;
+  --violet:#6b46c1; --teal:#0d9488; --pink:#b83280;
+  --sans:'IBM Plex Sans',sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:1rem; line-height:1.5; }
+
+/* base form-control reset — without this, native button/select/file-input
+   chrome renders with light OS theming that clashes with the dark surface
+   tokens above. Classed selectors elsewhere (.link-button, .add-goal, .picker,
+   .cm-button, etc.) already set their own values and win on specificity. */
+button, select, input[type=text], input[type=number], input[type=date], input:not([type]) {
+  font-family: var(--sans); font-size: 0.9231rem; color: var(--text);
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 0.4615rem;
+  padding: 0.4615rem 0.7692rem;
+}
+button { cursor: pointer; }
+button:hover { background: rgba(127,127,127,0.08); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+button.primary { background: var(--blue); border-color: var(--blue-border); color: #0f0f0f; font-weight: 600; }
+button.primary:hover { background: var(--blue-border); color: var(--text); }
+select:focus, input:focus { outline: none; border-color: var(--blue-border); }
+input[type=file] { font-size: 0.9231rem; color: var(--text2); border: none; background: none; padding: 0; }
+input[type=file]::file-selector-button {
+  font-family: var(--sans); font-size: 0.9231rem; color: var(--text); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 0.4615rem; padding: 0.4615rem 0.7692rem; cursor: pointer; margin-right: 0.7692rem;
+}
+input[type=file]::file-selector-button:hover { background: rgba(127,127,127,0.08); }

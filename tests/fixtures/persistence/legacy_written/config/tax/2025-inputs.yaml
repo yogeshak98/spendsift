@@ -1,0 +1,8 @@
+regime: old
+income:
+  gross_salary: '1200000'
+  tds: '95000'
+  exempt_hra_lta: '60000'
+deductions:
+  80c: '150000'
+  80d: '25000'

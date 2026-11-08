@@ -1,0 +1,93 @@
+{
+  "_note": "Computed from normalize_tag in the ingest package's tags module at 930c8c0 (now at backend.app.models.domain.tags.normalize_tag), then updated for Q20 (spaces around / collapse; whitespace after leading # stripped). tag null = refused (E1072 / normalizeTag returns null).",
+  "cases": [
+    {
+      "raw": "Madikeri Oct-2026",
+      "tag": "madikeri-oct-2026"
+    },
+    {
+      "raw": "travel/Madikeri  Oct - 2026",
+      "tag": "travel/madikeri-oct-2026"
+    },
+    {
+      "raw": "#Trip",
+      "tag": "trip"
+    },
+    {
+      "raw": "##x",
+      "tag": "x"
+    },
+    {
+      "raw": "# x",
+      "tag": "x"
+    },
+    {
+      "raw": "  Trip  ",
+      "tag": "trip"
+    },
+    {
+      "raw": "/travel/x/",
+      "tag": "travel/x"
+    },
+    {
+      "raw": "a.b_c-D9",
+      "tag": "a.b_c-d9"
+    },
+    {
+      "raw": "fy2026-27",
+      "tag": "fy2026-27"
+    },
+    {
+      "raw": "x y",
+      "tag": "x-y"
+    },
+    {
+      "raw": "A - B",
+      "tag": "a-b"
+    },
+    {
+      "raw": "travel / x",
+      "tag": "travel/x"
+    },
+    {
+      "raw": "x\t\ty",
+      "tag": "x-y"
+    },
+    {
+      "raw": "",
+      "tag": null
+    },
+    {
+      "raw": "  ",
+      "tag": null
+    },
+    {
+      "raw": "#",
+      "tag": null
+    },
+    {
+      "raw": "café",
+      "tag": null
+    },
+    {
+      "raw": "trip:x",
+      "tag": null
+    },
+    {
+      "raw": "travel//x",
+      "tag": null
+    },
+    {
+      "raw": "a#b",
+      "tag": null
+    },
+    {
+      "raw": "x#",
+      "tag": null
+    },
+    {
+      "raw": "trip!",
+      "tag": null
+    }
+  ]
+}

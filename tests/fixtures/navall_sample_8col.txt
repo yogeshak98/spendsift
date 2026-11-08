@@ -1,0 +1,20 @@
+Scheme Code;ISIN Div Payout/ ISIN Growth;ISIN Div Reinvestment;Scheme Name;Plan;Option;Net Asset Value;Date
+
+Open Ended Schemes ( Equity Scheme - Flexi Cap Fund )
+
+PPFAS Mutual Fund
+
+122639;INF879O01027;INF879O01035;Parag Parikh Flexi Cap Fund;Direct Plan;Growth;215.0500;24-Jun-2026
+122640;INF879O01100;INF879O01118;Parag Parikh Flexi Cap Fund;Regular Plan;Growth;198.2500;24-Jun-2026
+
+Open Ended Schemes ( Index Funds )
+
+UTI Mutual Fund
+
+120716;INF789FB1R44;INF789FB1S43;UTI Nifty 50 Index Fund;Direct Plan;Growth;151.0500;24-Jun-2026
+
+Mirae Asset Mutual Fund
+
+118989;INF769K01101;INF769K01119;Mirae Asset Large & Midcap Fund;Direct Plan;Growth;132.4000;24-Jun-2026
+999998;INF000000001;INF000000002;Closed Liquidated Fund;Direct;Growth;N.A.;24-Jun-2026
+999997;malformed line with too few fields

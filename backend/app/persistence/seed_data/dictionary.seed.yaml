@@ -1,0 +1,25 @@
+# merchant token (uppercase, normalized) -> category account
+SWIGGY: Expenses:Food
+ZOMATO: Expenses:Food
+BLINKIT: Expenses:Food
+ZEPTO: Expenses:Food
+BIGBASKET: Expenses:Groceries
+DMART: Expenses:Groceries
+AMAZON: Expenses:Shopping
+FLIPKART: Expenses:Shopping
+MYNTRA: Expenses:Shopping
+UBER: Expenses:Travel
+OLA: Expenses:Travel
+IRCTC: Expenses:Travel
+INDIGO: Expenses:Travel
+NETFLIX: Expenses:Entertainment
+HOTSTAR: Expenses:Entertainment
+BOOKMYSHOW: Expenses:Entertainment
+BESCOM: Expenses:Utilities
+AIRTEL: Expenses:Utilities
+JIO: Expenses:Utilities
+SALARY: Income:Salary
+INTEREST: Income:Interest
+INTEREST CHARGED: Expenses:Interest
+FINANCE CHARGE: Expenses:Interest
+LATE PAYMENT INTEREST: Expenses:Interest

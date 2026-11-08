@@ -1,0 +1,4 @@
+targets:
+  Expenses:Food: '8000'
+  Expenses:Travel: '2500.50'
+version: 1

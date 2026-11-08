@@ -1,0 +1,24 @@
+# HDFC Bank credit card statement (.xlsx). Header at row 19; one AMT column
+# with a Debit /Credit indicator that reads Cr on payments and credits.
+fingerprint: 83d87565a024f39c
+institution: HDFC
+header_row_index: 19
+date_column: DATE
+date_format: '%d/%m/%Y %H:%M:%S'
+narration_column: Description
+delimiter: ','
+amount_column: AMT
+sign_column: Debit /Credit
+credit_indicators:
+- Cr
+amount_sign: indicator
+account_marker_pattern: '^Card No:\s+\d{4} \d{2}XX XXXX (\d{4})\b'
+account_marker_map:
+  '2712': Liabilities:CreditCard:HDFCMillennia-2712
+  '4185': Liabilities:CreditCard:HDFCInfinia-4185
+# The Account Summary equation prints the previous statement's balance
+# under `Opening Bal`, one row below (a plain figure is owed).
+opening_balance:
+  label: '^Opening Bal$'
+  row_offset: 1
+origin: user

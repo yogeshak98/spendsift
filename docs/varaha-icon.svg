@@ -1,0 +1,35 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+  <!-- coin background -->
+  <circle cx="50" cy="50" r="50" fill="#0f0f0f"/>
+
+  <!-- outer coin rim -->
+  <circle cx="50" cy="50" r="46" fill="none" stroke="#C8981A" stroke-width="1.4"/>
+  <!-- inner coin rim (double-ring, classical coin detail) -->
+  <circle cx="50" cy="50" r="42" fill="none" stroke="#C8981A" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- V with tusk-curved outer edges -->
+  <!-- Left arm: outer edge bows outward like a tusk -->
+  <path
+    d="M 19,17
+       C 9,42 43,65 50,72
+       C 46,64 35,21 31,17
+       Z"
+    fill="#C8981A"
+  />
+  <!-- Right arm: symmetric -->
+  <path
+    d="M 81,17
+       C 91,42 57,65 50,72
+       C 54,64 65,21 69,17
+       Z"
+    fill="#C8981A"
+  />
+
+  <!-- serif crossbar at top of left arm -->
+  <rect x="12" y="15" width="22" height="4" rx="1" fill="#C8981A"/>
+  <!-- serif crossbar at top of right arm -->
+  <rect x="66" y="15" width="22" height="4" rx="1" fill="#C8981A"/>
+
+  <!-- subtle bottom dot at V tip -->
+  <circle cx="50" cy="74" r="2" fill="#C8981A" opacity="0.6"/>
+</svg>

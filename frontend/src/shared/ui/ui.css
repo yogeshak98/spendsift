@@ -1,0 +1,147 @@
+/* ───── PANELS / STATS ───── (lifted from the mockup) */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;overflow:hidden;margin-bottom:1.2308rem}
+.panel.glow{border-color:var(--blue-border)}
+.panel-head{padding:0.8462rem 1.1538rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.6923rem;font-weight:600;font-size:1rem}
+.panel-head .right{margin-left:auto;font-family:var(--mono);font-size:0.8462rem;color:var(--text2);font-weight:400}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9231rem;margin-bottom:1.0769rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;padding:1.0769rem 1.2308rem}
+.stat .l{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5385rem}
+.stat .n{font-size:1.8462rem;font-weight:600;font-family:var(--mono);letter-spacing:-0.01em}
+.stat .d{font-size:0.8462rem;margin-top:0.3077rem;font-family:var(--mono)}
+.stat.hero{border-color:var(--blue-border)}
+
+/* ───── TRANSACTION ROW ───── */
+
+/* Narration on the left, account chips grouped on the right (not scattered by
+   space-between). The annotation editor, when open, drops onto its own line. */
+.txn-row{padding:0.6154rem 1.1538rem;border-bottom:1px solid var(--line);font-size:0.9231rem}
+.txn-row:last-child{border-bottom:none}
+.txn-head{display:flex;justify-content:space-between;align-items:baseline;gap:1.0769rem}
+.txn-head .data-label{color:var(--text)}
+.acct-pills{display:flex;flex-wrap:wrap;gap:0.4615rem;justify-content:flex-end}
+.acct-pill{font-family:var(--mono);font-size:0.7692rem;padding:2px 0.6154rem;border-radius:0.3846rem;border:1px solid var(--border);background:var(--surface2);color:var(--text2);white-space:nowrap}
+button.acct-pill{font-weight:500}
+.acct-pill .pill-amt{margin-left:0.5385rem;font-variant-numeric:tabular-nums;font-weight:600}
+.import-template-actions{display:flex;gap:0.7692rem;justify-content:flex-end;align-items:center;margin-top:1.5385rem;padding-top:1.2308rem;border-top:1px solid var(--border)}
+.import-template-actions button{padding:0.6154rem 1.2308rem;border-radius:0.4615rem;font-size:0.9231rem;line-height:1.2}
+
+/* ───── TABLE ───── */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;overflow:hidden;margin-bottom:1.2308rem}
+
+/* When a table-wrap sits directly inside a Panel, the Panel already supplies the
+   bordered/rounded card chrome — drop the inner card's border, radius and trailing
+   margin so we don't get a card-in-card with a residual empty strip below the table.
+   NOTE: this rule also matches <details className="panel"> accordion (e.g. Salary.tsx
+   "Tax working" panel) because details.panel renders as a block with the same class —
+   intentional, visually correct, and should not be tightened to div.panel>.table-wrap. */
+.panel>.table-wrap{border:none;border-radius:0;margin-bottom:0}
+
+/* Long account groups (Assets can be 40+) are capped to a scroll window so each
+   root section stays compact instead of pushing the whole page down. The header
+   sticks so the columns stay labelled while scrolling within the section. */
+.acct-scroll{max-height:23.0769rem;overflow-y:auto}
+.acct-scroll thead th{position:sticky;top:0;z-index:1;background:var(--surface2)}
+table{width:100%;border-collapse:collapse;font-size:0.9231rem}
+thead tr{background:var(--surface2)}
+th{font-family:var(--mono);font-size:0.6923rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);padding:0.6923rem 1rem;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th.num,td.num{text-align:right}
+td{padding:0.6154rem 1rem;border-bottom:1px solid var(--line);color:var(--text2)}
+td.mono{font-family:var(--mono);font-size:0.8462rem}
+td.label{font-family:var(--sans);font-size:0.9231rem;color:var(--text);font-weight:500}
+tr:last-child td{border-bottom:none}
+
+/* ───── TREE TABLE (Income Statement, Liabilities Balance) ───── */
+
+/* table-layout:fixed makes column widths deterministic; the label column
+   (first col) is left as auto/flexible via colgroup so it absorbs available
+   space without overflow, while numeric columns get fixed 110px each.
+   Scoped to .tree-table so generic tables elsewhere are unaffected. */
+.tree-table{table-layout:fixed}
+
+/* Tabular numerals so digits stack cleanly in a column across all rows.
+   Applied to the explicit num-cell class on numeric <td>s in TreeTable. */
+.tree-table td.num-cell{font-variant-numeric:tabular-nums}
+
+/* ───── PILLS ───── */
+.pill{display:inline-block;font-family:var(--mono);font-size:0.7692rem;font-weight:500;padding:2px 0.5385rem;border-radius:0.3077rem}
+.pill.cat{background:rgba(96,165,250,0.10);color:var(--blue)}
+.pill.unk{background:rgba(248,113,113,0.10);color:var(--red)}
+
+/* ───── CALLOUT ───── */
+.callout{border-radius:0.6923rem;padding:0.7692rem 1rem;font-size:0.9231rem;margin-bottom:0.9231rem;display:flex;gap:0.6923rem;align-items:flex-start}
+.callout.warn{background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.4);color:var(--text)}
+.callout.bad{background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.4);color:var(--text)}
+.callout.info{background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.3);color:var(--text2)}
+.callout b{color:var(--text)}
+.callout-inline{display:flex;align-items:center;gap:0.6154rem;font-size:0.9231rem;color:var(--text2)}
+
+/* ───── PROGRESS TRACK ───── */
+.track{height:0.5385rem;background:var(--surface2);border-radius:0.3846rem;overflow:hidden}
+.fill{height:100%;border-radius:0.3846rem}
+
+/* ───── TOOLTIP ───── */
+.tip{position:fixed;z-index:100;background:var(--surface2);border:1px solid var(--border);
+  border-radius:0.6154rem;padding:0.6923rem 0.8462rem;font-family:var(--mono);font-size:0.8462rem;color:var(--text);
+  pointer-events:none;box-shadow:0 0.6154rem 1.8462rem rgba(0,0,0,0.45);min-width:12.3077rem;line-height:1.6}
+
+/* Tooltip color swatches: .dot is otherwise sized only under .legend, and tooltip
+   content renders inside .tip (outside .legend), so scope the same sizing here. */
+.tip .dot{display:inline-block;width:0.6154rem;height:0.6154rem;border-radius:2px;margin-right:0.3846rem;vertical-align:middle}
+
+/* ───── PANEL BODY (for panels whose children aren't already self-padded) ───── */
+.panel-body{padding:1.0769rem 1.1538rem}
+
+/* ───── FORM FIELDS (Goal Planner, Calculators) ───── */
+.field{margin-bottom:0.9231rem}
+.field label{display:block;font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.3846rem}
+.field input[type=number],.field input[type=text],.field input[type=date]{width:100%;padding:0.5385rem 0.6923rem;border:1px solid var(--border);border-radius:0.4615rem;background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:0.9231rem}
+.field input[type=number]:focus,.field input[type=text]:focus,.field input[type=date]:focus{outline:none;border-color:var(--blue-border)}
+.field textarea{width:100%;padding:0.5385rem 0.6923rem;border:1px solid var(--border);border-radius:0.4615rem;background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:0.9231rem;line-height:1.5;resize:vertical}
+.field textarea:focus{outline:none;border-color:var(--blue-border)}
+.field textarea::placeholder{color:var(--text3)}
+.field input[type=range]{width:100%;accent-color:var(--blue)}
+.field .range-val{float:right;font-family:var(--mono);color:var(--blue);font-weight:600}
+
+/* --- Sortable table headers (DataTable) ------------------------------------
+   The header stays a <th>; the button inside it is what takes focus and the
+   click, so keyboard users get the sort without the whole cell becoming a
+   tab stop. Arrow is dim until the column is the active sort. */
+th.sortable { padding: 0; }
+.th-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3846rem;
+  width: 100%;
+  padding: 0.5385rem 0.7692rem;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+th.num .th-sort { justify-content: flex-end; }
+.th-sort:hover { color: var(--text, #e6e6e6); }
+.sort-arrow { font-size: 0.6923rem; opacity: 0.35; }
+.sort-arrow.on { opacity: 1; }
+
+/* PeriodToggle: Month | FY | Custom segmented control + the active mode's picker */
+.ptoggle{display:inline-flex;align-items:center;gap:0.6154rem;flex-wrap:wrap}
+.ptoggle-seg{display:inline-flex;border:1px solid var(--border);border-radius:0.4615rem;overflow:hidden}
+.ptoggle-seg button{border:none;border-right:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--mono);font-size:0.7692rem;padding:0.3846rem 0.7692rem;cursor:pointer}
+.ptoggle-seg button:last-child{border-right:none}
+.ptoggle-seg button:hover:not([aria-pressed="true"]){color:var(--text);background:var(--line)}
+.ptoggle-seg button[aria-pressed="true"]{background:var(--blue-border);color:#fff}
+.ptoggle-seg button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.ptoggle-custom{display:inline-flex;align-items:center;gap:0.4615rem}
+.ptoggle-custom input{background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:0.4615rem;padding:0.3077rem 0.6154rem;font-size:0.8462rem;font-family:var(--mono);color-scheme:light dark}
+.ptoggle-dash{color:var(--text3)}
+.ptoggle-alert{color:var(--red);font-family:var(--mono);font-size:0.7692rem}
+
+/* Panel's `fill` variant and the muted .note line, shared by many screens.
+   Kept after .panel-body so .note's padding still wins on `.panel-body.note`;
+   the per-screen sheets that combine .note with another class (.flow-note,
+   .commit-bar .note) load later and still override it. */
+.panel.fill{display:flex;flex-direction:column}
+.panel.fill>:last-child{flex:1;min-height:0}
+.note{font-size:0.9231rem;color:var(--text3);padding:1.0769rem 1.2308rem}

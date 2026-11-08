@@ -1,0 +1,1063 @@
+<!doctype html>
+<title>SpendSift — User Guide</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Theme tokens — mirrors theme.css exactly ── */
+:root, [data-theme="midnight"] {
+  --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222; --border: #2e2e2e; --line: #1e1e1e;
+  --text: #e8e8e8; --text2: #b0b0b0; --text3: #8a8a8a;
+  --green: #4ade80; --amber: #fbbf24; --red: #f87171; --blue: #60a5fa; --blue-border: #3b82f6;
+  --violet: #a78bfa; --teal: #2dd4bf; --pink: #f472b6;
+  --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+  /* doc-specific */
+  --bg-callout-info: rgba(96,165,250,0.07); --border-callout-info: rgba(96,165,250,0.30);
+  --bg-callout-warn: rgba(251,191,36,0.10); --border-callout-warn: rgba(251,191,36,0.40);
+  --bg-callout-tip:  rgba(74,222,128,0.07); --border-callout-tip:  rgba(74,222,128,0.30);
+}
+[data-theme="carbon"] {
+  --bg: #0e1116; --surface: #161b22; --surface2: #1c232c; --border: #2a323d; --line: #222a33;
+  --text: #e6edf3; --text2: #8b949e; --text3: #5a626c;
+  --green: #3fb950; --amber: #d29922; --red: #f85149; --blue: #58a6ff; --blue-border: #1f6feb;
+  --violet: #bc8cff; --teal: #39c5cf; --pink: #f778ba;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --mono: 'IBM Plex Mono', monospace;
+  --bg-callout-info: rgba(88,166,255,0.07); --border-callout-info: rgba(88,166,255,0.28);
+  --bg-callout-warn: rgba(210,153,34,0.10); --border-callout-warn: rgba(210,153,34,0.38);
+  --bg-callout-tip:  rgba(63,185,80,0.07);  --border-callout-tip:  rgba(63,185,80,0.28);
+}
+[data-theme="daylight"] {
+  --bg: #f5f3ee; --surface: #fff; --surface2: #efece4; --border: #dcd7cc; --line: #e8e4da;
+  --text: #1f1d1a; --text2: #6b6658; --text3: #9c968a;
+  --green: #1f9d55; --amber: #b7791f; --red: #d64545; --blue: #2b6cb0; --blue-border: #2b6cb0;
+  --violet: #6b46c1; --teal: #0d9488; --pink: #b83280;
+  --sans: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+  --bg-callout-info: rgba(43,108,176,0.07); --border-callout-info: rgba(43,108,176,0.28);
+  --bg-callout-warn: rgba(183,121,31,0.10); --border-callout-warn: rgba(183,121,31,0.38);
+  --bg-callout-tip:  rgba(31,157,85,0.07);  --border-callout-tip:  rgba(31,157,85,0.28);
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--text); background: var(--bg); line-height: 1.6; font-size: 13px; }
+
+/* ── Layout ── */
+.shell { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ── mirrors .rail from shell.css ── */
+.sidebar {
+  width: 188px; flex-shrink: 0;
+  border-right: 1px solid var(--border); background: var(--surface);
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+
+.brand { padding: 18px 18px 14px; border-bottom: 1px solid var(--border); }
+.brand .logo { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
+.brand .logo span { color: var(--blue); }
+.brand .tag { font-family: var(--mono); font-size: 9px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
+
+.nav { flex: 1; overflow-y: auto; padding: 8px 10px; }
+.nav-group-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.10em;
+  text-transform: uppercase; color: var(--text3); padding: 12px 12px 4px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 7px 12px;
+  font-size: 12.5px; color: var(--text2); border-radius: 7px;
+  cursor: pointer; text-decoration: none; transition: background 0.1s, color 0.1s;
+}
+.nav-item:hover { color: var(--text); background: rgba(127,127,127,0.07); }
+.nav-item.active { color: var(--text); background: rgba(96,165,250,0.12); }
+.nav-item.active .ic { color: var(--blue); }
+.nav-item .ic { width: 15px; text-align: center; font-size: 12px; color: var(--text3); }
+
+.nav-sub { display: none; flex-direction: column; gap: 1px; margin: 1px 0 6px 22px; }
+.nav-sub.show { display: flex; }
+.nav-subitem {
+  display: block; padding: 4px 10px; font-size: 11.5px; color: var(--text3);
+  border-radius: 6px; cursor: pointer; text-decoration: none;
+}
+.nav-subitem:hover { color: var(--text); background: rgba(127,127,127,0.06); }
+.nav-subitem.active { color: var(--blue); }
+
+.sidebar-foot {
+  padding: 12px 18px; border-top: 1px solid var(--border);
+}
+.sidebar-foot select {
+  width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 8px; font-size: 11px; font-family: var(--mono);
+  cursor: pointer;
+}
+.sidebar-foot select:focus { outline: none; border-color: var(--blue-border); }
+
+/* ── Main content ── */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.cbar {
+  display: flex; align-items: center; gap: 10px; padding: 10px 24px;
+  border-bottom: 1px solid var(--border); position: sticky; top: 0;
+  background: var(--bg); z-index: 20;
+}
+.crumb { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+.crumb b { color: var(--text2); }
+
+/* 3-column: content grows, outline is fixed right */
+.body { display: flex; flex: 1; align-items: flex-start; }
+.content { flex: 1; min-width: 0; padding: 28px 40px 80px; }
+
+/* ── Right outline (On this page) ── */
+.outline {
+  width: 196px; flex-shrink: 0;
+  position: sticky; top: 43px; height: calc(100vh - 43px);
+  overflow-y: auto; padding: 20px 0 20px 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.outline .ol-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.10em;
+  text-transform: uppercase; color: var(--text3); padding: 0 16px 8px;
+}
+.outline a {
+  display: block; padding: 3px 16px; font-size: 11.5px; color: var(--text3);
+  text-decoration: none; transition: color 0.1s;
+  border-left: 2px solid transparent; margin-left: -1px;
+}
+.outline a:hover { color: var(--text2); }
+.outline a.active { color: var(--blue); border-left-color: var(--blue); }
+.outline a.h3 { padding-left: 26px; font-size: 11px; }
+
+/* ── Sections ── */
+.section { margin-bottom: 56px; scroll-margin-top: 50px; }
+
+/* ── Typography ── */
+h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; color: var(--text); margin-bottom: 10px; }
+h1 .eyebrow { display: block; font-family: var(--mono); font-size: 9px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 8px; }
+h2 { font-size: 15px; font-weight: 600; color: var(--text); margin: 36px 0 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+h2:first-child { margin-top: 0; }
+h3 { font-size: 13px; font-weight: 600; color: var(--text); margin: 24px 0 8px; }
+p { margin-bottom: 12px; color: var(--text2); font-size: 12.5px; }
+p:last-child { margin-bottom: 0; }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+strong { font-weight: 600; color: var(--text); }
+ul, ol { margin: 8px 0 14px 18px; }
+li { font-size: 12.5px; color: var(--text2); line-height: 1.7; }
+li + li { margin-top: 2px; }
+
+/* ── Code ── */
+code {
+  font-family: var(--mono); font-size: 11px;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 4px;
+  padding: 1px 5px; color: var(--text);
+}
+pre {
+  font-family: var(--mono); font-size: 11px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+  overflow-x: auto; margin: 12px 0; line-height: 1.65; color: var(--text2);
+}
+pre code { background: none; border: none; padding: 0; font-size: inherit; }
+.c-kw  { color: var(--violet); }
+.c-str { color: var(--green); }
+.c-num { color: var(--amber); }
+.c-cm  { color: var(--text3); font-style: italic; }
+.c-key { color: var(--blue); }
+.c-path{ color: var(--amber); }
+
+/* ── Panels (match .panel from components.css) ── */
+.panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+.panel-head { padding: 11px 15px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: 13px; color: var(--text); }
+.panel-body { padding: 14px 15px; }
+
+/* ── Callouts (match .callout from components.css) ── */
+.callout { border-radius: 9px; padding: 10px 13px; font-size: 12px; margin: 12px 0; display: flex; gap: 9px; align-items: flex-start; }
+.callout.info  { background: var(--bg-callout-info);  border: 1px solid var(--border-callout-info);  color: var(--text2); }
+.callout.warn  { background: var(--bg-callout-warn);  border: 1px solid var(--border-callout-warn);  color: var(--amber); }
+.callout.tip   { background: var(--bg-callout-tip);   border: 1px solid var(--border-callout-tip);   color: var(--green); }
+.callout b { color: var(--text); display: block; margin-bottom: 2px; }
+.callout p { margin-bottom: 0; font-size: 12px; color: inherit; }
+.callout code { background: rgba(127,127,127,0.15); border-color: transparent; font-size: 11px; color: inherit; }
+
+/* ── Pills (match .pill) ── */
+.pill { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 4px; }
+.pill.blue  { background: rgba(96,165,250,0.10); color: var(--blue); }
+.pill.green { background: rgba(74,222,128,0.10); color: var(--green); }
+.pill.amber { background: rgba(251,191,36,0.10); color: var(--amber); }
+.pill.red   { background: rgba(248,113,113,0.10); color: var(--red); }
+.pill.dim   { background: var(--surface2); color: var(--text3); border: 1px solid var(--border); }
+
+/* ── Steps ── */
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 14px 0 20px; }
+.steps > li { counter-increment: step; position: relative; padding: 0 0 20px 40px; color: var(--text2); font-size: 12.5px; }
+.steps > li::before {
+  content: counter(step); position: absolute; left: 0; top: 1px;
+  width: 24px; height: 24px; background: var(--blue-border); color: var(--bg);
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.steps > li::after { content: ''; position: absolute; left: 11px; top: 26px; bottom: 0; width: 2px; background: var(--border); }
+.steps > li:last-child::after { display: none; }
+.steps > li:last-child { padding-bottom: 0; }
+.steps p { margin-bottom: 6px; color: var(--text2); }
+.steps pre { margin: 8px 0; }
+
+/* ── Table (match table styles from components.css) ── */
+table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+thead tr { background: var(--surface2); }
+th { font-family: var(--mono); font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 8px 13px; border-bottom: 1px solid var(--line); color: var(--text2); }
+td:first-child { color: var(--text); font-weight: 500; }
+tr:last-child td { border-bottom: none; }
+.table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 12px 0; }
+.table-wrap table { margin: 0; }
+
+/* ── Flow diagram ── */
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 14px 0; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.flow-step { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-family: var(--mono); font-size: 11px; color: var(--text2); }
+.flow-arrow { color: var(--text3); font-family: var(--mono); font-size: 14px; }
+
+/* ── Screen grid ── */
+.screen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 14px 0; }
+.screen-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.screen-preview { background: var(--surface2); height: 80px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 5px; padding: 12px; }
+.screen-bar { height: 6px; border-radius: 3px; background: var(--border); }
+.screen-bar.blue  { background: rgba(96,165,250,0.6); width: 80%; }
+.screen-bar.green { background: rgba(74,222,128,0.6); width: 60%; }
+.screen-bar.red   { background: rgba(248,113,113,0.6); width: 45%; }
+.screen-bar.amber { background: rgba(251,191,36,0.5); width: 70%; }
+.screen-bar.dim   { width: 85%; }
+.screen-info { padding: 10px 12px; }
+.screen-name { font-weight: 600; font-size: 12.5px; color: var(--text); margin-bottom: 2px; }
+.screen-desc { font-size: 11.5px; color: var(--text3); }
+
+/* ── Nav source indicator ── */
+.src { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; padding: 2px 9px 2px 7px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface2); color: var(--text2); }
+.src .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex: none; }
+.src.live   { color: var(--green); border-color: rgba(74,222,128,0.35); background: rgba(74,222,128,0.08); }
+.src.live .dot { background: var(--green); }
+.src.cached { color: var(--blue); border-color: rgba(96,165,250,0.30); background: rgba(96,165,250,0.07); }
+.src.cached .dot { background: var(--blue); }
+.src.offline{ color: var(--amber); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
+.src.offline .dot { background: var(--amber); }
+
+/* ── Kbd shortcut ── */
+.kbd { font-family: var(--mono); font-size: 9px; color: var(--text3); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; background: var(--surface2); }
+
+/* ── Definition list ── */
+dl { margin: 10px 0; }
+dt { font-weight: 600; font-size: 12.5px; color: var(--text); margin-top: 14px; }
+dt:first-child { margin-top: 0; }
+dd { margin: 4px 0 0 0; padding-left: 14px; border-left: 2px solid var(--border); font-size: 12.5px; color: var(--text2); }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) { .outline { display: none; } }
+@media (max-width: 700px) { .sidebar { display: none; } .content { padding: 20px 18px 60px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .nav-item, .outline a { transition: none; } }
+</style>
+
+<div class="shell">
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="logo">Spend<span>Sift</span></div>
+    <div class="tag">User Guide</div>
+  </div>
+  <div class="nav">
+    <div class="nav-group-label">Getting Started</div>
+    <a class="nav-item" href="#overview"><span class="ic">◈</span>Overview</a>
+    <a class="nav-item" href="#install"><span class="ic">↓</span>Installation</a>
+    <a class="nav-item" href="#first-run"><span class="ic">▷</span>First Run</a>
+    <a class="nav-item" href="#data-folder"><span class="ic">▤</span>Data Folder</a>
+
+    <div class="nav-group-label" style="margin-top:8px">Importing</div>
+    <a class="nav-item" href="#institutions"><span class="ic">◇</span>Institutions</a>
+    <a class="nav-item" href="#import-flow"><span class="ic">⇄</span>Import Flow</a>
+    <a class="nav-item" href="#opening-balances"><span class="ic">◐</span>Opening Balances</a>
+    <a class="nav-item" href="#review-queue"><span class="ic">≡</span>Review Queue</a>
+    <a class="nav-item" href="#templates"><span class="ic">▦</span>Templates</a>
+    <a class="nav-item" href="#deduplication"><span class="ic">◎</span>Deduplication</a>
+
+    <div class="nav-group-label" style="margin-top:8px">Navigation</div>
+    <a class="nav-item" href="#dashboard"><span class="ic">◈</span>Dashboard</a>
+    <a class="nav-item" href="#networth"><span class="ic">▦</span>Net Worth</a>
+    <a class="nav-item" href="#nav-prices"><span class="ic">↑</span>NAV Prices</a>
+    <a class="nav-item" href="#cashflow"><span class="ic">⇄</span>Cash Flow</a>
+    <a class="nav-item" href="#expense"><span class="ic">▤</span>Expense</a>
+    <a class="nav-item" href="#liabilities"><span class="ic">◇</span>Liabilities</a>
+    <a class="nav-item" href="#income"><span class="ic">↑</span>Income</a>
+    <a class="nav-item" href="#ledger"><span class="ic">≡</span>Ledger</a>
+    <a class="nav-item" href="#planning"><span class="ic">◎</span>Planning</a>
+    <a class="nav-item" href="#tax"><span class="ic">₹</span>Tax</a>
+    <a class="nav-item" href="#quick-add"><span class="ic">＋</span>Quick Add</a>
+
+    <div class="nav-group-label" style="margin-top:8px">Reference</div>
+    <a class="nav-item" href="#settings"><span class="ic">⚙</span>Settings</a>
+    <a class="nav-item" href="#ledger-journal"><span class="ic">≡</span>Journal file</a>
+    <a class="nav-item" href="#troubleshooting"><span class="ic">✛</span>Troubleshooting</a>
+  </div>
+  <div class="sidebar-foot">
+    <select id="theme-picker" aria-label="Theme">
+      <option value="midnight">◐ Midnight</option>
+      <option value="carbon">◑ Carbon</option>
+      <option value="daylight">○ Daylight</option>
+    </select>
+  </div>
+</nav>
+
+<!-- ── Content ── -->
+<div class="main">
+<div class="cbar">
+  <span class="crumb">SpendSift · <b>User Guide</b></span>
+</div>
+<div class="body">
+<div class="content">
+
+<!-- ── Overview ── -->
+<section class="section" id="overview">
+  <h1><span class="eyebrow">SpendSift · Local-first personal finance</span>Your finances, from files</h1>
+
+  <p>SpendSift ingests exported statements from your bank, card, and broker, turns them into a trustworthy journal, and presents unified dashboards. No database to touch. No data sent anywhere.</p>
+
+  <div class="flow">
+    <div class="flow-step">Export from institution</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Upload on the Import screen</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Review exceptions only</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Open dashboards</div>
+  </div>
+
+  <h3>What's in the app</h3>
+  <div class="screen-grid">
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar dim"></div><div class="screen-bar blue"></div><div class="screen-bar green"></div></div>
+      <div class="screen-info"><div class="screen-name">Dashboard</div><div class="screen-desc">Where you stand today: net worth, cash flow, spending, things to do</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar green"></div><div class="screen-bar amber"></div><div class="screen-bar blue"></div></div>
+      <div class="screen-info"><div class="screen-name">Net Worth</div><div class="screen-desc">Overview, investments vs a benchmark, liabilities, allocation</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar blue"></div><div class="screen-bar dim"></div><div class="screen-bar red"></div></div>
+      <div class="screen-info"><div class="screen-name">Cash Flow</div><div class="screen-desc">Period overview, Sankey, Compare FYs, recurring</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar red"></div><div class="screen-bar amber"></div><div class="screen-bar dim"></div></div>
+      <div class="screen-info"><div class="screen-name">Expense</div><div class="screen-desc">Period overview, tags, budget, uncategorized</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar amber"></div><div class="screen-bar dim"></div><div class="screen-bar red"></div></div>
+      <div class="screen-info"><div class="screen-name">Liabilities</div><div class="screen-desc">Shortcut to Net Worth → Liabilities: cards, interest, repayment, balance</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar blue"></div><div class="screen-bar green"></div><div class="screen-bar blue" style="width:40%"></div></div>
+      <div class="screen-info"><div class="screen-name">Tax</div><div class="screen-desc">Income, capital gains, deductions, regime compare</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar green"></div><div class="screen-bar dim"></div><div class="screen-bar amber"></div></div>
+      <div class="screen-info"><div class="screen-name">Planning</div><div class="screen-desc">Goal planner, SIP/Lumpsum/CAGR calculators, salary</div></div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-preview"><div class="screen-bar dim"></div><div class="screen-bar blue"></div><div class="screen-bar dim" style="width:60%"></div></div>
+      <div class="screen-info"><div class="screen-name">Ledger</div><div class="screen-desc">Transactions, raw journal editor, import</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Install ── -->
+<section class="section" id="install">
+  <h2>Installation</h2>
+  <p>Requires Python 3.11+ and Node.js 18+.</p>
+
+  <ol class="steps">
+    <li>
+      <p>Clone and enter the repo:</p>
+      <pre><code>git clone https://github.com/yourname/spendsift.git
+cd spendsift</code></pre>
+    </li>
+    <li>
+      <p>Create the Python environment:</p>
+      <pre><code>uv sync</code></pre>
+      <p>No <code>uv</code>? Install with <code>pip install uv</code>, then retry.</p>
+    </li>
+    <li>
+      <p>Build the frontend:</p>
+      <pre><code>cd frontend && npm install && npm run build && cd ..</code></pre>
+    </li>
+  </ol>
+
+  <div class="callout tip">
+    <span>✓</span>
+    <div><b>Verify</b><p>Run <code>uv run pytest -q</code> from the repo root. All tests should pass before proceeding.</p></div>
+  </div>
+</section>
+
+<!-- ── First Run ── -->
+<section class="section" id="first-run">
+  <h2>First Run</h2>
+
+  <pre><code>./.venv/bin/python -m backend.app</code></pre>
+  <p>Or <code>scripts/run_app.sh</code>, which builds the frontend when it changed and then starts the backend.</p>
+
+  <p>Open <code>http://127.0.0.1:8765</code>. The backend serves both the API and the React frontend from one process.</p>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Frontend not built?</b><p>If you see a placeholder page, run <code>cd frontend &amp;&amp; npm run build</code> then restart.</p></div>
+  </div>
+
+  <h3>First-time checklist</h3>
+  <ol class="steps">
+    <li><p>Go to <strong>Settings → Accounts</strong> and confirm the default accounts match your institutions. Add or rename as needed.</p></li>
+    <li><p>Export a statement — HDFC or ICICI CSVs are the simplest starting point.</p></li>
+    <li><p>Open <strong>Ledger → Import</strong> and upload the file.</p></li>
+    <li><p>Work through the Review Queue for any flagged rows.</p></li>
+    <li><p>Open <strong>Ledger → Transactions</strong> to confirm everything looks right.</p></li>
+    <li><p>Go to <strong>Net Worth → Investments</strong> and click <strong>Refresh</strong> beside "Prices as of" to fetch current NAV prices.</p></li>
+  </ol>
+</section>
+
+<!-- ── Data Folder ── -->
+<section class="section" id="data-folder">
+  <h2>Data Folder</h2>
+
+  <p>Default location: <code>storage/</code> in the repo root (created on first start). Override with the <code>SPENDSIFT_STORAGE_DIR</code> environment variable.</p>
+
+  <pre><code><span class="c-path">storage/</span>
+├── <span class="c-path">journal/</span>             <span class="c-cm"># beancount journal — source of truth (main.beancount + one file per year, investments, prices)</span>
+├── <span class="c-path">snapshots/</span>           <span class="c-cm"># copy of journal/ taken before every write</span>
+├── <span class="c-path">imports/</span>             <span class="c-cm"># uploaded statement files</span>
+├── <span class="c-path">templates/</span>           <span class="c-cm"># import templates (YAML, one per fingerprint)</span>
+├── <span class="c-path">rules/</span>               <span class="c-cm"># learned category rules (learned.yaml), loan terms</span>
+├── <span class="c-path">config/</span>              <span class="c-cm"># benchmarks.yaml, tax/&lt;fy&gt;-inputs.yaml (edit freely)</span>
+├── <span class="c-path">prices/</span>              <span class="c-cm"># NAV history (parquet) and price cache</span>
+└── <span class="c-path">prompts/</span>             <span class="c-cm"># copy-paste categorisation prompts (user-owned)</span></code></pre>
+  <p>Pending review batches are held in memory until you commit or discard them.</p>
+
+  <div class="callout warn">
+    <span>⚠</span>
+    <div><b>Back this directory up</b><p><code>journal/</code> is your primary record. SpendSift snapshots it before every write, but the snapshots live in the same folder — keep an off-site copy too.</p></div>
+  </div>
+</section>
+
+<!-- ── Institutions ── -->
+<section class="section" id="institutions">
+  <h2>Supported Institutions</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Institution</th><th>Type</th><th>Format</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>HDFC Bank</td><td>Savings + Credit Card</td><td>CSV</td><td><span class="pill green">Supported</span></td></tr>
+        <tr><td>ICICI Bank</td><td>Savings + Credit Card</td><td>CSV</td><td><span class="pill green">Supported</span></td></tr>
+        <tr><td>IDFC FIRST Bank</td><td>Savings</td><td>CSV</td><td><span class="pill green">Supported</span></td></tr>
+        <tr><td>Groww</td><td>Mutual Fund orders &amp; P&amp;L</td><td>CSV</td><td><span class="pill green">Supported</span></td></tr>
+        <tr><td>Kite (Zerodha)</td><td>Equity trades &amp; P&amp;L</td><td>CSV</td><td><span class="pill amber">In progress</span></td></tr>
+        <tr><td>ledger-cli / hledger</td><td>Plain-text journal merge</td><td>.ledger</td><td><span class="pill blue">Merge import</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>How to export from each institution</h3>
+  <dl>
+    <dt>HDFC Bank / Credit Card</dt>
+    <dd>NetBanking → Accounts → Download Statement → CSV</dd>
+    <dt>ICICI Bank / Credit Card</dt>
+    <dd>iMobile / NetBanking → Account Summary → Export to CSV</dd>
+    <dt>IDFC FIRST Bank</dt>
+    <dd>App → Account → Transactions → Export as CSV</dd>
+    <dt>Groww</dt>
+    <dd>Reports → P&amp;L → MF Order History → Download CSV</dd>
+  </dl>
+</section>
+
+<!-- ── Import Flow ── -->
+<section class="section" id="import-flow">
+  <h2>Import Flow</h2>
+
+  <div class="flow">
+    <div class="flow-step">Fingerprint file</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Parse &amp; normalize</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Deduplicate</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Categorize</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Review if low confidence</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Commit to journal</div>
+  </div>
+
+  <h3>Step-by-step: uploading a statement</h3>
+  <ol class="steps">
+    <li><p>Open <strong>Ledger → Import</strong> in the rail. You'll see a large drop zone.</p></li>
+    <li><p>Drag and drop a CSV file (or click <strong>Browse</strong> to pick one). SpendSift fingerprints the file to identify the institution and tries to match a saved template.</p></li>
+    <li><p>If the file matches a saved template, you go straight to the review step. If it's a new institution, the Map step walks you through column assignment once.</p></li>
+    <li><p>Confirm the source account (e.g. <em>Assets:Bank:HDFC:Savings</em>) and click <strong>Import</strong>.</p></li>
+    <li><p>High-confidence rows commit immediately. Low-confidence rows stay in the Review Queue for your attention.</p></li>
+  </ol>
+
+  <h3>Watched folder</h3>
+  <p>Not available yet: every file currently goes through upload on the Import screen (or <code>/ingest-stmt</code> from Claude Code).</p>
+
+  <h3>Investment files (Groww)</h3>
+  <p>Groww CSV imports go through an additional <strong>Investment Review</strong> step — a wallet-flow view showing each buy/refund leg with the running Groww:Cash balance. Review the lot reconstruction before committing.</p>
+
+  <h3>Ledger file merge</h3>
+  <p>Expand <em>Import from ledger-cli / hledger file</em> on the Import screen to merge a plain-text journal. SpendSift maps ledger account names to SpendSift accounts and deduplicates against the existing journal before writing.</p>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Traceability</b><p>Every imported transaction records its source file. Filter by source in <strong>Ledger → Transactions</strong> to audit any import.</p></div>
+  </div>
+</section>
+
+<!-- ── Opening balances ── -->
+<section class="section" id="opening-balances">
+  <h2>Opening Balances</h2>
+
+  <p>An opening balance is what an account already held before your first record in SpendSift. Without it, balances and net worth start from zero and come out wrong.</p>
+
+  <h3>The first-import prompt</h3>
+  <p>The first time you import into an account that has no records, the import asks for its opening balance before you commit. When the statement prints the figure (or a running balance lets SpendSift work it out) the prompt suggests it, shows how it was reached, and proposes a date. You can:</p>
+  <ul>
+    <li><strong>Record</strong> the suggested opening as shown.</li>
+    <li><strong>Edit</strong> the amount, direction or date first, then record it.</li>
+    <li><strong>Started at zero</strong> if the account really began empty. You tick to confirm, then press <strong>Mark started at zero</strong>.</li>
+    <li><strong>Skip</strong> and add it later. The import still goes through.</li>
+  </ul>
+  <p>Nothing is written until you tick the confirmation and press the button, whether you record an opening, correct one, or mark or unmark started at zero. A restore point of the journal is taken first, and if the result would not validate, the journal is put back as it was.</p>
+
+  <h3>Which date is suggested</h3>
+  <ul>
+    <li><strong>Bank statements:</strong> when the statement's first date falls anywhere in April, the suggested opening is 31 March, so the whole financial year is covered. Otherwise it is the day before the first date.</li>
+    <li><strong>Credit cards:</strong> the opening is the day before the statement cycle starts. A cycle that covers 1 April counts as the April case.</li>
+  </ul>
+  <p>If your first statement starts later than April, the prompt tells you which earlier statement to import first for a full year. You can still go ahead and record the opening where it falls.</p>
+  <p>A bank statement that starts partway through April still gets a 31 March opening, but its figure is the balance on the day the statement starts. If you later import the earlier April statement, its rows fall between the two dates and would be counted twice, so the account shows a warning (see below). Correct the opening to the 31 March balance, for example the opening printed on that earlier statement, to clear it.</p>
+
+  <h3>Settings → Opening balances</h3>
+  <p>This checklist lists every account with its state: opening recorded, started at zero, missing, or not set up. Use it for accounts that have no statement (people, loans, cash, other assets):</p>
+  <ul>
+    <li><strong>Add opening</strong> for an account without one. The form proposes a date before the account's first record.</li>
+    <li><strong>Started at zero</strong> for an account that began empty, and <strong>Undo</strong> to take the mark back. Both ask you to tick a confirmation first.</li>
+    <li><strong>Correct</strong> an opening already recorded. The form shows the current figure, and a correction is refused if the opening changed since you opened it. A zero amount is allowed, and you can keep the opening's current date.</li>
+    <li><strong>Mutual-fund opening lots</strong> for funds you held before your order history starts: pick the fund, then enter units, total cost and the date the units were allotted. Importing the full order history is better where you have it.</li>
+  </ul>
+  <p>Adding an opening to an account marked started at zero replaces the mark: the account then shows the opening, and Undo is no longer offered.</p>
+
+  <h3>Openings dated after earlier activity</h3>
+  <p>Some openings do not cover all of an account's records:</p>
+  <ul>
+    <li>An opening dated after the account's first record, such as a mid-year restatement of what a friend owes. The records before it have no opening of their own.</li>
+    <li>An opening taken from a statement, with records imported later that fall between the opening's date and the start of that statement.</li>
+  </ul>
+  <p>The checklist marks these <strong>Opening dated after earlier activity</strong>, and they are counted in the warnings below. <strong>Correct</strong> proposes a date before the first record. Moving an opening earlier keeps today's balance the same but changes the balances shown between the old and new dates, so check the amount is right for the earlier date before you confirm.</p>
+
+  <h3>Warnings</h3>
+  <p>A missing opening never blocks anything, but SpendSift flags it so you do not trust wrong numbers. The same flags cover openings dated after earlier activity:</p>
+  <ul>
+    <li>A <strong>No opening</strong> or <strong>Late opening</strong> badge on the affected account in Net Worth, Liabilities and Credit Cards.</li>
+    <li>A callout on the Dashboard, Net Worth, Liabilities and the checklist that counts both kinds and links to the checklist. The import lists any other account in the batch whose records an opening does not cover.</li>
+    <li>An Openings line in <strong>Doctor</strong> that counts accounts with activity not covered by an opening balance.</li>
+  </ul>
+
+  <h3>From /ingest-stmt (Claude Code)</h3>
+  <p>The same prompt appears in chat after staging. The commands behind it:</p>
+  <ul>
+    <li><code>opening-check &lt;batch&gt;</code> shows the prompt for a staged batch.</li>
+    <li><code>openings [--missing]</code> lists the checklist.</li>
+    <li><code>commit-opening ACCOUNT --amount --direction --date [--batch]</code> records an opening; <code>commit-opening-correction</code> corrects one; <code>commit-opening-zero ACCOUNT [--undo]</code> marks started at zero.</li>
+  </ul>
+  <p>They write only after you approve in chat.</p>
+</section>
+
+<!-- ── Review Queue ── -->
+<section class="section" id="review-queue">
+  <h2>Review Queue</h2>
+
+  <p>SpendSift only surfaces rows that need a decision. The review screen uses a code-mirror-based editor showing the beancount entries as they'll be written — you edit inline.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Why a row is flagged</th><th>What to do</th></tr></thead>
+      <tbody>
+        <tr><td>Unknown category</td><td>Pick a category; SpendSift learns from this choice</td></tr>
+        <tr><td>Ambiguous transfer</td><td>Confirm whether this is a same-owner transfer or a real expense</td></tr>
+        <tr><td>New institution or column layout</td><td>Walk through one-time column mapping (Map step)</td></tr>
+        <tr><td>Low-confidence parse</td><td>Verify the parsed date and amount in the editor</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <span>✓</span>
+    <div><b>Corrections improve future imports</b><p>Every category you confirm during review trains SpendSift. The same merchant is classified correctly on the next import.</p></div>
+  </div>
+
+  <div class="callout warn">
+    <span>⚠</span>
+    <div><b>Snapshot on commit</b><p>Clicking <strong>Commit</strong> first copies the journal to <code>snapshots/&lt;timestamp&gt;/</code>, then writes. If the result does not validate, the snapshot is put back.</p></div>
+  </div>
+</section>
+
+<!-- ── Templates ── -->
+<section class="section" id="templates">
+  <h2>Templates</h2>
+
+  <p>A template captures the column mapping and default account for a specific institution's file format. Once saved, future imports from that institution need no manual steps.</p>
+
+  <p>View, rename, or delete templates at <strong>Settings → Import Templates</strong>. Templates are plain YAML files stored in <code>storage/templates/</code> — you can inspect and edit them directly if auto-detection picks wrong columns.</p>
+
+  <pre><code><span class="c-cm"># storage/templates/&lt;fingerprint&gt;.yaml (example)</span>
+<span class="c-key">institution</span>: <span class="c-str">HDFC</span>
+<span class="c-key">default_account</span>: <span class="c-str">Assets:Checking:HDFC</span>
+<span class="c-key">header_row_index</span>: <span class="c-num">0</span>
+<span class="c-key">date_column</span>: <span class="c-str">Date</span>
+<span class="c-key">date_format</span>: <span class="c-str">"%d/%m/%Y"</span>
+<span class="c-key">narration_column</span>: <span class="c-str">Narration</span>
+<span class="c-key">debit_column</span>: <span class="c-str">Withdrawal Amt.(INR )</span>
+<span class="c-key">credit_column</span>: <span class="c-str">Deposit Amt.(INR )</span></code></pre>
+</section>
+
+<!-- ── Deduplication ── -->
+<section class="section" id="deduplication">
+  <h2>Deduplication</h2>
+
+  <p>You can safely re-import a file. SpendSift fingerprints each transaction by institution, date, amount, and narration — exact duplicates are silently skipped. Near-duplicates surface for manual confirmation.</p>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Overlapping date ranges</b><p>If two exports cover the same period, SpendSift deduplicates across the overlap. If amounts differ slightly between formats, those rows appear in the review queue.</p></div>
+  </div>
+</section>
+
+<!-- ── Dashboard ── -->
+<section class="section" id="dashboard">
+  <h2>Dashboard</h2>
+
+  <p>The home screen: where you stand <strong>today</strong>. It has no period picker; every figure is as of today's date, shown beside the title. Everything on it is a link to the screen that explains it.</p>
+  <dl>
+    <dt>Needs action</dt>
+    <dd>A red pill at the top right with a count, shown only when there is something to do. Click it for the list: a card bill overdue or due within 7 days (it notes a payment you already made that the card statement does not show yet), transactions this month that still need a category, card statements expected in the next 3 weeks, and bank accounts with no new entries for more than 14 days. Each item has a button to the place that resolves it (the card, Uncategorized, or Import).</dd>
+    <dt>Net worth</dt>
+    <dd>The figure, its change over 12 months and this month, and a small 12-month line. Beside it, the breakdown as a sum: <b>Investments</b> (with XIRR and gain) + <b>Bank and cash</b> + <b>Other assets</b> − <b>Liabilities</b> = net worth, adding up exactly. Bank and cash shows <b>months of cover</b>: your balance divided by your average monthly spending over the last 3 complete months. Liabilities shows your EMIs and what the cards owe after payments on their way. Click a line to open Net Worth with that section highlighted. These are the same figures Net Worth shows.</dd>
+    <dt>Cash flow</dt>
+    <dd>For this month, the FY so far or the last 12 months: money in, spent, invested, net cash flow, savings rate, and where the income went (spent, invested, kept, or taken from savings).</dd>
+    <dt>Spending</dt>
+    <dd>Your average monthly spending over the last 3, 6 and 12 months, and <b>lifestyle drift</b> (the 3-month average against the 12-month one). Months with no spending are left out; when fewer months count than the window, the tile says "avg over N months". <b>All spending | Without one-offs</b> shows the averages with or without one-time spends. Below, the last 12 months as bars; click a month to open it in Expense.</dd>
+    <dt>One-time spends</dt>
+    <dd>Spends from the last three months that are not recurring and are at least 3 times the usual amount for their category. Subscriptions, premiums and other monthly, quarterly or yearly payments never count, however large, and refunds never count. Click one to open its month in Expense.</dd>
+  </dl>
+</section>
+
+<!-- ── Net Worth ── -->
+<section class="section" id="networth">
+  <h2>Net Worth</h2>
+
+  <p>One screen with four tabs at the top. The <strong>Liabilities</strong> rail entry opens its Liabilities tab.</p>
+  <dl>
+    <dt>Overview</dt>
+    <dd>As of today, like the Dashboard. Tiles for net worth (with its change this FY and this month), assets, liabilities and your investments' return (XIRR) beside the chosen benchmark. A bar shows what your assets are made of; tax already paid (TDS, advance tax) is listed as not counted, since it settles against tax due. Then one card per group: Investments, Property, Bank &amp; cash and Other assets; Loans &amp; EMIs, Credit cards, People and Other liabilities. Each card shows its total, a few facts and its largest accounts; click it for the detail (the Investments tab, a Liabilities view, or the Ledger filtered to that group). A badge in the header warns when a bank account has had no new entries for more than 14 days.</dd>
+    <dt>Investments</dt>
+    <dd>Each investment vehicle (mutual funds, stocks, FD, …), opening its own view, and <b>Return by vehicle</b>: invested, value, gain and XIRR against a benchmark. Pick the benchmark from the dropdown at the top right (Nifty 50 by default); <b>Blended</b> compares each vehicle with its own benchmark. Your choice is remembered. FD, PPF, NPS, insurance and property are shown at cost, with no return.</dd>
+    <dt>Liabilities</dt>
+    <dd>Credit cards, Interest, Repayment and Balance; see <a href="#liabilities">Liabilities</a>.</dd>
+    <dt>Allocation</dt>
+    <dd>How your investments split by vehicle (a donut) and by issuer (ranked bars), at cost.</dd>
+  </dl>
+
+  <div class="callout tip">
+    <span>✓</span>
+    <div><b>Benchmark figures are yours to set</b><p>Nothing is fetched online. The yearly returns come from <code>config/benchmarks.yaml</code> in your data folder, written with rough starting figures the first time you open Net Worth. Edit the numbers, or add a benchmark, and reload. If the file can't be read, the screen says "Benchmark unavailable" and everything else still works; delete the file to get the defaults back.</p></div>
+  </div>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Old links still work</b><p>The former Balance screen is now the Overview tab, and the former Liabilities screens are views under the Liabilities tab.</p></div>
+  </div>
+</section>
+
+<!-- ── NAV Prices ── -->
+<section class="section" id="nav-prices">
+  <h2>NAV Prices</h2>
+
+  <p>SpendSift fetches NAV data from AMFI (the Indian mutual fund association) so holdings are always valued at current NAV. The prices strip ("Prices as of …", with <strong>Refresh</strong>) appears at the top of the investment views under <strong>Net Worth → Investments</strong>.</p>
+
+  <h3>Status indicators</h3>
+  <p>The strip shows one of these states:</p>
+  <ul>
+    <li><span class="src live"><span class="dot"></span>live</span> — NAVs fetched today from AMFI</li>
+    <li><span class="src cached"><span class="dot"></span>cached</span> — using a recently fetched local copy</li>
+    <li><span class="src offline"><span class="dot"></span>offline</span> — fetch failed; showing last known values</li>
+    <li><code>NAVs not fetched yet</code> — no prices on disk yet; click Refresh</li>
+  </ul>
+
+  <p>The strip also computes whether prices are <em>stale</em> (older than the last business weekday) and shows the as-of date in amber if so.</p>
+
+  <h3>Refreshing prices</h3>
+  <p>Click <strong>Refresh</strong> in the strip. SpendSift does a conditional-GET from AMFI's all-NAV file and updates only what changed.</p>
+
+  <h3>Price-change windows and backfill</h3>
+  <p>The <strong>Mutual funds</strong> view shows each fund's price returns over several windows. A dash (—) means no historical NAV for that window yet.</p>
+  <p>If it says historical data is sparse, click <strong>Run backfill</strong>. SpendSift fetches per-fund historical NAV from mfapi.in — one fund at a time, with a 200 ms rate limit.</p>
+
+  <h3>Funds not in AMFI</h3>
+  <p>Closed or merged funds won't appear in the AMFI feed. They're listed in the strip's expandable "N funds not priced" disclosure. Add a price manually via the raw ledger editor.</p>
+</section>
+
+<!-- ── Cash Flow ── -->
+<section class="section" id="cashflow">
+  <h2>Cash Flow</h2>
+
+  <p>Two sub-screens under <strong>Cash Flow</strong>:</p>
+  <dl>
+    <dt>Overview</dt>
+    <dd>For the selected period: <b>Income</b>, <b>Expenses</b>, <b>Invested</b>, <b>Saved</b> and the <b>Savings rate</b>; a daily or monthly cash-flow chart, as a heatmap or bars (switches at the top right of the panel, remembered: <b>Both | Income | Expenses</b>, <b>Heatmap | Bars</b>, <b>Linear | Compressed</b>); the <b>Flow</b> diagram of money moving between your accounts, income and spending (<b>Summary | Detailed</b>), with refunds and repayments drawn as loops underneath; and a statement of income and expenses by category with the net. Click a day, month, account or flow to see the transactions behind it. Investment charges count as invested, not as spending.</dd>
+    <dt>Overview → Compare FYs</dt>
+    <dd>The switch at the top of Overview shows financial years side by side: income and expenses by category, one column per FY, for a span you pick (for example the last 3 FYs). The period control in the header is hidden while comparing; switch back to Overview to return to your period.</dd>
+    <dt>Recurring</dt>
+    <dd>Automatically detected recurring expenses and subscriptions shown as cards — frequency, next expected date, and average amount — for the month in the header.</dd>
+  </dl>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Old links still work</b><p>The former Income Statement, Monthly and Yearly screens are now part of Overview; their links open Overview.</p></div>
+  </div>
+</section>
+
+<!-- ── Expense ── -->
+<section class="section" id="expense">
+  <h2>Expense</h2>
+
+  <p>Four sub-screens under <strong>Expense</strong>:</p>
+  <dl>
+    <dt>Overview</dt>
+    <dd>Spending for the selected period: net spend, spent before refunds, refunds, and how much went via card, bank or other. A heatmap (one cell per day for up to about three months, one per month for longer periods), categories ranked by amount — hover for the top merchants, click to expand every merchant — and the transaction list. The <b>All / Card / Bank / Other</b> switch filters the whole screen by how you paid.</dd>
+    <dt>By Tag</dt>
+    <dd>Spend in the selected period grouped by tag. Useful for tracking cross-category groups like <code>#vacation-goa</code>. Tags with a slash nest: <code>#travel/goa</code> and <code>#travel/food</code> roll up under <code>#travel</code>.</dd>
+    <dt>Budget</dt>
+    <dd>Set a monthly target per category here. The budget screen shows the month's spend vs target with a progress bar.</dd>
+    <dt>Uncategorized</dt>
+    <dd>Merchants still booked as uncategorized, so you can categorize them.</dd>
+  </dl>
+
+  <div class="callout tip">
+    <span>✓</span>
+    <div><b>One period for every overview</b><p>The <b>Month | FY | Custom</b> control in the header sets the period for Expense, Income, Cash Flow and Credit Cards at once, and is remembered across visits. Custom takes a From and a To date. Investment charges (stamp duty, broker charges) are not counted as spending; Cash Flow shows them under Invested.</p></div>
+  </div>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Old links still work</b><p>The former Monthly, Breakdown and Yearly screens are now part of Overview; their links open Overview.</p></div>
+  </div>
+</section>
+
+<!-- ── Liabilities ── -->
+<section class="section" id="liabilities">
+  <h2>Liabilities</h2>
+
+  <p>Four views under <strong>Net Worth → Liabilities</strong> (the <strong>Liabilities</strong> rail entry opens it):</p>
+  <dl>
+    <dt>Credit Cards</dt>
+    <dd>One tile per card: the balance, the next statement and due dates, and the card's expiry (with an <b>Expiring soon</b> or <b>Expired</b> badge). When you have paid a bill from your bank but the card statement showing "payment received" is not imported yet, the tile says "paid ₹X on &lt;date&gt; · ₹Y left" and a line above the tiles shows <b>Paid, awaiting card statement</b> and the <b>Net owed</b> (or "in credit" if you paid more than you owed). It clears once that statement is imported. Below the tiles: your card spending for the selected period (pick one card or all), and the card's statement lines.</dd>
+    <dt>Interest</dt>
+    <dd>Finance charges, late fees, and annual fees detected from statement narrations.</dd>
+    <dt>Repayment</dt>
+    <dd>Timeline of payments made against each liability. Transfers from your bank account to your card are matched automatically.</dd>
+    <dt>Balance</dt>
+    <dd>Full double-entry balance sheet for the liabilities section — outstanding balance across all cards and loans, plus the card payments awaiting the statement and the net owed.</dd>
+  </dl>
+</section>
+
+<!-- ── Income ── -->
+<section class="section" id="income">
+  <h2>Income</h2>
+
+  <p>Two sub-screens under <strong>Income</strong>, both following the period in the header:</p>
+  <dl>
+    <dt>Overview</dt>
+    <dd>Money received in the period: net, received before deductions, and deductions such as TDS. The same chart as Expense, in green (heatmap or bars; a reversal shows red). Sources (salary, interest, …) ranked by amount — hover for the payers, click for the transactions — and the list. The <b>All / Card / Bank / Other</b> switch filters by where the money arrived; Card covers cashback credited to a card.</dd>
+    <dt>By Tag</dt>
+    <dd>Tagged income in the period, grouped by tag.</dd>
+  </dl>
+</section>
+
+<!-- ── Ledger ── -->
+<section class="section" id="ledger">
+  <h2>Ledger</h2>
+
+  <p>Three sub-screens under <strong>Ledger</strong>:</p>
+  <dl>
+    <dt>Transactions</dt>
+    <dd>The full transaction list — every committed journal entry. Filter by date, account, category, tag, amount, narration, or source file. Click any row to edit category, add tags, or add a note. Changes write back to the journal immediately.</dd>
+    <dt>Raw</dt>
+    <dd>CodeMirror-based beancount editor for the full journal. Syntax highlighting for dates, narrations, accounts, amounts, comments, and tags. Changes are validated before saving — invalid beancount is rejected with an explanation.</dd>
+    <dt>Import</dt>
+    <dd>The import surface. Upload a statement file, walk through column mapping, review, and commit. Also the entry point for ledger-cli / hledger journal merges.</dd>
+  </dl>
+</section>
+
+<!-- ── Planning ── -->
+<section class="section" id="planning">
+  <h2>Planning</h2>
+
+  <p>Six calculators under <strong>Planning</strong> — all local, no data sent anywhere:</p>
+  <dl>
+    <dt>Goal Planner</dt>
+    <dd>Define financial goals (amount + target year). SpendSift projects whether your current savings rate will reach each goal and shows a funded/short verdict per goal.</dd>
+    <dt>SIP Calculator</dt>
+    <dd>Given a monthly SIP amount and expected CAGR, projects corpus at maturity with an area chart of invested amount vs total value.</dd>
+    <dt>Lumpsum Calculator</dt>
+    <dd>Same as SIP but for a one-time investment. Projects future value at a given rate.</dd>
+    <dt>CAGR Calculator</dt>
+    <dd>Computes CAGR from initial value, final value, and duration. Or reverse: given CAGR and duration, computes final value.</dd>
+    <dt>In-Hand Salary</dt>
+    <dd>Gross-to-net salary calculator for Indian payroll — PF, income tax (old/new regime), professional tax, HRA. Shows a "tax working" breakdown panel.</dd>
+    <dt>FIRE Calculator</dt>
+    <dd>Retirement corpus from monthly expense, inflation, years to retirement and a corpus multiple, split across five buckets (safety, cash, low, medium and growth risk).</dd>
+  </dl>
+</section>
+
+<!-- ── Tax ── -->
+<section class="section" id="tax">
+  <h2>Tax Workspace</h2>
+
+  <p>Tax planning is a first-class surface. Everything in the workspace traces back to imported transactions and holdings.</p>
+
+  <p>A financial year selector at the top of the Tax rail group lets you switch between FY2023–24, FY2024–25, etc.</p>
+
+  <dl>
+    <dt>Overview</dt>
+    <dd>Estimated total tax liability for the selected financial year under old and new regime side by side.</dd>
+    <dt>Income</dt>
+    <dd>Gross income broken down by source — salary, interest, dividends, rental. Each line traces to the underlying transactions.</dd>
+    <dt>Capital Gains</dt>
+    <dd>STCG and LTCG from equity and mutual fund disposals, computed using FIFO lot matching. Grouped by asset class with applicable tax rate.</dd>
+    <dt>Deductions</dt>
+    <dd>80C, 80D, and other declared deductions. User-declared amounts — SpendSift does not auto-detect 80C investments from imports yet.</dd>
+    <dt>Regime Compare</dt>
+    <dd>Side-by-side old vs new regime with your actual numbers. Shows which regime produces lower tax for your situation.</dd>
+    <dt>Prepaid Tax</dt>
+    <dd>TDS and advance tax payments found in your transactions, matched against your estimated liability.</dd>
+  </dl>
+
+  <div class="callout warn">
+    <span>⚠</span>
+    <div><b>Not tax advice</b><p>SpendSift computes estimates from imported data and declared deductions. Consult a CA for filing decisions, especially for complex capital gains, foreign income, or business income.</p></div>
+  </div>
+</section>
+
+<!-- ── Quick Add ── -->
+<section class="section" id="quick-add">
+  <h2>Quick Add</h2>
+
+  <p>Record a one-off transaction (cash expense, manual adjustment) without a statement file. Quick Add lives in the rail footer — click the <strong>＋ Quick add</strong> button or press <span class="kbd">n</span> from any screen (when no input has focus).</p>
+
+  <ol class="steps">
+    <li><p>Press <span class="kbd">n</span> or click <strong>＋ Quick add</strong> in the rail footer. The Quick Add screen opens.</p></li>
+    <li><p>Toggle between <strong>Bank</strong> (debit/credit) and <strong>Investment</strong> (buy/sell) at the top of the form.</p></li>
+    <li><p>Enter date, amount, narration, and accounts. SpendSift suggests a category from the narration.</p></li>
+    <li><p>A net-by-account summary panel on the right updates live as you type.</p></li>
+    <li><p>Press <span class="kbd">⌘ Enter</span> or click <strong>Save</strong>. The entry is written to the journal immediately (snapshot first).</p></li>
+  </ol>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Same journal, same reports</b><p>Quick Add entries appear immediately in all dashboards — they're written identically to imported transactions.</p></div>
+  </div>
+</section>
+
+<!-- ── Settings ── -->
+<section class="section" id="settings">
+  <h2>Settings</h2>
+
+  <p>Settings has three screens (accessible via <strong>Settings</strong> at the bottom of the rail):</p>
+
+  <dl>
+    <dt>Accounts</dt>
+    <dd>Add, rename, or close accounts in the beancount taxonomy. Closing an account prevents new postings while preserving historical entries. Long account lists (Assets can have 40+) are shown in a scrollable section per root type.</dd>
+    <dt>Import Templates</dt>
+    <dd>View all saved column-mapping templates. You can rename or delete a template. The template's raw YAML is shown for inspection — edit the file directly in <code>storage/templates/</code> if needed.</dd>
+    <dt>Opening balances</dt>
+    <dd>A checklist of every account's opening balance: record, correct or mark started at zero, and add mutual-fund opening lots. See <a href="#opening-balances">Opening Balances</a>.</dd>
+  </dl>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Budget settings</b><p>Monthly budget targets are set inside <strong>Expense → Budget</strong>, not in Settings.</p></div>
+  </div>
+
+  <div class="callout info">
+    <span>ℹ</span>
+    <div><b>Theme switcher</b><p>The theme selector (Midnight / Carbon / Daylight) is at the very bottom of the rail. Your choice is saved to <code>localStorage</code>.</p></div>
+  </div>
+</section>
+
+<!-- ── Ledger Journal ── -->
+<section class="section" id="ledger-journal">
+  <h2>Ledger Journal</h2>
+
+  <p>Every transaction is stored as a beancount entry under <code>storage/journal/</code> (<code>main.beancount</code> includes one file per year). This is your primary record — plain-text files you can read, audit, and version-control independently of SpendSift.</p>
+
+  <h3>What an entry looks like</h3>
+  <pre><code><span class="c-num">2025-04-15</span> <span class="c-str">* "Swiggy"</span>
+  <span class="c-cm">; source: HDFC_Apr2025.csv | tag: #lunch</span>
+  <span class="c-key">Expenses:Food</span>             <span class="c-num">450.00 INR</span>
+  <span class="c-key">Assets:Bank:HDFC:Savings</span></code></pre>
+
+  <h3>Restoring from snapshot</h3>
+  <p>SpendSift copies <code>journal/</code> to <code>snapshots/&lt;timestamp&gt;/journal/</code> before every write. To restore, stop the server, then:</p>
+  <pre><code><span class="c-cm"># In storage/ (pick the snapshot to go back to):</span>
+rm -r journal &amp;&amp; cp -R snapshots/&lt;timestamp&gt;/journal journal</code></pre>
+  <p>Then restart the server.</p>
+
+  <h3>Account taxonomy (default)</h3>
+  <pre><code><span class="c-key">Assets:Checking:HDFC</span>
+<span class="c-key">Assets:Checking:ICICI</span>
+<span class="c-key">Assets:Checking:IDFC</span>
+<span class="c-key">Assets:Cash</span>
+<span class="c-key">Liabilities:CreditCard:HDFC</span>
+<span class="c-key">Expenses:Food</span>
+<span class="c-key">Expenses:Rent</span>
+<span class="c-key">Expenses:Travel</span>
+<span class="c-key">Expenses:Uncategorized</span>
+<span class="c-key">Income:Salary</span>
+<span class="c-key">Income:CapitalGains:LTCG</span>
+<span class="c-key">Income:CapitalGains:STCG</span>
+<span class="c-key">Equity:Opening-Balances</span></code></pre>
+</section>
+
+<!-- ── Troubleshooting ── -->
+<section class="section" id="troubleshooting">
+  <h2>Troubleshooting</h2>
+
+  <h3>Import fails with "no template matched"</h3>
+  <p>SpendSift couldn't fingerprint the file. Verify the file is the institution's raw export, unedited. A new institution walks you through one-time column mapping — after that, the template is saved.</p>
+
+  <h3>Holdings show no value / ₹0</h3>
+  <p>NAV prices haven't been fetched. Open <strong>Net Worth → Investments</strong> and click <strong>Refresh</strong> in the prices strip.</p>
+
+  <h3>Price Returns panel shows all dashes</h3>
+  <p>Historical NAV hasn't been backfilled. If the panel shows a backfill callout, click <strong>Run backfill</strong> to fetch per-fund history from mfapi.in.</p>
+
+  <h3>Duplicate transactions after re-import</h3>
+  <p>This shouldn't happen — deduplication is built into every import. If you see duplicates, open <strong>Ledger → Raw</strong>, find the duplicate by date and amount, and delete the entry. Then file an issue with the CSV so the fingerprinting can be improved.</p>
+
+  <h3>Journal is corrupt / server won't start</h3>
+  <pre><code><span class="c-cm"># In storage/:</span>
+rm -r journal &amp;&amp; cp -R snapshots/&lt;timestamp&gt;/journal journal</code></pre>
+  <p>Restart the server. If the snapshot is also damaged, restore from your external backup.</p>
+
+  <h3>Frontend shows a blank page</h3>
+  <pre><code>cd frontend && npm run build</code></pre>
+  <p>Then restart the server.</p>
+
+  <h3>Port 8765 is already in use</h3>
+  <pre><code>lsof -i :8765</code></pre>
+  <p>The app always binds to <code>127.0.0.1:8765</code>; stop the other process first. (The demo, <code>scripts/run_demo.sh [port]</code>, runs on 8766 by default.)</p>
+
+  <hr>
+  <p style="font-size: 11px; color: var(--text3); font-family: var(--mono);">SpendSift · local-first · INR · 127.0.0.1</p>
+</section>
+
+</div>
+
+<!-- ── Right outline ── -->
+<nav class="outline" id="outline">
+  <div class="ol-label">On this page</div>
+  <a href="#overview">Overview</a>
+  <a href="#install">Installation</a>
+  <a href="#first-run">First Run</a>
+  <a href="#data-folder">Data Folder</a>
+  <a href="#institutions">Institutions</a>
+  <a href="#import-flow">Import Flow</a>
+  <a href="#opening-balances">Opening Balances</a>
+  <a href="#review-queue">Review Queue</a>
+  <a href="#templates">Templates</a>
+  <a href="#deduplication">Deduplication</a>
+  <a href="#dashboard">Dashboard</a>
+  <a href="#networth">Net Worth</a>
+  <a href="#nav-prices">NAV Prices</a>
+  <a href="#cashflow">Cash Flow</a>
+  <a href="#expense">Expense</a>
+  <a href="#liabilities">Liabilities</a>
+  <a href="#income">Income</a>
+  <a href="#ledger">Ledger</a>
+  <a href="#planning">Planning</a>
+  <a href="#tax">Tax Workspace</a>
+  <a href="#quick-add">Quick Add</a>
+  <a href="#settings">Settings</a>
+  <a href="#ledger-journal">Journal File</a>
+  <a href="#troubleshooting">Troubleshooting</a>
+</nav>
+
+</div><!-- .body -->
+</div><!-- .main -->
+</div><!-- .shell -->
+
+<script>
+(function () {
+  // Theme switcher
+  var picker = document.getElementById('theme-picker');
+  var saved = localStorage.getItem('ss-theme') || 'midnight';
+  document.body.setAttribute('data-theme', saved);
+  picker.value = saved;
+  picker.addEventListener('change', function () {
+    document.body.setAttribute('data-theme', this.value);
+    localStorage.setItem('ss-theme', this.value);
+  });
+
+  // Active nav + outline tracking
+  var links = document.querySelectorAll('.nav-item, .nav-subitem');
+  var outlineLinks = document.querySelectorAll('.outline a');
+  var sections = document.querySelectorAll('.section');
+
+  function setActive(id) {
+    links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+    outlineLinks.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+  }
+
+  // Click on sidebar nav
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      setActive(id);
+    });
+  });
+
+  // Click on outline
+  outlineLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      setActive(id);
+    });
+  });
+
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setActive(entry.target.id);
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(function (s) { obs.observe(s); });
+})();
+</script>

@@ -1,0 +1,50 @@
+{
+  "by_tag": [
+    {
+      "tag": "travel/madikeri-oct-2026",
+      "amount": "2300.00",
+      "count": 2
+    },
+    {
+      "tag": "travel/food",
+      "amount": "800.00",
+      "count": 1
+    },
+    {
+      "tag": "fy2026-27",
+      "amount": "100.00",
+      "count": 1
+    }
+  ],
+  "groups": [
+    {
+      "prefix": "travel",
+      "amount": "2300.00",
+      "count": 2,
+      "tags": [
+        {
+          "tag": "travel/madikeri-oct-2026",
+          "amount": "2300.00",
+          "count": 2
+        },
+        {
+          "tag": "travel/food",
+          "amount": "800.00",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "prefix": "fy2026-27",
+      "amount": "100.00",
+      "count": 1,
+      "tags": [
+        {
+          "tag": "fy2026-27",
+          "amount": "100.00",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

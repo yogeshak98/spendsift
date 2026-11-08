@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-03-10",
+    "amount": "315.00",
+    "direction": "debit",
+    "raw_narration": "UBER INDIA",
+    "source_account": "Liabilities:CreditCard:ICICI"
+  },
+  {
+    "date": "2026-03-11",
+    "amount": "2000.00",
+    "direction": "credit",
+    "raw_narration": "CARD PAYMENT RECEIVED",
+    "source_account": "Liabilities:CreditCard:ICICI"
+  }
+]

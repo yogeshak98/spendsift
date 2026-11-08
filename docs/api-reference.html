@@ -1,0 +1,1738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendSift · API Reference</title>
+<style>
+:root {
+  --bg: #0D0D16;
+  --surface: #17171F;
+  --surface-2: #1E1E2C;
+  --surface-3: #262638;
+  --text: #E1DEEE;
+  --text-2: #9290AE;
+  --text-3: #5E5C76;
+  --accent: #7B6EFF;
+  --accent-dim: rgba(123,110,255,.14);
+  --accent-2: #B8B0FF;
+  --green: #4ADE80;
+  --green-dim: rgba(74,222,128,.13);
+  --red: #F87171;
+  --red-dim: rgba(248,113,113,.13);
+  --amber: #FBBF24;
+  --amber-dim: rgba(251,191,36,.13);
+  --blue: #60A5FA;
+  --blue-dim: rgba(96,165,250,.13);
+  --teal: #2DD4BF;
+  --border: rgba(255,255,255,.07);
+  --border-2: rgba(255,255,255,.12);
+  --mono: 'JetBrains Mono','Cascadia Code','Fira Mono','Consolas',monospace;
+  --sans: system-ui,-apple-system,'Segoe UI',Helvetica,sans-serif;
+  --nav-w: 252px;
+  --header-h: 52px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────── */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.site-logo {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-2);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+.site-logo span { color: var(--text-3); font-weight: 400; }
+.header-pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--accent-dim);
+  color: var(--accent-2);
+  border: 1px solid rgba(123,110,255,.3);
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: .05em;
+}
+.header-base {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  margin-left: auto;
+}
+.header-base strong { color: var(--text-2); }
+
+/* ── Layout ──────────────────────────────────── */
+.layout {
+  display: flex;
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+}
+
+/* ── Sidebar ─────────────────────────────────── */
+.sidebar {
+  width: var(--nav-w);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  overflow-y: auto;
+  padding: 20px 0 40px;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
+
+.nav-group { margin-bottom: 4px; }
+.nav-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 12px 20px 4px;
+  display: block;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 20px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color .15s, border-color .15s, background .15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,.04); }
+.nav-item.active {
+  color: var(--accent-2);
+  border-left-color: var(--accent);
+  background: var(--accent-dim);
+}
+.nav-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.nav-method {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  border-radius: 3px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+.m-get  { background: var(--blue-dim);  color: var(--blue); }
+.m-post { background: var(--green-dim); color: var(--green); }
+.m-put  { background: var(--amber-dim); color: var(--amber); }
+.m-del  { background: var(--red-dim);   color: var(--red); }
+
+/* ── Main content ────────────────────────────── */
+.main {
+  margin-left: var(--nav-w);
+  flex: 1;
+  padding: 48px 56px 100px;
+  max-width: 860px;
+}
+
+/* ── Section headings ────────────────────────── */
+.section { margin-bottom: 64px; }
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.section > h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -.02em;
+  text-wrap: balance;
+  margin-bottom: 12px;
+}
+.section > .section-desc {
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 62ch;
+  margin-bottom: 28px;
+}
+
+/* ── Endpoint card ───────────────────────────── */
+.endpoint {
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  background: var(--surface);
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.ep-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.ep-method {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  padding: 3px 9px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.ep-path {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  letter-spacing: .01em;
+}
+.ep-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  margin-left: auto;
+  text-align: right;
+  max-width: 240px;
+  flex-shrink: 0;
+}
+.ep-body { padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+
+/* ── Params table ────────────────────────────── */
+.param-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.param-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.param-table th {
+  text-align: left;
+  padding: 6px 10px;
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--border);
+}
+.param-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.param-table tr:last-child td { border-bottom: none; }
+.param-table td:first-child {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-2);
+}
+.param-table td:nth-child(2) { color: var(--text-2); }
+.param-table td:nth-child(3) { color: var(--text-2); }
+.req-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+.opt-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--surface-3);
+  color: var(--text-3);
+}
+
+/* ── Code block ──────────────────────────────── */
+.code-wrap { overflow-x: auto; }
+pre {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.65;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 14px 16px;
+  white-space: pre;
+  min-width: max-content;
+}
+.j-key  { color: var(--accent-2); }
+.j-str  { color: var(--green); }
+.j-num  { color: var(--amber); font-variant-numeric: tabular-nums; }
+.j-null { color: var(--red); }
+.j-bool { color: var(--blue); }
+.j-cm   { color: var(--text-3); font-style: italic; }
+
+/* ── Inline code ─────────────────────────────── */
+code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--surface-3);
+  color: var(--accent-2);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ── Error codes table ───────────────────────── */
+.error-table-wrap { overflow-x: auto; }
+.error-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.error-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.error-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.error-table tr:last-child td { border-bottom: none; }
+.error-table tr:hover td { background: rgba(255,255,255,.02); }
+.ec { font-family: var(--mono); font-size: 11.5px; color: var(--amber); font-weight: 700; }
+.ec-desc { color: var(--text); max-width: 300px; }
+.ec-fix  { color: var(--text-2); max-width: 260px; }
+.refresh-y { color: var(--green); font-size: 11px; }
+.refresh-n { color: var(--text-3); font-size: 11px; }
+.status-pill {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+.s-422 { background: var(--red-dim); color: var(--red); }
+.s-404 { background: var(--amber-dim); color: var(--amber); }
+.s-409 { background: var(--blue-dim); color: var(--blue); }
+
+/* ── Note / callout ──────────────────────────── */
+.note {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.note strong { color: var(--accent-2); }
+
+/* ── Data model card ─────────────────────────── */
+.model {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.model-head {
+  padding: 10px 16px;
+  background: var(--surface-2);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent-2);
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.model-body { padding: 14px 16px; }
+.model-field {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.model-field:last-child { border-bottom: none; }
+.mf-name  { font-family: var(--mono); color: var(--accent-2); min-width: 160px; flex-shrink: 0; }
+.mf-type  { color: var(--blue); font-family: var(--mono); font-size: 11px; min-width: 90px; flex-shrink: 0; }
+.mf-desc  { color: var(--text-2); }
+
+/* ── Screens grid ────────────────────────────── */
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.screen-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+}
+.screen-card h4 {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--accent-2);
+  margin-bottom: 4px;
+}
+.screen-card p { color: var(--text-2); font-size: 12px; line-height: 1.5; }
+
+/* ── Divider ─────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-logo">SpendSift <span>/ API Reference</span></div>
+  <div class="header-pill">v1 · local-first</div>
+  <div class="header-base">Base URL: <strong>http://127.0.0.1:8765</strong></div>
+</header>
+
+<div class="layout">
+
+<!-- ── Sidebar nav ──────────────────────────── -->
+<nav class="sidebar" aria-label="API sections">
+
+  <div class="nav-group">
+    <span class="nav-group-label">Getting Started</span>
+    <a class="nav-item active" href="#overview">overview</a>
+    <a class="nav-item" href="#errors-format">error format</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Prices / NAV</span>
+    <a class="nav-item" href="#prices-status"><span class="nav-method m-get">GET</span>prices/status</a>
+    <a class="nav-item" href="#prices-refresh"><span class="nav-method m-post">POST</span>prices/refresh</a>
+    <a class="nav-item" href="#prices-backfill"><span class="nav-method m-post">POST</span>prices/backfill</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Dashboard</span>
+    <a class="nav-item" href="#reports-dashboard"><span class="nav-method m-get">GET</span>reports/dashboard</a>
+    <a class="nav-item" href="#reports-networth"><span class="nav-method m-get">GET</span>reports/networth</a>
+    <a class="nav-item" href="#reports-years"><span class="nav-method m-get">GET</span>reports/available-years</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Investments</span>
+    <a class="nav-item" href="#investments"><span class="nav-method m-get">GET</span>reports/investments</a>
+    <a class="nav-item" href="#investments-gains"><span class="nav-method m-get">GET</span>investments/gains</a>
+    <a class="nav-item" href="#investments-changes"><span class="nav-method m-get">GET</span>investments/changes</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Cashflow</span>
+    <a class="nav-item" href="#cashflow-overview"><span class="nav-method m-get">GET</span>cashflow/overview</a>
+    <a class="nav-item" href="#cashflow-monthly"><span class="nav-method m-get">GET</span>cashflow/monthly</a>
+    <a class="nav-item" href="#cashflow-sankey"><span class="nav-method m-get">GET</span>cashflow/sankey</a>
+    <a class="nav-item" href="#cashflow-pnl"><span class="nav-method m-get">GET</span>cashflow/pnl</a>
+    <a class="nav-item" href="#cashflow-recurring"><span class="nav-method m-get">GET</span>cashflow/recurring</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Expenses</span>
+    <a class="nav-item" href="#expense-overview"><span class="nav-method m-get">GET</span>expense/overview</a>
+    <a class="nav-item" href="#income-overview"><span class="nav-method m-get">GET</span>income/overview</a>
+    <a class="nav-item" href="#expense-tags"><span class="nav-method m-get">GET</span>expense/tags</a>
+    <a class="nav-item" href="#expense-monthly-ep"><span class="nav-method m-get">GET</span>expense/monthly</a>
+    <a class="nav-item" href="#expense-budget"><span class="nav-method m-get">GET</span>expense/budget</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Liabilities</span>
+    <a class="nav-item" href="#liab-balance"><span class="nav-method m-get">GET</span>liabilities/balance</a>
+    <a class="nav-item" href="#liab-cc"><span class="nav-method m-get">GET</span>liabilities/credit-cards</a>
+    <a class="nav-item" href="#liab-repayment"><span class="nav-method m-get">GET</span>liabilities/repayment</a>
+    <a class="nav-item" href="#liab-interest"><span class="nav-method m-get">GET</span>liabilities/interest</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reports · Tax</span>
+    <a class="nav-item" href="#tax-workspace"><span class="nav-method m-get">GET</span>reports/tax/workspace</a>
+    <a class="nav-item" href="#reports-doctor"><span class="nav-method m-get">GET</span>reports/doctor</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Import Pipeline</span>
+    <a class="nav-item" href="#import-detect"><span class="nav-method m-post">POST</span>import/detect</a>
+    <a class="nav-item" href="#import-classify"><span class="nav-method m-post">POST</span>import/classify</a>
+    <a class="nav-item" href="#import-review"><span class="nav-method m-get">GET</span>review/{batch_id}</a>
+    <a class="nav-item" href="#import-commit"><span class="nav-method m-post">POST</span>commit/{batch_id}</a>
+    <a class="nav-item" href="#import-ledger"><span class="nav-method m-post">POST</span>import/ledger/preview</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Transactions</span>
+    <a class="nav-item" href="#txn-list"><span class="nav-method m-get">GET</span>transactions</a>
+    <a class="nav-item" href="#ledger-raw"><span class="nav-method m-get">GET</span>ledger/raw</a>
+    <a class="nav-item" href="#entries"><span class="nav-method m-post">POST</span>entries</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Settings</span>
+    <a class="nav-item" href="#accounts"><span class="nav-method m-get">GET</span>accounts</a>
+    <a class="nav-item" href="#templates"><span class="nav-method m-get">GET</span>templates</a>
+  </div>
+
+  <div class="nav-group">
+    <span class="nav-group-label">Reference</span>
+    <a class="nav-item" href="#error-codes">error codes</a>
+    <a class="nav-item" href="#frontend-screens">frontend screens</a>
+  </div>
+
+</nav>
+
+<!-- ── Main content ─────────────────────────── -->
+<main class="main">
+
+<!-- ═══════════════════════════════════════════ OVERVIEW -->
+<section class="section" id="overview">
+  <div class="section-eyebrow">Getting Started</div>
+  <h2>SpendSift API</h2>
+  <p class="section-desc">Local-first personal finance REST API. The backend runs on <code>127.0.0.1:8765</code>; every request is loopback-only. All monetary amounts are decimal strings — no floats anywhere in the API surface.</p>
+
+  <div class="note">
+    <strong>Single-user, no auth.</strong> The API has no authentication layer — it binds to loopback only. All writes snapshot the journal (<code>storage/journal/</code> → <code>storage/snapshots/</code>) first, so every destructive call is rollback-safe.
+  </div>
+
+  <br>
+  <div class="code-wrap">
+    <pre><span class="j-cm"># Quick health check</span>
+curl http://127.0.0.1:8765/api/health
+
+<span class="j-cm"># Returns</span>
+{<span class="j-key">"status"</span>: <span class="j-str">"ok"</span>}</pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ ERROR FORMAT -->
+<section class="section" id="errors-format">
+  <div class="section-eyebrow">Getting Started</div>
+  <h2>Error Envelope</h2>
+  <p class="section-desc">All coded errors return a uniform JSON envelope. The <code>code</code> field is machine-readable; <code>detail</code> and <code>description</code> are identical and user-displayable.</p>
+
+  <div class="code-wrap">
+    <pre>{
+  <span class="j-key">"code"</span>:        <span class="j-str">"E1015"</span>,
+  <span class="j-key">"status"</span>:      <span class="j-num">422</span>,
+  <span class="j-key">"detail"</span>:      <span class="j-str">"The AMFI price feed returned no schemes while funds are held."</span>,
+  <span class="j-key">"description"</span>: <span class="j-str">"The AMFI price feed returned no schemes while funds are held."</span>,
+  <span class="j-key">"resolution"</span>:  <span class="j-str">"Cached NAVs kept; try refreshing later."</span>
+}</pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ PRICES -->
+<section class="section" id="prices-status">
+  <div class="section-eyebrow">Prices / NAV</div>
+  <h2>NAV Pipeline</h2>
+  <p class="section-desc">Live NAV refresh from the AMFI NAVAll feed. Held funds = positive unit balance. Prices are stored in <code>nav_history.parquet</code> and written as <code>price</code> directives to <code>journal/prices.beancount</code>.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/prices/status</span>
+      <span class="ep-desc">Current NAV freshness — no network call</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Parameters</div>
+        <p style="color:var(--text-3);font-size:12px">None. Reads from the cache sidecar — honest after a reload.</p>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"as_of"</span>:    <span class="j-str">"2026-06-30"</span>,
+  <span class="j-key">"source"</span>:   <span class="j-str">"fetched"</span>,   <span class="j-cm">// "fetched" | "cached" | "offline" | "never"</span>
+  <span class="j-key">"priced"</span>:   [
+    { <span class="j-key">"symbol"</span>: <span class="j-str">"MF122639"</span>, <span class="j-key">"name"</span>: <span class="j-str">"Parag Parikh Flexi Cap Fund - Direct Plan - Growth"</span> },
+    { <span class="j-key">"symbol"</span>: <span class="j-str">"MF120716"</span>, <span class="j-key">"name"</span>: <span class="j-str">"UTI Nifty 50 Index Fund - Direct Plan - Growth"</span> }
+  ],
+  <span class="j-key">"unpriced"</span>: []
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="prices-refresh">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/prices/refresh</span>
+      <span class="ep-desc">Conditional-GET AMFI feed + write prices.beancount</span>
+    </div>
+    <div class="ep-body">
+      <div class="note">Offline-safe. Returns the same shape as <code>/status</code>. A zero-scheme 200 response while funds are held raises <code>E1015</code> and leaves the cache intact.</div>
+      <div class="code-wrap">
+        <pre><span class="j-cm">// Errors: E1014 (NAV store corrupt), E1015 (empty dump while holding)</span>
+{
+  <span class="j-key">"as_of"</span>:    <span class="j-str">"2026-06-30"</span>,
+  <span class="j-key">"source"</span>:   <span class="j-str">"fetched"</span>,
+  <span class="j-key">"priced"</span>:   [{ <span class="j-key">"symbol"</span>: <span class="j-str">"MF122639"</span>, <span class="j-key">"name"</span>: <span class="j-str">"Parag Parikh Flexi Cap Fund..."</span> }],
+  <span class="j-key">"unpriced"</span>: []
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="prices-backfill">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/prices/backfill</span>
+      <span class="ep-desc">Pull historical NAV from mfapi.in for all ever-transacted funds</span>
+    </div>
+    <div class="ep-body">
+      <div class="note">Fetches since the fund's earliest transaction. Skips funds already covered. 200ms rate-limit per fund. Errors are per-fund, non-fatal.</div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"fetched"</span>:               <span class="j-num">2</span>,
+  <span class="j-key">"skipped_already_covered"</span>: <span class="j-num">1</span>,
+  <span class="j-key">"skipped_errors"</span>:        [],
+  <span class="j-key">"rows_added"</span>:            <span class="j-num">842</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ DASHBOARD -->
+<section class="section" id="reports-dashboard">
+  <div class="section-eyebrow">Reports · Dashboard</div>
+  <h2>Dashboard</h2>
+  <p class="section-desc">Monthly financial snapshot: cash, liabilities, spending, investments.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/dashboard</span>
+      <span class="ep-desc">Monthly summary snapshot</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>year</td><td>integer</td><td><span class="req-badge">req</span></td><td>Calendar year e.g. 2026</td></tr>
+            <tr><td>month</td><td>integer</td><td><span class="req-badge">req</span></td><td>1–12</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"cash_net_worth"</span>:   <span class="j-str">"485000.00"</span>,
+  <span class="j-key">"liabilities"</span>:     <span class="j-str">"3500000.00"</span>,
+  <span class="j-key">"spent_this_month"</span>: <span class="j-str">"42500.00"</span>,
+  <span class="j-key">"liquid"</span>:          <span class="j-str">"120000.00"</span>,
+  <span class="j-key">"investments"</span>:     <span class="j-str">"850000.00"</span>,
+  <span class="j-key">"checking_count"</span>:  <span class="j-num">3</span>,
+  <span class="j-key">"investment_kinds"</span>: [<span class="j-str">"MutualFund"</span>, <span class="j-str">"Equity"</span>],
+  <span class="j-key">"accounts"</span>: [
+    { <span class="j-key">"account"</span>: <span class="j-str">"Assets:Bank:HDFC:Savings"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"85000.00"</span> },
+    { <span class="j-key">"account"</span>: <span class="j-str">"Assets:Bank:ICICI:Savings"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"35000.00"</span> }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="reports-networth">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/networth</span>
+      <span class="ep-desc">Monthly net worth series (all time)</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>[
+  { <span class="j-key">"month"</span>: <span class="j-str">"2026-01"</span>, <span class="j-key">"net_worth"</span>: <span class="j-str">"920000.00"</span>, <span class="j-key">"assets"</span>: <span class="j-str">"4420000.00"</span>, <span class="j-key">"liabilities"</span>: <span class="j-str">"3500000.00"</span> },
+  { <span class="j-key">"month"</span>: <span class="j-str">"2026-02"</span>, <span class="j-key">"net_worth"</span>: <span class="j-str">"944000.00"</span>, <span class="j-key">"assets"</span>: <span class="j-str">"4444000.00"</span>, <span class="j-key">"liabilities"</span>: <span class="j-str">"3500000.00"</span> }
+]</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="reports-years">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/available-years</span>
+      <span class="ep-desc">Calendar and fiscal years present in the ledger</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"calendar_years"</span>: [<span class="j-num">2024</span>, <span class="j-num">2025</span>, <span class="j-num">2026</span>],
+  <span class="j-key">"fiscal_years"</span>:   [<span class="j-num">2024</span>, <span class="j-num">2025</span>, <span class="j-num">2026</span>]  <span class="j-cm">// FY2026 = Apr 2025 – Mar 2026</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ INVESTMENTS -->
+<section class="section" id="investments">
+  <div class="section-eyebrow">Reports · Investments</div>
+  <h2>Investments</h2>
+  <p class="section-desc">Three complementary views: holdings aggregated by vehicle, per-fund gains with XIRR, and NAV-based price-change windows (1D / 1M / 1Y / since inception).</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/investments</span>
+      <span class="ep-desc">Holdings by vehicle and issuer (cost basis)</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"total"</span>: <span class="j-str">"850000.00"</span>,
+  <span class="j-key">"holdings"</span>: [
+    { <span class="j-key">"account"</span>: <span class="j-str">"Assets:Investment:MutualFund:Groww:MF122639"</span>,
+      <span class="j-key">"vehicle"</span>: <span class="j-str">"MutualFund"</span>, <span class="j-key">"issuer"</span>: <span class="j-str">"Groww"</span>,
+      <span class="j-key">"instrument"</span>: <span class="j-str">"MF122639"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"500000.00"</span> }
+  ],
+  <span class="j-key">"by_vehicle"</span>: [{ <span class="j-key">"vehicle"</span>: <span class="j-str">"MutualFund"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"850000.00"</span> }],
+  <span class="j-key">"by_issuer"</span>:  [{ <span class="j-key">"vehicle"</span>: <span class="j-str">"MutualFund"</span>, <span class="j-key">"issuer"</span>: <span class="j-str">"Groww"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"850000.00"</span> }]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="investments-gains">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/investments/gains</span>
+      <span class="ep-desc">Per-fund unrealized gain, return %, current + lifetime XIRR</span>
+    </div>
+    <div class="ep-body">
+      <div class="note">Requires NAV data. Funds without a current price appear in <strong>unpriced</strong> at cost basis only. Run <code>POST /api/prices/refresh</code> first.</div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"as_of"</span>:  <span class="j-str">"2026-06-30"</span>,
+  <span class="j-key">"totals"</span>: {
+    <span class="j-key">"current_value"</span>:   <span class="j-str">"1324763.00"</span>,
+    <span class="j-key">"cost_basis"</span>:      <span class="j-str">"1000000.00"</span>,
+    <span class="j-key">"unrealized_gain"</span>: <span class="j-str">"324763.00"</span>,
+    <span class="j-key">"abs_return_pct"</span>:  <span class="j-str">"32.48"</span>,
+    <span class="j-key">"current_xirr"</span>:   <span class="j-str">"18.40"</span>,
+    <span class="j-key">"lifetime_xirr"</span>:  <span class="j-null">null</span>
+  },
+  <span class="j-key">"holdings"</span>: [
+    {
+      <span class="j-key">"symbol"</span>:         <span class="j-str">"MF122639"</span>,
+      <span class="j-key">"name"</span>:           <span class="j-str">"Parag Parikh Flexi Cap Fund - Direct Plan - Growth"</span>,
+      <span class="j-key">"units"</span>:          <span class="j-str">"6139.000"</span>,
+      <span class="j-key">"nav"</span>:            <span class="j-str">"215.7600"</span>,
+      <span class="j-key">"nav_date"</span>:       <span class="j-str">"2026-06-30"</span>,
+      <span class="j-key">"current_value"</span>:  <span class="j-str">"1324763.00"</span>,
+      <span class="j-key">"cost_basis"</span>:     <span class="j-str">"1000000.00"</span>,
+      <span class="j-key">"unrealized_gain"</span>:<span class="j-str">"324763.00"</span>,
+      <span class="j-key">"abs_return_pct"</span>: <span class="j-str">"32.48"</span>,
+      <span class="j-key">"current_xirr"</span>:  <span class="j-str">"18.40"</span>,
+      <span class="j-key">"lifetime_xirr"</span>: <span class="j-null">null</span>
+    }
+  ],
+  <span class="j-key">"unpriced"</span>:      [],
+  <span class="j-key">"unpriced_count"</span>: <span class="j-num">0</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="investments-changes">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/investments/changes</span>
+      <span class="ep-desc">NAV-based price returns: 1D / 1M / 1Y / SI per fund + weighted portfolio</span>
+    </div>
+    <div class="ep-body">
+      <div class="note"><strong>backfill_needed</strong> is true when any held fund has &lt;30 days of history. Call <code>POST /api/prices/backfill</code> to enable full window coverage.</div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"as_of"</span>:          <span class="j-str">"2026-06-30"</span>,
+  <span class="j-key">"backfill_needed"</span>: <span class="j-bool">false</span>,
+  <span class="j-key">"portfolio_windows"</span>: [
+    { <span class="j-key">"label"</span>: <span class="j-str">"1D"</span>, <span class="j-key">"return_pct"</span>: <span class="j-str">"0.15"</span>,  <span class="j-key">"date_then"</span>: <span class="j-str">"2026-06-29"</span>, <span class="j-key">"nav_now"</span>: <span class="j-str">"215.76"</span>, <span class="j-key">"nav_then"</span>: <span class="j-str">"215.43"</span> },
+    { <span class="j-key">"label"</span>: <span class="j-str">"1M"</span>, <span class="j-key">"return_pct"</span>: <span class="j-str">"2.30"</span>,  <span class="j-key">"date_then"</span>: <span class="j-str">"2026-05-30"</span>, <span class="j-key">"nav_now"</span>: <span class="j-str">"215.76"</span>, <span class="j-key">"nav_then"</span>: <span class="j-str">"210.91"</span> },
+    { <span class="j-key">"label"</span>: <span class="j-str">"1Y"</span>, <span class="j-key">"return_pct"</span>: <span class="j-str">"18.40"</span>, <span class="j-key">"date_then"</span>: <span class="j-str">"2025-06-30"</span>, <span class="j-key">"nav_now"</span>: <span class="j-str">"215.76"</span>, <span class="j-key">"nav_then"</span>: <span class="j-str">"182.23"</span> },
+    { <span class="j-key">"label"</span>: <span class="j-str">"SI"</span>, <span class="j-key">"return_pct"</span>: <span class="j-str">"45.20"</span>, <span class="j-key">"date_then"</span>: <span class="j-str">"2023-01-10"</span>, <span class="j-key">"nav_now"</span>: <span class="j-str">"215.76"</span>, <span class="j-key">"nav_then"</span>: <span class="j-str">"148.59"</span> }
+  ],
+  <span class="j-key">"funds"</span>: [
+    {
+      <span class="j-key">"symbol"</span>: <span class="j-str">"MF122639"</span>,
+      <span class="j-key">"name"</span>:   <span class="j-str">"Parag Parikh Flexi Cap Fund - Direct Plan - Growth"</span>,
+      <span class="j-key">"windows"</span>: [
+        { <span class="j-key">"label"</span>: <span class="j-str">"1D"</span>, <span class="j-key">"return_pct"</span>: <span class="j-str">"0.15"</span>, ... },
+        { <span class="j-key">"label"</span>: <span class="j-str">"1Y"</span>, <span class="j-key">"return_pct"</span>: <span class="j-null">null</span>, <span class="j-key">"date_then"</span>: <span class="j-null">null</span>, <span class="j-key">"nav_then"</span>: <span class="j-null">null</span> }
+      ]
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ CASHFLOW -->
+<section class="section" id="cashflow-monthly">
+  <div class="section-eyebrow">Reports · Cashflow</div>
+  <h2>Cashflow</h2>
+  <p class="section-desc">The period overview (totals, monthly series, statement), the Sankey money-flow graph for a period or an FY, the P&amp;L matrix across fiscal years, the FY monthly series, and recurring-transaction analysis.</p>
+
+  <div class="endpoint" id="cashflow-overview">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/cashflow/overview</span>
+      <span class="ep-desc">Totals, monthly series and statement for a date range</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>from</td><td>date</td><td><span class="req-badge">req</span></td><td>First day, ISO <code>YYYY-MM-DD</code>, inclusive</td></tr>
+            <tr><td>to</td><td>date</td><td><span class="req-badge">req</span></td><td>Last day, inclusive</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"start"</span>: <span class="j-str">"2026-08-01"</span>, <span class="j-key">"end"</span>: <span class="j-str">"2026-08-31"</span>,
+  <span class="j-key">"totals"</span>: {
+    <span class="j-key">"income"</span>:   <span class="j-str">"90000.00"</span>,  <span class="j-cm">// net of TDS</span>
+    <span class="j-key">"expenses"</span>: <span class="j-str">"30000.00"</span>,  <span class="j-cm">// spending; Expenses:Investment excluded</span>
+    <span class="j-key">"invested"</span>: <span class="j-str">"19995.00"</span>,  <span class="j-cm">// investments + investment charges</span>
+    <span class="j-key">"saved"</span>:    <span class="j-str">"60000.00"</span>,
+    <span class="j-key">"savings_rate"</span>: <span class="j-str">"66.7"</span>    <span class="j-cm">// null when income ≤ 0</span>
+  },
+  <span class="j-key">"granularity"</span>: <span class="j-str">"day"</span>,  <span class="j-cm">// "day" for ≤ 92 days, else "month"</span>
+  <span class="j-key">"series"</span>: [  <span class="j-cm">// one point per day (or month), zero-filled</span>
+    { <span class="j-key">"key"</span>: <span class="j-str">"2026-08-01"</span>, <span class="j-key">"label"</span>: <span class="j-str">"1 Aug"</span>, <span class="j-key">"income"</span>: <span class="j-str">"90000.00"</span>, <span class="j-key">"expenses"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"invested"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"net"</span>: <span class="j-str">"90000.00"</span> }
+  ],
+  <span class="j-key">"by_month"</span>: [
+    { <span class="j-key">"year"</span>: <span class="j-num">2026</span>, <span class="j-key">"month"</span>: <span class="j-num">8</span>, <span class="j-key">"label"</span>: <span class="j-str">"Aug"</span>, <span class="j-key">"income"</span>: <span class="j-str">"90000.00"</span>, <span class="j-key">"expenses"</span>: <span class="j-str">"30000.00"</span>,
+      <span class="j-key">"liabilities"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"investment"</span>: <span class="j-str">"19995.00"</span>, <span class="j-key">"tax"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"balance"</span>: <span class="j-str">"40005.00"</span> }
+  ],
+  <span class="j-key">"statement"</span>: {
+    <span class="j-key">"income"</span>:   [{ <span class="j-key">"category"</span>: <span class="j-str">"Income:Salary"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"90000.00"</span> }],
+    <span class="j-key">"expenses"</span>: [{ <span class="j-key">"category"</span>: <span class="j-str">"Expenses:Rent"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"20000.00"</span> }, { <span class="j-key">"category"</span>: <span class="j-str">"Expenses:Food"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"10000.00"</span> }],
+    <span class="j-key">"net"</span>: <span class="j-str">"60000.00"</span>
+  }
+}</pre>
+      </div>
+      <div>
+        <p style="color:var(--text-2);font-size:12.5px">An invalid range (from after to, only one of the two, a year outside 1900–2200) returns <code>422</code> with code <code>E1087</code> (<code>PERIOD_RANGE_INVALID</code>).</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/cashflow/monthly</span>
+      <span class="ep-desc">12-point FY series — income, expenses, liabilities, investments, tax, balance (used by the Dashboard)</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>fy</td><td>integer</td><td><span class="req-badge">req</span></td><td>Fiscal year e.g. 2026 (Apr 2025–Mar 2026)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"series"</span>: [
+    {
+      <span class="j-key">"month"</span>:       <span class="j-num">4</span>,          <span class="j-cm">// April = month 4, always 12 points</span>
+      <span class="j-key">"income"</span>:      <span class="j-str">"125000.00"</span>,
+      <span class="j-key">"expenses"</span>:    <span class="j-str">"42500.00"</span>,
+      <span class="j-key">"liabilities"</span>: <span class="j-str">"20000.00"</span>,
+      <span class="j-key">"investment"</span>:  <span class="j-str">"30000.00"</span>,
+      <span class="j-key">"tax"</span>:         <span class="j-str">"12000.00"</span>,
+      <span class="j-key">"balance"</span>:     <span class="j-str">"485000.00"</span>
+    }
+    <span class="j-cm">// ... 11 more months through March</span>
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="cashflow-sankey">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/cashflow/sankey</span>
+      <span class="ep-desc">Cash-flow Sankey: income sources → accounts → destinations, for an FY or a date range</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>fy</td><td>integer</td><td><span class="opt-badge">opt</span></td><td>Fiscal year</td></tr>
+            <tr><td>from</td><td>date</td><td><span class="opt-badge">opt</span></td><td>First day, inclusive (with <code>to</code>)</td></tr>
+            <tr><td>to</td><td>date</td><td><span class="opt-badge">opt</span></td><td>Last day, inclusive (with <code>from</code>)</td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--text-2);font-size:12.5px">Exactly one of <code>fy</code> or <code>from</code>+<code>to</code>; anything else is <code>E1087</code>.</p>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"start"</span>: <span class="j-str">"2026-04-01"</span>, <span class="j-key">"end"</span>: <span class="j-str">"2027-03-31"</span>,
+  <span class="j-key">"income_total"</span>: <span class="j-str">"90000.00"</span>,  <span class="j-cm">// = cashflow/overview totals.income; income nodes sum to it</span>
+  <span class="j-key">"nodes"</span>: [
+    { <span class="j-key">"id"</span>: <span class="j-str">"Income:Salary"</span>, <span class="j-key">"label"</span>: <span class="j-str">"Salary"</span>, <span class="j-key">"kind"</span>: <span class="j-str">"income"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"90000.00"</span>, <span class="j-key">"folded"</span>: [] },
+    { <span class="j-key">"id"</span>: <span class="j-str">"Assets:Checking:HDFC"</span>, <span class="j-key">"label"</span>: <span class="j-str">"Checking:HDFC"</span>, <span class="j-key">"kind"</span>: <span class="j-str">"account"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"90000.00"</span>, <span class="j-key">"folded"</span>: [] },
+    { <span class="j-key">"id"</span>: <span class="j-str">"Card bills"</span>, <span class="j-key">"label"</span>: <span class="j-str">"Card bills"</span>, <span class="j-key">"kind"</span>: <span class="j-str">"liability"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"4000.00"</span>, <span class="j-key">"folded"</span>: [] }
+  ],
+  <span class="j-key">"links"</span>: [
+    { <span class="j-key">"source"</span>: <span class="j-str">"Income:Salary"</span>, <span class="j-key">"target"</span>: <span class="j-str">"Assets:Checking:HDFC"</span>, <span class="j-key">"value"</span>: <span class="j-str">"90000.00"</span> },
+    { <span class="j-key">"source"</span>: <span class="j-str">"Assets:Checking:HDFC"</span>, <span class="j-key">"target"</span>: <span class="j-str">"Card bills"</span>, <span class="j-key">"value"</span>: <span class="j-str">"4000.00"</span> }
+  ],
+  <span class="j-key">"omitted"</span>: []  <span class="j-cm">// own-account transfers left out to keep the graph acyclic</span>
+}</pre>
+      </div>
+      <div>
+        <div class="param-label" style="margin-top:4px">Sankey drilldown</div>
+        <p style="color:var(--text-2);font-size:12.5px"><code>GET /api/reports/cashflow/sankey/contributions?from=2026-08-01&amp;to=2026-08-31&amp;source=Income:Salary&amp;target=Assets:Checking:HDFC</code> (or <code>fy=</code>) — returns the individual transactions that make up any Sankey link (node ids, either direction; an <code>Other</code> node stands for what it folds). Hand-written journal entries are included, with a read-only <code>untracked-…</code> id.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="cashflow-pnl">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/cashflow/pnl</span>
+      <span class="ep-desc">P&amp;L matrix — rows = categories, columns = fiscal years</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>fys</td><td>string</td><td><span class="req-badge">req</span></td><td>Comma-separated FYs e.g. <code>2024,2025,2026</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"fys"</span>:     [<span class="j-num">2024</span>, <span class="j-num">2025</span>, <span class="j-num">2026</span>],
+  <span class="j-key">"columns"</span>: [
+    { <span class="j-key">"fy"</span>: <span class="j-num">2024</span>, <span class="j-key">"label"</span>: <span class="j-str">"FY 2023-24"</span> },
+    { <span class="j-key">"fy"</span>: <span class="j-num">2025</span>, <span class="j-key">"label"</span>: <span class="j-str">"FY 2024-25"</span> },
+    { <span class="j-key">"fy"</span>: <span class="j-num">2026</span>, <span class="j-key">"label"</span>: <span class="j-str">"FY 2025-26"</span> }
+  ],
+  <span class="j-key">"sections"</span>: [
+    {
+      <span class="j-key">"key"</span>: <span class="j-str">"income"</span>, <span class="j-key">"label"</span>: <span class="j-str">"Income"</span>,
+      <span class="j-key">"line_items"</span>: [
+        { <span class="j-key">"category"</span>: <span class="j-str">"Income:Salary"</span>, <span class="j-key">"amounts"</span>: [<span class="j-str">"1200000"</span>, <span class="j-str">"1440000"</span>, <span class="j-str">"1620000"</span>] }
+      ],
+      <span class="j-key">"totals"</span>: [<span class="j-str">"1200000"</span>, <span class="j-str">"1440000"</span>, <span class="j-str">"1620000"</span>]
+    }
+  ],
+  <span class="j-key">"net"</span>: [<span class="j-str">"420000"</span>, <span class="j-str">"540000"</span>, <span class="j-str">"630000"</span>]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="cashflow-recurring">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/cashflow/recurring</span>
+      <span class="ep-desc">Recurring transaction detection and summary</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>year</td><td>integer</td><td><span class="req-badge">req</span></td><td>Calendar year</td></tr>
+            <tr><td>month</td><td>integer</td><td><span class="req-badge">req</span></td><td>1–12</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ EXPENSES -->
+<section class="section" id="expense-monthly">
+  <div class="section-eyebrow">Reports · Expenses</div>
+  <h2>Expenses</h2>
+  <p class="section-desc">The expense and income overviews for a date range (filterable by how money was paid or received), tag rollups, the month summary used by the Dashboard, and budget vs actual. Spending is every <code>Expenses:*</code> account except <code>Expenses:Investment:*</code>.</p>
+
+  <div class="endpoint" id="expense-overview">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/expense/overview</span>
+      <span class="ep-desc">Spending for a date range: headline, series, categories → merchants, lines</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>from</td><td>date</td><td><span class="req-badge">req</span></td><td>First day, ISO <code>YYYY-MM-DD</code>, inclusive</td></tr>
+            <tr><td>to</td><td>date</td><td><span class="req-badge">req</span></td><td>Last day, inclusive</td></tr>
+            <tr><td>funding</td><td>string</td><td><span class="opt-badge">opt</span></td><td><code>all</code> (default), <code>card</code>, <code>bank</code> or <code>other</code>: scopes every section</td></tr>
+            <tr><td>account</td><td>string</td><td><span class="opt-badge">opt</span></td><td>Only lines paid from this account (e.g. one card)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"side"</span>: <span class="j-str">"expense"</span>, <span class="j-key">"start"</span>: <span class="j-str">"2026-08-01"</span>, <span class="j-key">"end"</span>: <span class="j-str">"2026-08-31"</span>,
+  <span class="j-key">"funding"</span>: <span class="j-str">"all"</span>, <span class="j-key">"account"</span>: null, <span class="j-key">"granularity"</span>: <span class="j-str">"day"</span>,  <span class="j-cm">// month when > 92 days</span>
+  <span class="j-key">"headline"</span>: {
+    <span class="j-key">"net"</span>: <span class="j-str">"1424.00"</span>, <span class="j-key">"gross"</span>: <span class="j-str">"1924.00"</span>, <span class="j-key">"reversals"</span>: <span class="j-str">"500.00"</span>, <span class="j-key">"count"</span>: <span class="j-num">5</span>,
+    <span class="j-key">"funding_split"</span>: { <span class="j-key">"card"</span>: <span class="j-str">"424.00"</span>, <span class="j-key">"bank"</span>: <span class="j-str">"1000.00"</span>, <span class="j-key">"other"</span>: <span class="j-str">"0.00"</span> }
+  },
+  <span class="j-key">"series"</span>: [{ <span class="j-key">"key"</span>: <span class="j-str">"2026-08-01"</span>, <span class="j-key">"label"</span>: <span class="j-str">"1 Aug"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"gross"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"reversals"</span>: <span class="j-str">"0.00"</span> }],
+  <span class="j-key">"groups"</span>: [
+    { <span class="j-key">"group"</span>: <span class="j-str">"Expenses:Rent"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"1000.00"</span>, <span class="j-key">"pct"</span>: <span class="j-str">"52.0"</span>,
+      <span class="j-key">"items"</span>: [{ <span class="j-key">"name"</span>: <span class="j-str">"Acme Landlord"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"1000.00"</span>, <span class="j-key">"count"</span>: <span class="j-num">1</span> }] }
+  ],
+  <span class="j-key">"lines"</span>: [
+    { <span class="j-key">"txn_id"</span>: <span class="j-str">"t1"</span>, <span class="j-key">"date"</span>: <span class="j-str">"2026-08-05"</span>, <span class="j-key">"account"</span>: <span class="j-str">"Expenses:Rent"</span>, <span class="j-key">"group"</span>: <span class="j-str">"Expenses:Rent"</span>,
+      <span class="j-key">"name"</span>: <span class="j-str">"Acme Landlord"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"1000.00"</span>, <span class="j-key">"editable"</span>: true,
+      <span class="j-key">"via"</span>: { <span class="j-key">"kind"</span>: <span class="j-str">"bank"</span>, <span class="j-key">"label"</span>: <span class="j-str">"Acme"</span>, <span class="j-key">"account"</span>: <span class="j-str">"Assets:Checking:Acme"</span> } }
+  ]
+}</pre>
+      </div>
+      <div>
+        <p style="color:var(--text-2);font-size:12.5px">An invalid range (from after to, only one of the two, a year outside 1900–2200) returns <code>422</code> with code <code>E1087</code> (<code>PERIOD_RANGE_INVALID</code>). A line with <code>editable: false</code> comes from a hand-written entry; its <code>txn_id</code> is a read-only <code>untracked-…</code> id.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="income-overview">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/income/overview</span>
+      <span class="ep-desc">Income for a date range — the same response for <code>Income:*</code> accounts</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>from</td><td>date</td><td><span class="req-badge">req</span></td><td>First day, ISO <code>YYYY-MM-DD</code>, inclusive</td></tr>
+            <tr><td>to</td><td>date</td><td><span class="req-badge">req</span></td><td>Last day, inclusive</td></tr>
+            <tr><td>funding</td><td>string</td><td><span class="opt-badge">opt</span></td><td><code>all</code>, <code>card</code>, <code>bank</code> or <code>other</code></td></tr>
+            <tr><td>account</td><td>string</td><td><span class="opt-badge">opt</span></td><td>Only lines received into this account</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p style="color:var(--text-2);font-size:12.5px">Same shape as <code>expense/overview</code> with <code>side: "income"</code>: amounts are money received (positive), <code>gross</code> is before deductions and <code>reversals</code> is deductions such as TDS; groups are income sources and items are payers.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="expense-tags">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/expense/tags</span>
+      <span class="ep-desc">Spending (or income) by tag, flat and grouped by <code>/</code> prefix</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>from</td><td>date</td><td><span class="opt-badge">opt</span></td><td>With <code>to</code>; neither means all time</td></tr>
+            <tr><td>to</td><td>date</td><td><span class="opt-badge">opt</span></td><td>With <code>from</code></td></tr>
+            <tr><td>kind</td><td>string</td><td><span class="opt-badge">opt</span></td><td><code>expense</code> (default) or <code>income</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"kind"</span>: <span class="j-str">"expense"</span>, <span class="j-key">"start"</span>: <span class="j-str">"2026-08-01"</span>, <span class="j-key">"end"</span>: <span class="j-str">"2026-08-31"</span>,
+  <span class="j-key">"by_tag"</span>: [{ <span class="j-key">"tag"</span>: <span class="j-str">"travel/goa"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"2300.00"</span>, <span class="j-key">"count"</span>: <span class="j-num">2</span> }],
+  <span class="j-key">"groups"</span>: [{ <span class="j-key">"prefix"</span>: <span class="j-str">"travel"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"2300.00"</span>, <span class="j-key">"count"</span>: <span class="j-num">2</span>,
+    <span class="j-key">"tags"</span>: [{ <span class="j-key">"tag"</span>: <span class="j-str">"travel/goa"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"2300.00"</span>, <span class="j-key">"count"</span>: <span class="j-num">2</span> }] }]
+}</pre>
+      </div>
+      <div>
+        <p style="color:var(--text-2);font-size:12.5px">An invalid range (from after to, only one of the two, a year outside 1900–2200) returns <code>422</code> with code <code>E1087</code> (<code>PERIOD_RANGE_INVALID</code>).</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="endpoint" id="expense-monthly-ep">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/expense/monthly</span>
+      <span class="ep-desc">Category breakdown, day-of-month spending, 6-month trailing (used by the Dashboard)</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>year</td><td>integer</td><td><span class="req-badge">req</span></td><td>Calendar year</td></tr>
+            <tr><td>month</td><td>integer</td><td><span class="req-badge">req</span></td><td>1–12</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"by_category"</span>: [
+    { <span class="j-key">"category"</span>: <span class="j-str">"Expenses:Food:Dining"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"12400.00"</span>, <span class="j-key">"pct"</span>: <span class="j-num">29.2</span> },
+    { <span class="j-key">"category"</span>: <span class="j-str">"Expenses:Transport"</span>,   <span class="j-key">"amount"</span>: <span class="j-str">"8100.00"</span>,  <span class="j-key">"pct"</span>: <span class="j-num">19.1</span> }
+  ],
+  <span class="j-key">"by_day"</span>: { <span class="j-str">"1"</span>: <span class="j-str">"4200.00"</span>, <span class="j-str">"15"</span>: <span class="j-str">"9800.00"</span>, <span class="j-str">"28"</span>: <span class="j-str">"3100.00"</span> },
+  <span class="j-key">"postings"</span>: [
+    { <span class="j-key">"date"</span>: <span class="j-str">"2026-06-01"</span>, <span class="j-key">"narration"</span>: <span class="j-str">"Swiggy"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"420.00"</span>, <span class="j-key">"account"</span>: <span class="j-str">"Expenses:Food:Dining"</span> }
+  ],
+  <span class="j-key">"trailing"</span>: [
+    { <span class="j-key">"month"</span>: <span class="j-str">"Jan"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"38200.00"</span> },
+    { <span class="j-key">"month"</span>: <span class="j-str">"Jun"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"42500.00"</span> }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="expense-budget">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/expense/budget</span>
+      <span class="ep-desc">Budget vs actual by category</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>year</td><td>integer</td><td><span class="req-badge">req</span></td><td>Calendar year</td></tr>
+            <tr><td>month</td><td>integer</td><td><span class="req-badge">req</span></td><td>1–12</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ LIABILITIES -->
+<section class="section" id="liab-balance">
+  <div class="section-eyebrow">Reports · Liabilities</div>
+  <h2>Liabilities</h2>
+  <p class="section-desc">Loan balances, credit card summaries, interest accrual, and repayment schedules.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/liabilities/balance</span>
+      <span class="ep-desc">Per-account balances, interest and APR, plus card payments awaiting the statement (<code>in_transit</code>, <code>cards_outstanding</code>, <code>cards_net_owed</code>)</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"balances"</span>: [
+    {
+      <span class="j-key">"account"</span>:  <span class="j-str">"Liabilities:Loan:HomeLoan"</span>,
+      <span class="j-key">"drawn"</span>:    <span class="j-str">"5000000.00"</span>,
+      <span class="j-key">"repaid"</span>:   <span class="j-str">"1500000.00"</span>,
+      <span class="j-key">"balance"</span>:  <span class="j-str">"3500000.00"</span>,
+      <span class="j-key">"interest"</span>: <span class="j-str">"350000.00"</span>,
+      <span class="j-key">"apr"</span>:      <span class="j-str">"8.65"</span>
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="liab-cc">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/liabilities/credit-cards</span>
+      <span class="ep-desc">Card tiles, payments awaiting the card statement, outstanding and net owed</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"cards"</span>: [
+    {
+      <span class="j-key">"account"</span>: <span class="j-str">"Liabilities:CreditCard:Acme1234"</span>, <span class="j-key">"outstanding"</span>: <span class="j-str">"31872.00"</span>, <span class="j-key">"last4"</span>: <span class="j-str">"1234"</span>,
+      <span class="j-key">"next_statement_date"</span>: <span class="j-str">"2026-11-15"</span>, <span class="j-key">"next_due_date"</span>: <span class="j-str">"2026-12-03"</span>,
+      <span class="j-key">"expiry"</span>: <span class="j-str">"2029-08"</span>, <span class="j-key">"expiry_status"</span>: <span class="j-str">"ok"</span>,  <span class="j-cm">// ok | expiring_soon | expired | null</span>
+      <span class="j-key">"in_transit"</span>: { <span class="j-key">"amount"</span>: <span class="j-str">"31860.00"</span>, <span class="j-key">"date"</span>: <span class="j-str">"2026-10-20"</span>, <span class="j-key">"count"</span>: <span class="j-num">1</span> },
+      <span class="j-key">"net_owed"</span>: <span class="j-str">"12.00"</span>
+    }
+  ],
+  <span class="j-key">"in_transit"</span>: { <span class="j-key">"amount"</span>: <span class="j-str">"31860.00"</span>, <span class="j-key">"attributed"</span>: <span class="j-str">"31860.00"</span>, <span class="j-key">"unattributed"</span>: <span class="j-str">"0.00"</span>,
+    <span class="j-key">"payments"</span>: [{ <span class="j-key">"txn_id"</span>: <span class="j-str">"t-pay-1"</span>, <span class="j-key">"date"</span>: <span class="j-str">"2026-10-20"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"31860.00"</span>, <span class="j-key">"account"</span>: <span class="j-str">"Liabilities:CreditCard:Acme1234"</span> }] },
+  <span class="j-key">"outstanding"</span>: <span class="j-str">"31872.00"</span>,
+  <span class="j-key">"net_owed"</span>: <span class="j-str">"12.00"</span>   <span class="j-cm">// negative = in credit</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="liab-repayment">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/liabilities/repayment</span>
+      <span class="ep-desc">Loan repayment schedules with principal/interest split</span>
+    </div>
+    <div class="ep-body"><div style="color:var(--text-3);font-size:12px">No parameters.</div></div>
+  </div>
+
+  <div class="endpoint" id="liab-interest">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/liabilities/interest</span>
+      <span class="ep-desc">Interest accrual by account and month</span>
+    </div>
+    <div class="ep-body"><div style="color:var(--text-3);font-size:12px">No parameters.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ TAX -->
+<section class="section" id="tax-workspace">
+  <div class="section-eyebrow">Reports · Tax</div>
+  <h2>Tax Workspace</h2>
+  <p class="section-desc">Combined tax workspace: income items, Chapter VI-A deductions, capital gains, regime comparison, prepaid tax and TDS, and a full tax estimate.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/tax/workspace</span>
+      <span class="ep-desc">Full FY tax picture — income, gains, deductions, estimate</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>fy</td><td>integer</td><td><span class="req-badge">req</span></td><td>Fiscal year e.g. 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"period"</span>: <span class="j-str">"FY 2025-26"</span>,
+  <span class="j-key">"items"</span>: [
+    { <span class="j-key">"kind"</span>: <span class="j-str">"salary"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"1620000.00"</span>, <span class="j-key">"source_refs"</span>: [<span class="j-str">"2026-06-01 Salary credit"</span>] }
+  ],
+  <span class="j-key">"deductions"</span>: [
+    { <span class="j-key">"section"</span>: <span class="j-str">"80C"</span>, <span class="j-key">"declared"</span>: <span class="j-str">"150000.00"</span>, <span class="j-key">"applied_old"</span>: <span class="j-str">"150000.00"</span>, <span class="j-key">"applied_new"</span>: <span class="j-str">"0.00"</span> }
+  ],
+  <span class="j-key">"summary"</span>: {
+    <span class="j-key">"gross_ordinary_income"</span>: <span class="j-str">"1620000.00"</span>,
+    <span class="j-key">"capital_gains"</span>: { <span class="j-key">"ltcg"</span>: <span class="j-str">"38000.00"</span>, <span class="j-key">"stcg"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"crypto"</span>: <span class="j-str">"0.00"</span>, <span class="j-key">"debt"</span>: <span class="j-str">"0.00"</span> },
+    <span class="j-key">"prepaid_tax"</span>: <span class="j-str">"280000.00"</span>,
+    <span class="j-key">"tax_paid_direct"</span>: <span class="j-str">"0.00"</span>,
+    <span class="j-key">"estimate"</span>: {
+      <span class="j-key">"new_regime"</span>: { <span class="j-key">"taxable_income"</span>: <span class="j-str">"1470000.00"</span>, <span class="j-key">"total"</span>: <span class="j-str">"298500.00"</span> },
+      <span class="j-key">"old_regime"</span>: { <span class="j-key">"taxable_income"</span>: <span class="j-str">"1320000.00"</span>, <span class="j-key">"total"</span>: <span class="j-str">"312000.00"</span> },
+      <span class="j-key">"lower_tax_regime"</span>: <span class="j-str">"new"</span>,
+      <span class="j-key">"balance_due"</span>: <span class="j-str">"18500.00"</span>
+    },
+    <span class="j-key">"rules_configured"</span>: <span class="j-bool">true</span>,
+    <span class="j-key">"uncovered"</span>: []
+  }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="reports-doctor">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/reports/doctor</span>
+      <span class="ep-desc">Ledger health checks — unbalanced transactions, open accounts, etc.</span>
+    </div>
+    <div class="ep-body"><div style="color:var(--text-3);font-size:12px">No parameters. Returns a list of health issues; empty list = clean journal.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ IMPORT -->
+<section class="section" id="import-detect">
+  <div class="section-eyebrow">Import Pipeline</div>
+  <h2>Import Pipeline</h2>
+  <p class="section-desc">A multi-step flow: detect header → create template → classify → review candidates → edit → commit. Investments (Groww MF) go through a separate MF-scheme resolution step.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/import/detect</span>
+      <span class="ep-desc">Parse uploaded file, detect header row and column mapping</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Request Body</div>
+        <p style="color:var(--text-2);font-size:12.5px">Multipart form: <code>file</code> field with the CSV/statement file.</p>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"filename"</span>:    <span class="j-str">"HDFC_statement_Jun2026.csv"</span>,
+  <span class="j-key">"fingerprint"</span>: <span class="j-str">"a3f8c2e1"</span>,
+  <span class="j-key">"header_row"</span>:  <span class="j-num">0</span>,
+  <span class="j-key">"columns"</span>:    { <span class="j-key">"date"</span>: <span class="j-num">0</span>, <span class="j-key">"narration"</span>: <span class="j-num">1</span>, <span class="j-key">"amount"</span>: <span class="j-num">4</span> },
+  <span class="j-key">"preview"</span>:     [[<span class="j-str">"01/06/2026"</span>, <span class="j-str">"UPI/Swiggy"</span>, <span class="j-str">""</span>, <span class="j-str">""</span>, <span class="j-str">"-420.00"</span>]]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="import-classify">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/import/classify</span>
+      <span class="ep-desc">Classify upload as bank statement or Groww investment file</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Request Body</div>
+        <p style="color:var(--text-2);font-size:12.5px">Multipart form: <code>file</code> + optional <code>force_kind</code> (<code>"statement"</code> or <code>"investment"</code>).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="import-review">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/review/{batch_id}</span>
+      <span class="ep-desc">Candidates awaiting review — auto-categorized, low-confidence, or unknown</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"batch_id"</span>: <span class="j-str">"b8f3a1c2"</span>,
+  <span class="j-key">"candidates"</span>: [
+    {
+      <span class="j-key">"id"</span>:          <span class="j-str">"cand_01"</span>,
+      <span class="j-key">"date"</span>:        <span class="j-str">"2026-06-01"</span>,
+      <span class="j-key">"narration"</span>:  <span class="j-str">"UPI/SWIGGY"</span>,
+      <span class="j-key">"amount"</span>:     <span class="j-str">"-420.00"</span>,
+      <span class="j-key">"account"</span>:    <span class="j-str">"Expenses:Food:Dining"</span>,
+      <span class="j-key">"confidence"</span>: <span class="j-str">"high"</span>,
+      <span class="j-key">"status"</span>:     <span class="j-str">"ready"</span>
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="import-commit">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/commit/{batch_id}</span>
+      <span class="ep-desc">Commit all ready candidates in a batch to the journal</span>
+    </div>
+    <div class="ep-body">
+      <div class="note">Snapshots the journal before writing. All candidates must have a resolved account (E1010) and MF scheme where required (E1012).</div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"committed"</span>: <span class="j-num">14</span>,
+  <span class="j-key">"skipped"</span>:   <span class="j-num">0</span>,
+  <span class="j-key">"year_file"</span>: <span class="j-str">"2026.beancount"</span>
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="import-ledger">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/import/ledger/preview</span>
+      <span class="ep-desc">Preview a ledger-cli/hledger journal merge — dedup detection + account mapping</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Request Body</div>
+        <p style="color:var(--text-2);font-size:12.5px">Multipart form: <code>file</code> field with a <code>.journal</code> or <code>.ledger</code> file.</p>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"batch_id"</span>:     <span class="j-str">"m3x9b1a4"</span>,
+  <span class="j-key">"summary"</span>: {
+    <span class="j-key">"transactions"</span>:  <span class="j-num">84</span>,
+    <span class="j-key">"duplicates"</span>:    <span class="j-num">12</span>,
+    <span class="j-key">"new_accounts"</span>:  <span class="j-num">3</span>,
+    <span class="j-key">"new_commodities"</span>: <span class="j-num">2</span>,
+    <span class="j-key">"unparsed"</span>:      <span class="j-num">0</span>,
+    <span class="j-key">"imbalances"</span>:    <span class="j-num">0</span>
+  },
+  <span class="j-key">"accounts"</span>: [
+    { <span class="j-key">"raw"</span>: <span class="j-str">"assets:bank:hdfc"</span>, <span class="j-key">"suggested"</span>: <span class="j-str">"Assets:Bank:HDFC:Savings"</span>, <span class="j-key">"status"</span>: <span class="j-str">"new"</span> }
+  ]
+}</pre>
+      </div>
+      <div>
+        <div class="param-label" style="margin-top:4px">Commit the merge</div>
+        <p style="color:var(--text-2);font-size:12.5px"><code>POST /api/import/ledger/commit</code> — body: <code>{ batch_id, account_map, commodity_map, include_duplicates }</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ TRANSACTIONS -->
+<section class="section" id="txn-list">
+  <div class="section-eyebrow">Transactions</div>
+  <h2>Transactions &amp; Ledger</h2>
+  <p class="section-desc">List and annotate committed transactions, edit raw beancount files, and manually enter single transactions.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/transactions</span>
+      <span class="ep-desc">All committed transactions with postings</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"transactions"</span>: [
+    {
+      <span class="j-key">"txn_id"</span>:         <span class="j-str">"2026-06-01:0"</span>,
+      <span class="j-key">"date"</span>:           <span class="j-str">"2026-06-01"</span>,
+      <span class="j-key">"narration"</span>:     <span class="j-str">"Swiggy dinner"</span>,
+      <span class="j-key">"year_file_hash"</span>: <span class="j-str">"e3f8a1c2"</span>,
+      <span class="j-key">"postings"</span>: [
+        { <span class="j-key">"account"</span>: <span class="j-str">"Expenses:Food:Dining"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"420.00"</span>, <span class="j-key">"tags"</span>: [], <span class="j-key">"meta"</span>: {} },
+        { <span class="j-key">"account"</span>: <span class="j-str">"Assets:Bank:HDFC:Savings"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"-420.00"</span>, <span class="j-key">"tags"</span>: [], <span class="j-key">"meta"</span>: {} }
+      ]
+    }
+  ]
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="ledger-raw">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/ledger/raw</span>
+      <span class="ep-desc">Raw beancount file text for a calendar year</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Query Parameters</div>
+        <table class="param-table">
+          <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>year</td><td>integer</td><td><span class="req-badge">req</span></td><td>Calendar year</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="code-wrap">
+        <pre>{
+  <span class="j-key">"year"</span>: <span class="j-num">2026</span>,
+  <span class="j-key">"text"</span>: <span class="j-str">"2026-06-01 * \"Swiggy dinner\"\n  Expenses:Food:Dining  420.00 INR\n  Assets:Bank:HDFC:Savings"</span>,
+  <span class="j-key">"hash"</span>: <span class="j-str">"e3f8a1c2"</span>
+}</pre>
+      </div>
+      <div>
+        <div class="param-label" style="margin-top:4px">Write raw</div>
+        <p style="color:var(--text-2);font-size:12.5px"><code>PUT /api/ledger/raw</code> — body: <code>{ year, text, expected_hash }</code>. Compares <code>expected_hash</code> before writing to prevent lost updates.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="entries">
+    <div class="ep-head">
+      <span class="ep-method m-post">POST</span>
+      <span class="ep-path">/api/entries</span>
+      <span class="ep-desc">Manually enter a single transaction (Quick Add)</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre><span class="j-cm">// Request body</span>
+{
+  <span class="j-key">"date"</span>:      <span class="j-str">"2026-07-01"</span>,
+  <span class="j-key">"narration"</span>: <span class="j-str">"Coffee at Third Wave"</span>,
+  <span class="j-key">"postings"</span>: [
+    { <span class="j-key">"account"</span>: <span class="j-str">"Expenses:Food:Cafe"</span>,      <span class="j-key">"amount"</span>: <span class="j-str">"280.00"</span> },
+    { <span class="j-key">"account"</span>: <span class="j-str">"Assets:Bank:HDFC:Savings"</span>, <span class="j-key">"amount"</span>: <span class="j-str">"-280.00"</span> }
+  ],
+  <span class="j-key">"tags"</span>: [<span class="j-str">"weekend"</span>]
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ SETTINGS -->
+<section class="section" id="accounts">
+  <div class="section-eyebrow">Settings</div>
+  <h2>Settings</h2>
+  <p class="section-desc">Account management (open, rename, close) and import template CRUD.</p>
+
+  <div class="endpoint">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/accounts</span>
+      <span class="ep-desc">List all open accounts</span>
+    </div>
+    <div class="ep-body">
+      <div class="code-wrap">
+        <pre>{ <span class="j-key">"accounts"</span>: [<span class="j-str">"Assets:Bank:HDFC:Savings"</span>, <span class="j-str">"Assets:Bank:ICICI:Savings"</span>, <span class="j-str">"Expenses:Food:Dining"</span>] }</pre>
+      </div>
+      <div>
+        <div class="param-label" style="margin-top:4px">Other account operations</div>
+        <table class="param-table">
+          <thead><tr><th>Method + Path</th><th>Body fields</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>POST /api/accounts</code></td><td><code>accounts: string[]</code></td><td>Open new accounts</td></tr>
+            <tr><td><code>POST /api/accounts/rename</code></td><td><code>account, new_name</code></td><td>Rename — updates all postings</td></tr>
+            <tr><td><code>POST /api/accounts/close</code></td><td><code>account</code></td><td>Close — balance must be zero</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint" id="templates">
+    <div class="ep-head">
+      <span class="ep-method m-get">GET</span>
+      <span class="ep-path">/api/templates</span>
+      <span class="ep-desc">List all import templates</span>
+    </div>
+    <div class="ep-body">
+      <div>
+        <div class="param-label">Template CRUD</div>
+        <table class="param-table">
+          <thead><tr><th>Method + Path</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET /api/templates/{fingerprint}</code></td><td>Get one template</td></tr>
+            <tr><td><code>PUT /api/templates/{fingerprint}</code></td><td>Update template</td></tr>
+            <tr><td><code>DELETE /api/templates/{fingerprint}</code></td><td>Delete template</td></tr>
+            <tr><td><code>POST /api/templates</code></td><td>Create from detect result</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ ERROR CODES -->
+<section class="section" id="error-codes">
+  <div class="section-eyebrow">Reference</div>
+  <h2>Error Codes</h2>
+  <p class="section-desc">All coded errors share the same envelope. <code>resolvedByRefresh</code> = true means a retry may succeed without user action.</p>
+
+  <div class="error-table-wrap">
+    <table class="error-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>HTTP</th>
+          <th>Description</th>
+          <th>Resolution</th>
+          <th>Retry?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="ec">E0000</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Generic error</td><td class="ec-fix">Check logs</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1001</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Uploaded file missing filename</td><td class="ec-fix">Re-select file and upload</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1002</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Could not auto-detect header row</td><td class="ec-fix">Check file has a header row</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1003</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Could not auto-detect date/narration columns</td><td class="ec-fix">Map columns manually</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1004</td><td><span class="status-pill s-404">404</span></td><td class="ec-desc">Upload not found</td><td class="ec-fix">Re-run detect for a fresh batch</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1005</td><td><span class="status-pill s-404">404</span></td><td class="ec-desc">Unknown template fingerprint</td><td class="ec-fix">Detect and create template first</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1006</td><td><span class="status-pill s-404">404</span></td><td class="ec-desc">Unknown import batch</td><td class="ec-fix">Re-run detect for a fresh batch</td><td class="refresh-y">↻</td></tr>
+        <tr><td class="ec">E1007</td><td><span class="status-pill s-404">404</span></td><td class="ec-desc">Unknown candidate in batch</td><td class="ec-fix">Reload review screen</td><td class="refresh-y">↻</td></tr>
+        <tr><td class="ec">E1008</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Splits must sum to transaction amount</td><td class="ec-fix">Adjust split amounts</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1009</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Each split needs account &amp; amount</td><td class="ec-fix">Fill in all splits</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1010</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Unresolved candidate accounts</td><td class="ec-fix">Assign account to each candidate, then commit</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1011</td><td><span class="status-pill s-404">404</span></td><td class="ec-desc">MF scheme master file not found</td><td class="ec-fix">Place AMFI CSV at configured path</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1012</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Unresolved MF scheme candidates</td><td class="ec-fix">Pick matching scheme for each, then commit</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1013</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Redemptions exceed known lots</td><td class="ec-fix">Import earlier purchases or correct units</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1014</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">NAV history store unreadable/corrupt</td><td class="ec-fix">Restore from snapshot or delete <code>nav_history.parquet</code></td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1015</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">AMFI feed returned zero schemes while funds held</td><td class="ec-fix">Cache kept intact; retry later</td><td class="refresh-y">↻</td></tr>
+        <tr><td class="ec">E1016</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Investment valuation — negative unit balance</td><td class="ec-fix">Re-check imported buy/redeem rows</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1017</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Invalid account name</td><td class="ec-fix">Use <code>Type:Component:...</code> pattern</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1018</td><td><span class="status-pill s-409">409</span></td><td class="ec-desc">Account already open</td><td class="ec-fix">Pick an unused name or rename existing</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1019</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Cannot close account with non-zero balance</td><td class="ec-fix">Move balance to zero first</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1020</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Ledger merge mapping incomplete</td><td class="ec-fix">Map every account and commodity</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1021</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Mapping targets not valid beancount names</td><td class="ec-fix">Use valid <code>Type:Component</code> or UPPERCASE symbol</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1022</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Sells with no matching lot</td><td class="ec-fix">Import covering purchases or exclude rows</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1023</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Transactions do not balance</td><td class="ec-fix">Add missing leg or enable MF gains booking</td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1024</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">Broker charge residual exceeds tolerance</td><td class="ec-fix">Check <code>stamp_duty_rate</code>, <code>stt_rate_sell</code>, <code>charge_tolerance</code></td><td class="refresh-n">—</td></tr>
+        <tr><td class="ec">E1030</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">mfapi.in unavailable or HTTP error</td><td class="ec-fix">Check connectivity; backfill skips this fund</td><td class="refresh-y">↻</td></tr>
+        <tr><td class="ec">E1031</td><td><span class="status-pill s-422">422</span></td><td class="ec-desc">mfapi.in returned unparseable response</td><td class="ec-fix">Fund code may be invalid or API format changed</td><td class="refresh-y">↻</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FRONTEND SCREENS -->
+<section class="section" id="frontend-screens">
+  <div class="section-eyebrow">Reference</div>
+  <h2>Frontend Screens</h2>
+  <p class="section-desc">React/TypeScript screens served by FastAPI at <code>http://127.0.0.1:8765</code>. Each screen owns its data-fetching via <code>useReport(url)</code>.</p>
+
+  <div style="margin-bottom:24px">
+    <div class="param-label" style="margin-bottom:10px">Dashboard &amp; Net Worth</div>
+    <div class="screens-grid">
+      <div class="screen-card"><h4>Dashboard</h4><p>Where you stand today — net worth, cash flow, spending, needs-action list</p></div>
+      <div class="screen-card"><h4>Net Worth/Overview</h4><p>Net worth, assets, liabilities, XIRR vs benchmark, group cards</p></div>
+      <div class="screen-card"><h4>Net Worth/Investments</h4><p>Vehicles, holdings, instrument detail, NAV-return windows</p></div>
+      <div class="screen-card"><h4>Net Worth/Liabilities</h4><p>Credit cards, interest, repayment, balance (also the Liabilities rail entry)</p></div>
+      <div class="screen-card"><h4>Net Worth/Allocation</h4><p>Split by vehicle and issuer, at cost</p></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <div class="param-label" style="margin-bottom:10px">Cash Flow, Expense &amp; Income</div>
+    <div class="screens-grid">
+      <div class="screen-card"><h4>Cash Flow/Overview</h4><p>Period totals, heatmap/bars, Sankey, Compare FYs</p></div>
+      <div class="screen-card"><h4>Cash Flow/Recurring</h4><p>Recurring transaction detection</p></div>
+      <div class="screen-card"><h4>Expense/Overview</h4><p>Period spend, heatmap, categories ranked</p></div>
+      <div class="screen-card"><h4>Expense/By Tag</h4><p>Tag-based expense aggregation</p></div>
+      <div class="screen-card"><h4>Expense/Budget</h4><p>Budget vs actual by category</p></div>
+      <div class="screen-card"><h4>Expense/Uncategorized</h4><p>Rows still booked as uncategorized</p></div>
+      <div class="screen-card"><h4>Income/Overview</h4><p>Money received in the period by source</p></div>
+      <div class="screen-card"><h4>Income/By Tag</h4><p>Tagged income grouped by tag</p></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <div class="param-label" style="margin-bottom:10px">Tax</div>
+    <div class="screens-grid">
+      <div class="screen-card"><h4>Tax/Overview</h4><p>Gross income, gains, deductions, estimate</p></div>
+      <div class="screen-card"><h4>Tax/Income</h4><p>Income items by kind</p></div>
+      <div class="screen-card"><h4>Tax/Capital Gains</h4><p>LTCG, STCG, crypto, debt</p></div>
+      <div class="screen-card"><h4>Tax/Deductions</h4><p>Chapter VI-A deductions + caps</p></div>
+      <div class="screen-card"><h4>Tax/Regime Compare</h4><p>Old vs new regime side-by-side</p></div>
+      <div class="screen-card"><h4>Tax/Prepaid Tax</h4><p>TDS + advance tax paid</p></div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:24px">
+    <div class="param-label" style="margin-bottom:10px">Ledger &amp; Import</div>
+    <div class="screens-grid">
+      <div class="screen-card"><h4>Quick Add</h4><p>Manual single-transaction entry with smart defaults</p></div>
+      <div class="screen-card"><h4>Ledger/Transactions</h4><p>Full transaction list with search</p></div>
+      <div class="screen-card"><h4>Ledger/Raw</h4><p>CodeMirror editor for raw beancount files</p></div>
+      <div class="screen-card"><h4>Ledger/Import</h4><p>Statement + ledger-file import workflow</p></div>
+      <div class="screen-card"><h4>Doctor</h4><p>Ledger health checks</p></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="param-label" style="margin-bottom:10px">Planning &amp; Settings</div>
+    <div class="screens-grid">
+      <div class="screen-card"><h4>Planning</h4><p>Goal Planner, SIP, Lumpsum, CAGR, In-Hand Salary, FIRE calculators</p></div>
+      <div class="screen-card"><h4>Settings/Accounts</h4><p>Create, rename, and close accounts</p></div>
+      <div class="screen-card"><h4>Settings/Import Templates</h4><p>Manage import templates per institution</p></div>
+      <div class="screen-card"><h4>Settings/Opening balances</h4><p>Record, correct or zero opening balances; MF opening lots</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(function () {
+  const navItems = document.querySelectorAll('.nav-item[href^="#"]');
+  const sections = [];
+
+  navItems.forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) sections.push({ id, el, a });
+  });
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const match = sections.find(s => s.el === e.target);
+        if (match) match.a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+  sections.forEach(s => obs.observe(s.el));
+
+  navItems.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navItems.forEach(n => n.classList.remove('active'));
+        a.classList.add('active');
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

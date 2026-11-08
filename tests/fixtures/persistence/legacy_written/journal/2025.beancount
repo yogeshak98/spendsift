@@ -1,0 +1,4 @@
+
+2025-12-31 * "FICTIVE PAYROLL"
+  Assets:Bank:FictiveBank   50000.00 INR
+  Income:Salary            -50000.00 INR

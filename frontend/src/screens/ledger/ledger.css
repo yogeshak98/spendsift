@@ -1,0 +1,59 @@
+/* ───── LEDGER REVIEW EDITOR ───── */
+.lg-date{color:var(--green)}
+.lg-narr{color:var(--text)}
+.lg-account{color:var(--violet)}
+.lg-amount{color:var(--blue)}
+.lg-currency{color:var(--text3)}
+.lg-comment{color:var(--text3);font-style:italic}
+.lg-tag{color:#9d8fd6}
+
+/* overflow:hidden here would make this box the sticky containing block for
+   the find/replace panel below — but this box never scrolls itself (the
+   page does), so the panel would just sit at its initial position instead
+   of pinning to the viewport. Corner rounding is clipped on .cm-scroller
+   instead, which isn't an ancestor of the sticky panel. */
+.panel:has(.ledger-review-rows){overflow:visible}
+.ledger-review-rows{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem}
+.ledger-review-code{font-family:var(--mono);font-size:1rem;padding:0.7692rem 0;cursor:text}
+.ledger-review-code .cm-editor{outline:none}
+.ledger-review-code .cm-content,.ledger-review-code .cm-line{cursor:text}
+.ledger-review-code .cm-content{padding-top:0;padding-bottom:0}
+.ledger-review-code .cm-gutters{background:var(--surface);border-right:1px solid var(--border)}
+.ledger-review-code .cm-lineNumbers .cm-gutterElement{color:var(--text3);padding:0 0.6154rem 0 0.3077rem}
+
+/* native gutter: one checkbox (bulk-tag select) + a colored status strip,
+   pixel-locked to the line it describes by construction — not a separate
+   DOM column that can drift out of sync. */
+.ledger-row-gutter{width:1.6923rem}
+.ledger-row-marker{display:flex;align-items:center;justify-content:center;height:100%;box-shadow:2px 0 0 0 transparent inset}
+.ledger-row-marker.status-needs{box-shadow:2px 0 0 0 var(--red) inset}
+.ledger-row-marker.status-transfer{box-shadow:2px 0 0 0 var(--amber) inset}
+.ledger-row-check{appearance:none;width:0.9231rem;height:0.9231rem;border-radius:3px;margin:0;border:1.5px solid var(--text3);background:var(--bg);cursor:pointer;position:relative}
+.ledger-row-check:checked{border-color:var(--blue-border);background:var(--blue)}
+.ledger-row-check:checked::after{content:"";position:absolute;left:0.2308rem;top:0px;width:0.2308rem;height:0.5385rem;border:solid var(--bg);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+
+/* reason annotation: replaces the old stacked text badges with one dim,
+   non-editable note rendered inline where the issue is, not off to the side. */
+.ledger-reason{font-style:italic}
+.ledger-reason.status-needs{color:var(--red)}
+.ledger-reason.status-transfer{color:var(--amber)}
+.ledger-bulk-toolbar{display:flex;align-items:center;gap:0.7692rem;font-size:0.9231rem;color:var(--text2);background:var(--surface2);border:1px solid var(--border);border-radius:0.6154rem;padding:0.6154rem 0.9231rem;margin-bottom:0.7692rem}
+.ledger-bulk-toolbar input{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:0.3077rem;padding:0.3077rem 0.6154rem;font-family:var(--mono);font-size:0.9231rem}
+.ledger-bulk-toolbar .sel-count{font-family:var(--mono);color:var(--blue);font-weight:600}
+.ledger-review-hint{font-size:0.8462rem;color:var(--text3);margin-top:0.4615rem}
+.link-button{background:none;border:none;padding:0;color:var(--blue);cursor:pointer;font:inherit;text-decoration:underline}
+
+/* @codemirror/search's find/replace panel — unstyled by default, illegible
+   against this dark theme without these rules. */
+.ledger-review-code .cm-panels{background:var(--surface2);color:var(--text)}
+.ledger-review-code .cm-panels-top{position:sticky;top:0;z-index:5;border-bottom:1px solid var(--border)}
+.ledger-review-code .cm-panel.cm-search{display:flex;flex-wrap:wrap;gap:0.4615rem;align-items:center;padding:0.6154rem 0.7692rem;font-size:0.9231rem}
+.ledger-review-code .cm-panel.cm-search label{display:flex;align-items:center;gap:0.3077rem;color:var(--text2)}
+.ledger-review-code .cm-textfield{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:0.3077rem;padding:0.3077rem 0.5385rem;font-family:var(--mono);font-size:0.9231rem}
+.ledger-review-code .cm-textfield:focus{outline:none;border-color:var(--blue-border)}
+.ledger-review-code .cm-button{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:0.3077rem;padding:0.3077rem 0.6923rem;font-size:0.8846rem;font-family:var(--mono);cursor:pointer}
+.ledger-review-code .cm-button:hover{background:rgba(96,165,250,0.10);border-color:var(--blue-border)}
+
+/* ───── RAW LEDGER (view/edit) ───── */
+.ledger-raw{font-family:var(--mono);font-size:0.9231rem;white-space:pre;overflow-x:auto;color:var(--text);padding:0.6154rem 0;margin:0}
+.ledger-raw-problem{color:var(--red);font-size:0.9231rem;margin-bottom:0.6154rem}

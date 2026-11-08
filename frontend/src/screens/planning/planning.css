@@ -1,0 +1,138 @@
+/* ───── GOAL ROWS / CARDS ───── */
+.goal-row{display:grid;grid-template-columns:1.3846rem 1fr 7.6923rem 6.1538rem 2.1538rem;gap:0.6154rem;align-items:center;margin-bottom:0.5385rem}
+.goal-row.dragging{opacity:0.4}
+.goal-drag{cursor:grab;color:var(--text3);font-size:1rem;text-align:center;user-select:none}
+.goal-drag:active{cursor:grabbing}
+.goal-row input[type=text],.goal-row input[type=number]{padding:0.4615rem 0.6154rem;font-size:0.8846rem;border:1px solid var(--border);border-radius:0.4615rem;background:var(--surface2);color:var(--text);font-family:var(--mono)}
+.goal-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1.1538rem;width:2rem;height:2rem;border-radius:0.4615rem}
+.goal-del:hover{background:rgba(248,113,113,0.12);color:var(--red)}
+.add-goal{margin-top:0.4615rem;background:var(--surface2);border:1px dashed var(--border);color:var(--blue);border-radius:0.4615rem;padding:0.5385rem 0.8462rem;font-size:0.8846rem;font-weight:600;cursor:pointer;width:100%;font-family:var(--mono)}
+.add-goal:hover{background:rgba(96,165,250,0.08)}
+.goal-cards{display:flex;gap:0.7692rem;flex-wrap:wrap;padding:1.0769rem}
+.goal-card{flex:1;min-width:10.7692rem;border-radius:0.6154rem;padding:0.8462rem 1rem;border:1px solid var(--border);background:var(--surface)}
+.goal-card .gname{font-weight:600;font-size:0.9615rem;color:var(--text)}
+.goal-card .gamt{color:var(--text2);font-size:0.8462rem;margin-top:1px}
+.goal-card .gyear{margin-top:0.4615rem;font-family:var(--mono);font-size:1.1538rem}
+.goal-card .gcushion{font-size:0.8077rem;color:var(--text3);margin-top:2px}
+.goal-card.ok .gyear{color:var(--green)}
+.goal-card.bad .gyear{color:var(--red)}
+
+/* ───── PILLS (funded/short events) ───── */
+.pill.ok{background:rgba(74,222,128,0.10);color:var(--green)}
+.pill.short{background:rgba(248,113,113,0.10);color:var(--red)}
+
+/* ───── RECURRING CARDS ───── */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(16.9231rem,1fr));gap:0.9231rem;padding:1.0769rem}
+.rec-card{border-radius:0.6923rem;padding:1rem 1.1538rem;border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;gap:0.4615rem}
+.rec-card-header{display:flex;align-items:baseline;gap:0.5385rem;flex-wrap:wrap}
+.rec-card .rec-label{font-weight:600;font-size:0.9615rem;color:var(--text);font-family:var(--mono)}
+.rec-card .rec-account-chip{font-size:0.7692rem;font-family:var(--mono);color:var(--text3);background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:0.3077rem;padding:1px 0.4615rem}
+.rec-card .rec-status{display:flex;align-items:center;gap:0.4615rem;font-size:0.8846rem;font-family:var(--mono)}
+.rec-card .rec-dot{display:inline-block;width:0.6154rem;height:0.6154rem;border-radius:50%;flex-shrink:0}
+.rec-card .rec-amount{display:flex;align-items:baseline;gap:0.4615rem}
+.rec-card .rec-amount-value{font-family:var(--mono);font-size:1.2308rem;font-weight:600;color:var(--text)}
+.rec-card .rec-amount-note{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.rec-card .rec-subtitle{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+
+/* ───── BUDGET CARD ───── */
+.budgetcard{padding:0.7692rem 0;border-bottom:1px solid var(--line)}
+.budgetcard:last-child{border-bottom:none}
+.budgetcard-header{display:flex;align-items:baseline;gap:0.7692rem;margin-bottom:0.4615rem}
+.budgetcard-label{font-size:1rem;font-weight:600;color:var(--text);flex:1}
+.budgetcard-amounts{font-family:var(--mono);font-size:0.8462rem;color:var(--text2)}
+.budgetcard-pct{font-family:var(--mono);font-size:0.8462rem;font-weight:600;min-width:2.9231rem;text-align:right}
+.budgetcard-track{height:0.6154rem;background:var(--surface2);border-radius:0.3846rem;overflow:hidden}
+.budgetcard-fill{height:100%;border-radius:0.3846rem;transition:width 0.3s ease}
+
+/* Credit-card grid (liabilities/credit-cards) — mirrors .rec-grid + .budgetcard idioms */
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(16.9231rem,1fr));gap:0.9231rem;padding:1.0769rem 1.1538rem}
+.ccard{display:flex;flex-direction:column;gap:0.3077rem;text-align:left;padding:0.9231rem 1.0769rem;background:var(--surface2);border:1px solid var(--border);border-radius:0.6154rem;cursor:pointer;font-family:var(--sans)}
+.ccard:hover{border-color:var(--text3)}
+.ccard.is-active{border-color:var(--blue)}
+.ccard-name{font-size:1rem;font-weight:600;color:var(--text)}
+.ccard-account{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.ccard-outstanding{font-family:var(--mono);font-size:1.3846rem;font-weight:600;color:var(--amber);margin-top:0.3077rem}
+.ccard-meta{font-size:0.8462rem;color:var(--text2)}
+.ccard-select{display:flex;flex-direction:column;gap:0.3077rem;text-align:left;padding:0;background:none;border:0;cursor:pointer;font:inherit;color:inherit}
+.ccard-cycle{font-size:0.8462rem;color:var(--text2)}
+a.ccard-cycle{text-decoration:none}
+a.ccard-cycle:hover{color:var(--blue);text-decoration:underline}
+.ccard-nudge{font-size:0.8462rem;color:var(--amber)}
+.ccard-transit{font-family:var(--mono);font-size:0.8462rem;color:var(--green)}
+.ccard-transit-line{display:flex;flex-wrap:wrap;gap:0.4615rem 1.3846rem;padding:0.9231rem 1.1538rem 0;font-family:var(--mono);font-size:0.9231rem;color:var(--text2)}
+.ccard-net-owed{color:var(--amber);font-weight:600}
+.ccards-head{padding:1.6923rem 1.6923rem 0}
+.ccards-foot{padding:0 1.6923rem 1.6923rem}
+.ccard-picker{margin-top:0.9231rem}
+
+/* color comes from the Panel right-slot link rule (.panel-head .right a) */
+.ccard-help{font-size:0.8462rem;text-decoration:none}
+.ccard-help:hover{color:var(--blue);text-decoration:underline}
+
+/* ───── DETAILS/SUMMARY (Salary calculator "Tax working" panel) ───── */
+details.panel{padding:0}
+details.panel summary{padding:0.8462rem 1.1538rem;cursor:pointer;font-weight:600;font-size:1rem;list-style:none;color:var(--text)}
+details.panel summary::-webkit-details-marker{display:none}
+details.panel[open] summary{border-bottom:1px solid var(--border)}
+
+/* ───── CALCULATORS (Planning) ─────
+   Shared vocabulary across SIP/Lumpsum/CAGR/Salary/FIRE: inputs collapse into
+   one inline console strip instead of a boxy form-grid, and each screen
+   surfaces exactly one hero number instead of a row of equal-weight stats.
+   Part-to-whole relationships (invested vs gained, bucket shares, regime
+   comparison) get a bar/diff built for that relationship rather than a
+   generic stat row or table. */
+.calc-console{display:flex;flex-wrap:wrap;align-items:center;gap:2px 0;padding:0.9231rem 1.1538rem}
+.calc-console .cf{display:inline-flex;align-items:baseline;gap:0.5385rem;padding:0.3846rem 1.0769rem;border-right:1px solid var(--line)}
+.calc-console .cf:last-child{border-right:none}
+.calc-console .cf label{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap}
+.calc-console .cf input[type=number]{width:6.4615rem;padding:0.3846rem 0.6154rem;font-size:0.9231rem;font-family:var(--mono)}
+.calc-console .cf input[type=number].w-narrow{width:4.3077rem}
+.calc-console .cf input[type=number].w-wide{width:8.6154rem}
+.calc-console .cf .unit{font-family:var(--mono);font-size:0.8462rem;color:var(--text2)}
+.calc-console .cf.toggle label{cursor:pointer;display:flex;align-items:center;gap:0.4615rem;text-transform:none;letter-spacing:0;font-size:0.9231rem;color:var(--text2)}
+.calc-console select{font-family:var(--mono);font-size:0.9231rem;padding:0.3846rem 0.6154rem}
+.calc-readout{display:flex;align-items:center;justify-content:space-between;gap:1.8462rem;padding:1.3846rem 1.3846rem 1.5385rem;flex-wrap:wrap}
+.hero-num{font-family:var(--mono);font-size:2.4615rem;font-weight:600;letter-spacing:-0.01em;line-height:1}
+.hero-label{font-family:var(--mono);font-size:0.7692rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-top:0.6154rem}
+.ratio-bar-wrap,.progress-wrap{min-width:15.3846rem;flex:1;max-width:24.6154rem}
+.ratio-bar{display:flex;height:0.6923rem;border-radius:0.3846rem;overflow:hidden;background:var(--surface2)}
+.ratio-legend{display:flex;justify-content:space-between;margin-top:0.6154rem;font-family:var(--mono);font-size:0.8462rem}
+.ratio-legend .k{display:flex;align-items:center;gap:0.4615rem;color:var(--text2)}
+.ratio-legend .dot{width:0.5385rem;height:0.5385rem;border-radius:2px;display:inline-block}
+.progress-track{height:0.5385rem;border-radius:0.3077rem;background:var(--surface2);overflow:hidden}
+.progress-fill{height:100%;background:var(--blue)}
+.progress-caption{margin-top:0.6154rem;font-family:var(--mono);font-size:0.8462rem;color:var(--text2)}
+.sub-figures{display:flex;gap:2rem;flex-wrap:wrap;padding:0 1.3846rem 1.3846rem}
+.sub-figures .sf-label{font-family:var(--mono);font-size:0.6923rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3);margin-bottom:0.3077rem}
+.sub-figures .sf-val{font-family:var(--mono);font-size:1.1538rem;color:var(--text);font-weight:500}
+.equation-strip{display:flex;align-items:baseline;gap:0.7692rem;padding:1.5385rem 1.3846rem;font-family:var(--mono);flex-wrap:wrap}
+.equation-strip .term{font-size:1.1538rem;color:var(--text);background:transparent;border:none;border-bottom:1px dashed var(--border);padding:2px;font-family:var(--mono);border-radius:0}
+.equation-strip .term:focus{outline:none;border-bottom-color:var(--blue-border)}
+.equation-strip .op{color:var(--text3);font-size:1.0769rem}
+.equation-strip .over{color:var(--text2);font-size:0.9231rem;font-family:var(--sans)}
+.bucket-bar{display:flex;height:2.7692rem;border-radius:0.4615rem;overflow:hidden;margin:2px 1.3846rem 1.0769rem}
+.bucket-bar.sm{height:2rem}
+.bucket-bar .seg{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.7692rem;color:#0b0b0b;font-weight:600;white-space:nowrap;overflow:hidden}
+.bucket-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(8.4615rem,1fr));gap:0.7692rem;padding:0 1.3846rem 1.3846rem}
+.bucket-legend .item{font-family:var(--mono);font-size:0.8077rem}
+.bucket-legend .swatch{width:0.6154rem;height:0.6154rem;border-radius:2px;display:inline-block;margin-right:0.4615rem}
+.bucket-legend .lbl{color:var(--text2)}
+.bucket-legend .amt{color:var(--text);font-weight:600;margin-top:2px}
+.sip-compare{display:flex;gap:2.1538rem;flex-wrap:wrap;padding:0 1.3846rem 1.3846rem;font-family:var(--mono)}
+.sip-compare .item .l{font-size:0.6923rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--text3)}
+.sip-compare .item .v{font-size:1.1538rem;color:var(--text);font-weight:500;margin-top:3px}
+.sip-compare .item.primary .v{font-size:1.6923rem;color:var(--green);font-weight:600}
+.verdict-hero{padding:1.3846rem 1.3846rem 0.3077rem}
+.verdict-hero .hero-num{font-size:2rem}
+.verdict-hero .hero-sub{font-family:var(--sans);font-size:0.9231rem;color:var(--text2);margin-top:0.4615rem;max-width:40rem}
+.diff-strip{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);margin:0 1.3846rem 1.3846rem;border-radius:0.6154rem;overflow:hidden}
+.diff-col{background:var(--surface);padding:1.0769rem 1.2308rem}
+.diff-col.better{background:rgba(74,222,128,0.06)}
+.diff-col .regime-name{font-family:var(--mono);font-size:0.7692rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);display:flex;justify-content:space-between;align-items:center}
+.diff-col.better .regime-name{color:var(--green)}
+.diff-col .th{font-family:var(--mono);font-size:1.5385rem;font-weight:600;margin:0.4615rem 0 0.7692rem}
+.diff-col .th .unit{font-size:0.8462rem;color:var(--text3);font-weight:400}
+.diff-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:0.8462rem;color:var(--text2);padding:3px 0}
+.diff-row .val{color:var(--text)}
+.diff-chip{font-family:var(--mono);font-size:0.6923rem;padding:1px 0.4615rem;border-radius:0.3077rem;background:rgba(74,222,128,0.15);color:var(--green)}

@@ -1,0 +1,58 @@
+/* Tax workspace: source-txn drill-down. A source-txn count that toggles a
+   detail row listing the transactions behind a tax aggregate. */
+.refs-toggle{background:none;border:none;padding:0;color:var(--blue);cursor:pointer;font:inherit;display:inline-flex;align-items:center;gap:0.3846rem}
+.refs-toggle:disabled{color:var(--text3);cursor:default}
+.refs-toggle .cv{font-size:0.6923rem;color:var(--text3)}
+.srcref-cell{background:var(--surface2);padding:0}
+.srcref{width:100%;border-collapse:collapse}
+.srcref td{padding:0.4615rem 1.0769rem;border-bottom:1px solid var(--line);font-size:0.9231rem;text-align:left}
+.srcref tr:last-child td{border-bottom:none}
+.srcref .srcref-date{font-family:var(--mono);color:var(--text3);white-space:nowrap;width:1%}
+.srcref .srcref-narr{color:var(--text2)}
+
+/* Declared-income overlay: provenance read together with the figure it
+   describes, so the number is never seen without its source. */
+.figure-prov{margin-top:0.4615rem;font-size:0.8462rem;line-height:1.5;color:var(--text3)}
+.figure-prov .fp-src{color:var(--text2)}
+.tax-key{font-family:var(--mono);font-size:0.8462rem;color:var(--text)}
+/* The one canonical `income:` snippet, shown in every notice that asks for an
+   edit. A copyable two-line block instead of prose naming keys, so no two
+   notices can describe the same YAML differently. */
+.tax-yaml{margin:0.6154rem 0 0;padding:0.6154rem 0.7692rem;background:var(--surface2);border:1px solid var(--line);border-radius:0.3077rem;font-family:var(--mono);font-size:0.8462rem;line-height:1.6;color:var(--text2);white-space:pre;overflow-x:auto}
+/* A row whose own amount is deliberately not the one the totals use. */
+.row-note{margin-top:3px;font-size:0.7692rem;line-height:1.4;color:var(--text3);font-weight:400}
+
+/* Declared-inputs form: the one writable surface in the tax workspace. Sits
+   above every screen's null-workspace guard, because it is the repair tool for
+   the states that make the workspace itself fail to load. */
+.declared-form .panel-body{padding-top:0.9231rem}
+.declared-path{font-size:0.8462rem;line-height:1.6;color:var(--text3);margin-bottom:0.9231rem}
+.declared-group{margin:1.2308rem 0 0.7692rem;font-family:var(--mono);font-size:0.6923rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);border-top:1px solid var(--line);padding-top:0.9231rem}
+.declared-group:first-of-type{border-top:none;padding-top:0;margin-top:0.3077rem}
+.declared-actions{display:flex;align-items:center;gap:0.9231rem;margin-top:1.0769rem;flex-wrap:wrap}
+.declared-actions .field-hint{display:block;max-width:32.3077rem}
+.declared-invalid{color:var(--amber,#fbbf24)}
+
+/* Income screen: the two-panel split by "does this reach your tax figure".
+   Structural, not chromatic -- a correct exclusion is not a problem, so these
+   rows get a border rule and muted mono headings, never amber or red. Amber is
+   spent once on this screen, on the gratuity journal-start caveat, which is the
+   only genuinely uncertain figure. */
+.treat-group{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;padding:0.9231rem 1.1538rem 0.3846rem}
+tr.treat-row td:first-child{border-left:2px solid var(--border);padding-left:1rem}
+tr.treat-row .row-note{font-size:0.8462rem;max-width:62ch}
+/* The excluded-group total, read together with its heading so the panel can
+   never show a table of figures with no total of its own. `panel-head` is a
+   flex row, hence `margin-left:auto` rather than the mockup's float. */
+.panel-head .tot{margin-left:auto;font-family:var(--mono);font-weight:400;color:var(--text2)}
+/* `.stats` is a 4-column grid. The Income screen has exactly two tiles and
+   they are NOT addends of each other (left is the declared gross, right comes
+   from the ledger), so they sit side by side at equal weight with no
+   "of which" between them. */
+.stats.two{grid-template-columns:repeat(2,1fr)}
+.stat .sub{font-size:0.8462rem;margin-top:0.3077rem;font-family:var(--mono);color:var(--text3)}
+/* Gratuity ceiling panel body: the bar + three data rows + the one caveat. */
+.ceiling-body{padding:1.1538rem}
+.ceiling-body .track{margin-bottom:1.0769rem}
+.ceiling-body .data-row{padding-left:0;padding-right:0}
+.ceiling-body .qual{color:var(--text3)}

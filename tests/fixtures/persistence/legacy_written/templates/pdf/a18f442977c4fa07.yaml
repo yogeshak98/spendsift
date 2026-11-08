@@ -1,0 +1,64 @@
+institution: Fictive Card
+default_account: Liabilities:CreditCard:Fictive
+date_format: '%d/%m/%Y'
+row_pattern: ^(?P<date>\d{2}/\d{2}/\d{4})\s?\|?\s*\d{2}:\d{2}(?:\s+(?P<description>.+?))??(?:\s+\+\s(?P<rewards>\d+))?\s+(?P<credit>\+\s)?C\s(?P<amount>[\d,]+\.\d{2})(?:\s+l)?$
+section_start:
+- ^DATE & TIME TRANSACTION DESCRIPTION REWARDS AMOUNT PI$
+section_end: ^TRANSACTIONS TOTAL AMOUNT
+continuation_pattern: ^(?!\d{2}/\d{2}/\d{4}).+$
+skip_patterns:
+- ^(Domestic|International) Transactions$
+- ^Page \S+ of \S+$
+manual_sections:
+- name: EMI
+  start: ^EMI / Personal Loan
+  end: ^Page \S+ of \S+$
+summary:
+  previous_balance:
+    label: PREVIOUS STATEMENT DUES
+    line_offset: 4
+    date_format: null
+  payments_credits:
+    label: PAYMENTS/CREDITS
+    line_offset: 4
+    date_format: null
+  total_due:
+    label: TOTAL AMOUNT DUE
+    line_offset: 1
+    date_format: null
+  minimum_due:
+    label: MINIMUM DUE
+    line_offset: 1
+    date_format: null
+  due_date:
+    label: DUE DATE
+    line_offset: 1
+    date_format: '%d %b, %Y'
+  transactions_total:
+    label: ^TRANSACTIONS TOTAL AMOUNT
+    line_offset: 0
+    date_format: null
+  period_start:
+    label: Billing Period
+    line_offset: 0
+    date_format: '%d %b, %Y'
+  period_end:
+    label: Billing Period
+    line_offset: 0
+    date_format: '%d %b, %Y'
+summary_rows:
+- label: PURCHASES/DEBIT
+  line_offset: 4
+  roles:
+  - purchases_debits
+  - finance_charges
+  labels:
+  - PURCHASES/DEBIT
+  - FINANCE CHARGES
+card_pattern: 'Card No: (?:[\dX*][ -]?){12}(?P<last4>\d{4})'
+finance_charges_listed: true
+total_due_rounding: rupee
+description_around: true
+fingerprint: a18f442977c4fa07
+card_last4: '4242'
+origin: user

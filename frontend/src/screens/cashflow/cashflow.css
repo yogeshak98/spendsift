@@ -1,0 +1,44 @@
+/* FlowOverview: Expense / Income / Card period overview */
+.flow-overview{padding:1.6923rem;display:grid;grid-template-columns:1fr 1fr;gap:1.2308rem;align-items:start}
+@media (max-width:900px){.flow-overview{grid-template-columns:1fr}}
+.flow-overview>*{transition:opacity .15s}
+
+/* Heatmap + By category: equal heights; the heatmap sets the row, the list scrolls */
+.flow-pair{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:1.2308rem;align-items:stretch}
+.flow-pair>.panel{margin-bottom:0}
+.flow-pair-fill{position:relative;min-height:18.4615rem}
+.flow-pair-fill>.panel{position:absolute;inset:0;margin-bottom:0}
+.flow-pair-scroll{overflow-y:auto}
+@media (max-width:900px){.flow-pair{grid-template-columns:1fr}.flow-pair-fill{position:static;min-height:0}.flow-pair-fill>.panel{position:static}.flow-pair-scroll{max-height:32.3077rem}}
+
+/* Cash Flow · Overview | Compare FYs switch; the view below brings its own padding */
+.cf-view{display:flex;justify-content:flex-end;padding:1.2308rem 1.6923rem 0;margin-bottom:-0.7692rem}
+.flow-overview.is-stale>*{opacity:.55}
+.tags-screen>*{transition:opacity .15s}
+.tags-screen.is-stale>*{opacity:.55}
+.stats.flow-stats{grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));padding:1.0769rem 1.1538rem 2px}
+.flow-note{color:var(--text3);font-family:var(--mono);font-size:0.9231rem}
+.flow-lines{max-height:27.6923rem;overflow-y:auto}
+.flow-line{display:flex;justify-content:space-between;align-items:center;gap:0.9231rem;padding:0.6154rem 1.1538rem;border-bottom:1px solid var(--border)}
+.flow-line-main{display:flex;flex-direction:column;min-width:0}
+.flow-line-name{font-size:1rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.flow-line-meta{font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.flow-line-amt{font-family:var(--mono);font-size:1rem;white-space:nowrap}
+.flow-items{background:rgba(127,127,127,0.025)}
+/* Expense · Overview one-offs: header switches, left-out line, chart key, list */
+.flow-switches{display:flex;flex-wrap:wrap;gap:0.6154rem;justify-content:flex-end}
+.flow-oneoff-out{padding:0.6154rem 1.1538rem 0;font-family:var(--mono);font-size:0.8462rem;color:var(--text2)}
+.flow-oneoff-key{padding:0 1.2308rem 0.6154rem;font-size:0.8462rem;color:var(--text3)}
+.flow-oneoff-key i{display:inline-block;width:1.0769rem;height:0.6923rem;border:1.5px dashed var(--text);border-radius:2px;vertical-align:-1px;margin-right:0.4615rem}
+.day-tip-oneoff{margin-top:0.3077rem;font-size:0.8462rem;color:var(--text2)}
+.oneoff-list{list-style:none;margin:0;padding:0;max-height:27.6923rem;overflow-y:auto}
+.oneoff-list li{border-bottom:1px solid var(--border)}
+.oneoff-list li:last-child{border-bottom:0}
+.oneoff-row{display:grid;grid-template-columns:3.6923rem 1fr auto;gap:2px 0.9231rem;padding:0.7692rem 1.1538rem;width:100%;text-align:left;background:transparent;border:0;border-radius:0;font:inherit;font-size:1rem;color:inherit;cursor:pointer}
+.oneoff-row:hover,.oneoff-row:focus-visible{background:var(--surface2)}
+.oneoff-row:focus-visible{outline:1px solid var(--blue);outline-offset:-1px}
+.oneoff-row .d{font-family:var(--mono);font-size:0.8462rem;color:var(--text3)}
+.oneoff-row .nm{min-width:0;overflow-wrap:anywhere}
+.oneoff-row .amt{font-family:var(--mono);font-weight:600;text-align:right}
+.oneoff-row .meta{grid-column:2/-1;font-size:0.8462rem;color:var(--text3);display:flex;justify-content:space-between;gap:0.7692rem;flex-wrap:wrap}
+.oneoff-row .basis{color:var(--text3)}

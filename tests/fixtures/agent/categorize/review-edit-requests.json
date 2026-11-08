@@ -1,0 +1,49 @@
+{
+  "_note": "Request bodies for POST /api/review/{batch_id}/{candidate_id}. Fictional.",
+  "set_category": {
+    "suggested_category": "Expenses:Travel"
+  },
+  "set_tags": {
+    "tags": [
+      "travel/Madikeri Oct-2026",
+      "#Trip"
+    ]
+  },
+  "set_tags_normalised_result": [
+    "travel/madikeri-oct-2026",
+    "trip"
+  ],
+  "learn_off": {
+    "learn": false
+  },
+  "learn_on": {
+    "learn": true
+  },
+  "unlink_fee": {
+    "follows": null
+  },
+  "browser_resave_same_split": {
+    "splits": [
+      {
+        "account": "Expenses:Food",
+        "amount": "412.00"
+      }
+    ],
+    "date": "2026-10-06",
+    "raw_narration": "FICTIVEFOODS ORDER BANGALORE",
+    "source_account": "Liabilities:CreditCard:HDFC",
+    "tags": []
+  },
+  "browser_uncategorised_row": {
+    "date": "2026-10-09",
+    "raw_narration": "FICTIVE GYM 21/10/2026",
+    "source_account": "Liabilities:CreditCard:HDFC",
+    "tags": [
+      "fitness"
+    ]
+  },
+  "remember_is_ignored": {
+    "suggested_category": "Expenses:Travel",
+    "remember": true
+  }
+}

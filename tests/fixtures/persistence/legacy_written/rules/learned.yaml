@@ -1,0 +1,6 @@
+- pattern: FICTIVEBIKES
+  category: Expenses:Travel:Bike
+- pattern: KITEWORKS PRINT
+  category: Expenses:Office
+- pattern: FICTIVE TIFFINS
+  category: Expenses:Food:Lunch

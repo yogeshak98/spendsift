@@ -1,0 +1,5 @@
+/* Step number rendered via CSS so the DOM textContent stays clean
+   (tests filter step buttons by their label text only). */
+.istep .mk::before {
+  content: attr(data-n);
+}

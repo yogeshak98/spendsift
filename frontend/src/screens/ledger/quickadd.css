@@ -1,0 +1,45 @@
+/* ───── QUICK-ADD (daily-entry surface) ───── */
+
+/* global Quick-add button — pinned in the rail foot above Settings; kept
+   compact and tinted so it sits quietly under the brand rather than shouting */
+.rail-qa{margin-bottom:0.6154rem}
+.rail-qa button{width:100%;display:flex;align-items:center;gap:0.5385rem;background:rgba(96,165,250,0.10);border:1px solid var(--blue-border);color:var(--blue);font-weight:500;border-radius:0.5385rem;padding:0.4615rem 0.6923rem;font-size:0.9231rem}
+.rail-qa button .plus{font-size:1rem;line-height:1}
+.rail-qa button .key{margin-left:auto;font-family:var(--mono);font-size:0.6923rem;color:var(--text3);border:1px solid var(--border);border-radius:0.3077rem;padding:0 0.3846rem;line-height:1.1538rem}
+.rail-qa button:hover{background:rgba(96,165,250,0.16);color:var(--text)}
+.rail-qa button.on{background:rgba(96,165,250,0.20);color:var(--text)}
+
+/* Bank/Investment toggle inside the form */
+.qa .qa-toggle{display:flex;border:1px solid var(--border);border-radius:0.6154rem;overflow:hidden;margin-bottom:1.3846rem;width:max-content}
+.qa .qa-toggle b{padding:0.5385rem 1.2308rem;font-size:0.9231rem;color:var(--text2);cursor:pointer;border-right:1px solid var(--border);font-weight:500}
+.qa .qa-toggle b:last-child{border-right:none}
+.qa .qa-toggle b.on{background:rgba(96,165,250,0.12);color:var(--text)}
+
+/* form grid */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.0769rem}
+.qa-grid .full{grid-column:1 / -1}
+.qa-foot{display:flex;align-items:center;gap:0.9231rem;margin-top:1.5385rem;padding-top:1.2308rem;border-top:1px solid var(--border)}
+.qa-foot .bal{font-family:var(--mono);font-size:0.8462rem;color:var(--green);display:flex;align-items:center;gap:0.4615rem}
+.qa-foot .bal .dot{width:0.5385rem;height:0.5385rem;border-radius:50%;background:var(--green)}
+.qa-foot .spacer{flex:1}
+.kbd{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);border:1px solid var(--border);border-radius:0.3077rem;padding:1px 0.3846rem;background:var(--surface2)}
+.kbd-row{font-family:var(--mono);font-size:0.7692rem;color:var(--text3);letter-spacing:0.03em}
+
+/* dedicated quick-add screen layout */
+.qa-screen{display:flex;flex-direction:column;gap:1.2308rem;padding:1.6923rem 2rem}
+.qa-card{background:var(--surface);border:1px solid var(--border);border-radius:0.7692rem;padding:1.3846rem}
+.smart{font-family:var(--mono);font-size:0.6923rem;color:var(--green);letter-spacing:0.04em;text-transform:none;margin-left:0.5385rem}
+
+/* top row: form left (1.5fr), summary right (1fr) */
+.qa-top{display:grid;grid-template-columns:1.5fr 1fr;gap:1.2308rem;align-items:start}
+@media(max-width:900px){.qa-top{grid-template-columns:1fr}}
+
+/* net-by-account summary scroll container */
+.sum-scroll{max-height:23.0769rem;overflow:auto}
+.sum-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.6923rem 1.1538rem;border-bottom:1px solid var(--line)}
+.sum-row:last-child{border-bottom:none}
+.sum-row .acc{font-family:var(--mono);font-size:0.8846rem;color:var(--text2)}
+.sum-row .amt{font-family:var(--mono);font-size:0.9231rem;font-variant-numeric:tabular-nums}
+
+/* rotating quote below the form */
+.qa-quote{margin-top:1.2308rem;padding-top:1.0769rem;border-top:1px solid var(--line);font-size:0.8846rem;color:var(--text3);font-style:italic;line-height:1.6}

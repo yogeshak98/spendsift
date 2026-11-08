@@ -1,0 +1,21 @@
+# Kotak Mahindra Bank savings statement (.csv). Header at row 11; one Amount
+# column with a Dr / Cr indicator; a closing totals block follows.
+fingerprint: 25bdc7e9070479e1
+institution: Kotak
+header_row_index: 11
+date_column: Transaction Date
+date_format: '%d-%m-%Y'
+narration_column: Description
+delimiter: ','
+amount_column: Amount
+sign_column: Dr / Cr
+credit_indicators:
+- CR
+amount_sign: indicator
+balance_column: Balance
+account_marker_pattern: '^Account No\.\s+\d{2,}(\d{4})\b'
+account_marker_map:
+  '1481': Assets:Checking:Kotak-1481
+  '1743': Assets:Checking:Kotak-1743
+stop_pattern: '^Opening Balance\b'
+origin: user

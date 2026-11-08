@@ -1,0 +1,37 @@
+{
+  "will_learn": [
+    {
+      "pattern": "FICTIVEAI",
+      "category": "Expenses:Subscriptions",
+      "candidate_ids": [
+        "90d7a45998445c0ca69b8e11cba509ad"
+      ],
+      "replaces": null
+    },
+    {
+      "pattern": "FICTIVEBIKES",
+      "category": "Expenses:Travel",
+      "candidate_ids": [
+        "6c85233928a05f76b2fe24511e75d722"
+      ],
+      "replaces": "Expenses:Travel:Bike"
+    }
+  ],
+  "not_learned": [
+    {
+      "candidate_id": "67566ddefa185e28a9d69d3410b06494",
+      "pattern": "OFFUS EMI",
+      "reason": "only generic words"
+    },
+    {
+      "candidate_id": "295609f0a6cb54a0a8c1453db2727748",
+      "pattern": "FICTIVE CAFE",
+      "reason": "you said don't learn this"
+    }
+  ],
+  "would_open": [
+    "Expenses:Food:Cafe",
+    "Expenses:Household:Appliances",
+    "Expenses:Subscriptions"
+  ]
+}

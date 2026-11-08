@@ -1,0 +1,55 @@
+# ICICI Amazon Pay credit card statement (PDF), card ending 6807.
+institution: ICICI
+default_account: Liabilities:CreditCard:ICICIAmazonPay-6807
+date_format: '%d/%m/%Y'
+row_pattern: '^(?P<date>\d{2}/\d{2}/\d{4}) \d{11} (?P<description>.+?)(?: (?P<rewards>\d+))? (?P<amount>[\d,]+\.\d{2})(?: (?P<credit>CR))?$'
+section_start:
+- ^Date Ser\. No\. Transaction Details Reward Points Intl\. Amount Amount \(in `\)$
+section_end: ^Reward Points Summary$
+continuation_pattern: null
+skip_patterns:
+- ^Page \d+ of \d+$
+manual_sections: []
+summary:
+  period_start:
+    label: '^Statement Period :'
+    line_offset: 0
+    date_format: '%d/%m/%Y'
+  period_end:
+    label: '^Statement Period :'
+    line_offset: 0
+    date_format: '%d/%m/%Y'
+  due_date:
+    label: Payment Due Date
+    line_offset: 1
+    date_format: '%d/%m/%Y'
+summary_rows:
+- label: ^Statement Date Payment Due Date Total Amount Due Minimum Amount Due Credit Limit$
+  line_offset: 1
+  roles:
+  - total_due
+  - minimum_due
+  - credit_limit
+  labels:
+  - Total Amount Due
+  - Minimum Amount Due
+  - Credit Limit
+- label: ^Previous Balance Purchases / Charges Cash Advances Payments / Credits$
+  line_offset: 1
+  roles:
+  - previous_balance
+  - purchases_debits
+  - cash_advances
+  - payments_credits
+  labels:
+  - Previous Balance
+  - Purchases / Charges
+  - Cash Advances
+  - Payments / Credits
+card_pattern: ^[\dX]{4} XXXX XXXX (?P<last4>\d{4})$
+finance_charges_listed: false
+total_due_rounding: exact
+description_around: false
+fingerprint: 661088550ef2f9bc
+card_last4: '6807'
+origin: user

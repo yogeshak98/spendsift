@@ -1,0 +1,218 @@
+/* Template-creation form: labeled fields on a responsive grid, scrollable
+   source preview, so the mapping config reads as a tidy form, not a stream. */
+.tmpl-form{display:flex;flex-direction:column;gap:1.2308rem}
+.tmpl-form .field{margin-bottom:0}
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14.6154rem,1fr));gap:1.0769rem}
+.tmpl-headerrow{max-width:13.8462rem}
+.field select{width:100%;padding:0.5385rem 0.6923rem;border:1px solid var(--border);border-radius:0.4615rem;background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:0.9231rem}
+.field select:focus{outline:none;border-color:var(--blue-border)}
+.field .field-hint{display:block;margin-top:0.3846rem;font-family:var(--sans);font-size:0.7692rem;color:var(--text3);text-transform:none;letter-spacing:0}
+.tmpl-grouplabel{display:block;font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5385rem}
+.tmpl-radios{display:flex;flex-wrap:wrap;gap:1.3846rem}
+.field .tmpl-radios label{display:inline-flex;align-items:center;gap:0.4615rem;font-family:var(--sans);font-size:0.9231rem;color:var(--text2);cursor:pointer}
+.tmpl-rawrows{max-height:13.0769rem;overflow:auto;background:var(--bg);border:1px solid var(--border);border-radius:0.4615rem;padding:0.4615rem 0;font-family:var(--mono);font-size:0.7692rem;color:var(--text3)}
+.tmpl-rawrows .row{padding:1px 0.9231rem;white-space:nowrap}
+.tmpl-rawrows .row.hdr{color:var(--text);background:rgba(96,165,250,0.10)}
+.tmpl-rawrows .ln{display:inline-block;min-width:1.6923rem;color:var(--text3);opacity:0.6}
+.acct-pill.editable{cursor:pointer;color:var(--text);border-color:var(--blue-border)}
+.acct-pill.editable:hover{background:rgba(96,165,250,0.12)}
+.acct-annotate{display:flex;flex-wrap:wrap;gap:0.6154rem;align-items:center;margin-top:0.6923rem}
+.acct-annotate label{font-family:var(--mono);font-size:0.7692rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em}
+.data-label{color:var(--text2)}
+.data-val{font-weight:500;font-family:var(--mono);font-size:0.8462rem}
+.v-green{color:var(--green)}
+.v-amber{color:var(--amber)}
+.v-red{color:var(--red)}
+.v-blue{color:var(--blue)}
+.v-violet{color:var(--violet)}
+.v-dim{color:var(--text2)}
+.v-text{color:var(--text)}
+.panel-head .right a{color:var(--blue);text-decoration:none;font-family:var(--sans);font-size:0.9231rem;font-weight:500}
+.panel-head .right a:hover{text-decoration:underline}
+
+/* ───── IMPORT SHELL ───── */
+
+/* .ibody: flex container holding the step rail + content area.
+   min-height ensures the rail reaches the bottom of the viewport. */
+.ibody{display:flex;align-items:stretch;min-height:calc(100vh - 3.2308rem)}
+
+/* Step rail — matches the approved mock (.istep-rail, 182px). */
+.istep-rail{width:14rem;flex-shrink:0;border-right:1px solid var(--border);background:var(--surface);
+  padding:1.3846rem 0.9231rem;display:flex;flex-direction:column;gap:2px}
+.istep-rail .rl{font-family:var(--mono);font-size:0.6923rem;color:var(--text3);letter-spacing:0.12em;
+  text-transform:uppercase;padding:0 0.7692rem 0.9231rem}
+
+/* Individual step button. */
+.istep{display:flex;gap:0.8462rem;align-items:center;padding:0.6923rem 0.7692rem;border-radius:0.6154rem;cursor:pointer;
+  color:var(--text2);position:relative;text-align:left;background:none;border:none;width:100%;
+  font-family:var(--sans)}
+.istep:hover{background:rgba(127,127,127,0.06)}
+.istep.active{background:rgba(96,165,250,0.12);color:var(--text)}
+
+/* Circular step marker. */
+.istep .mk{width:1.6154rem;height:1.6154rem;border-radius:50%;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.7692rem;
+  color:var(--text3);flex-shrink:0;background:var(--bg);position:relative;z-index:1}
+.istep.active .mk{border-color:var(--blue-border);color:var(--blue)}
+.istep.done .mk{border-color:var(--green);background:var(--green);color:var(--bg)}
+
+/* Step label and subtitle. */
+.istep .tx{font-size:0.9615rem;line-height:1.25}
+.istep .sb{display:block;font-family:var(--mono);font-size:0.6923rem;color:var(--text3);margin-top:2px;
+  letter-spacing:0.02em}
+
+/* Connector spine between step markers. */
+.istep:not(:first-of-type)::before{content:"";position:absolute;left:1.5385rem;top:-0.6923rem;width:1.5px;
+  height:0.8462rem;background:var(--border)}
+.istep.done:not(:first-of-type)::before{background:var(--green)}
+
+/* Main content area next to the rail. */
+.istep-content{flex:1;min-width:0;padding:1.6923rem 2rem;overflow:auto}
+
+/* Step content headings (reused across Upload/Map/Review/Commit). */
+.h-title{font-size:1.3846rem;font-weight:600;color:var(--text);margin-bottom:3px;letter-spacing:-0.01em}
+.h-sub{font-size:0.9615rem;color:var(--text2);margin-bottom:1.3846rem;max-width:52.3077rem}
+
+/* ───── INVESTMENT WALLET FLOW ───── */
+
+/* flow-step: one card in the buy→refund stack. */
+.flow-step{display:flex;gap:0.9231rem;padding:0.7692rem 0;border-bottom:1px solid var(--line);
+  align-items:flex-start}
+.flow-step:last-child{border-bottom:none}
+.flow-step .fn{width:1.6923rem;height:1.6923rem;border-radius:0.4615rem;background:var(--surface2);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:0.7692rem;color:var(--text3);flex-shrink:0}
+.flow-step .ft{flex:1;min-width:0}
+.flow-step .ft .lab{font-size:0.9615rem;color:var(--text);font-weight:500}
+.flow-step .ft .sub{font-family:var(--mono);font-size:0.8077rem;color:var(--text3);margin-top:3px}
+
+/* Running Groww:Cash balance chip shown after each leg.
+   .zero = balance >= 0 (green/ok); .neg = balance < 0 (red, soft funding hint). */
+.bal-chip{font-family:var(--mono);font-size:0.7692rem;padding:2px 0.6154rem;border-radius:0.3846rem;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text2);white-space:nowrap}
+.bal-chip.zero{color:var(--green);border-color:rgba(74,222,128,0.4)}
+.bal-chip.neg{color:var(--red);border-color:rgba(248,113,113,0.5)}
+
+/* ───── UPLOAD STEP: primary statement hero + quiet ledger disclosure ───── */
+.upload-step{display:flex;flex-direction:column;gap:1.2308rem}
+
+/* visually-hidden real <input type=file>; a styled label drives it */
+.file-input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Primary path — the loudest thing on the step. A whole-card label so a click
+   anywhere (and a file drop) opens the picker. */
+.dropzone{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;
+  border:1.5px dashed var(--border);border-radius:0.9231rem;padding:3.3846rem 2.3077rem;background:var(--surface);
+  transition:border-color .15s,background .15s}
+.dropzone:hover,.dropzone.dragging{border-color:var(--blue-border);background:var(--surface2)}
+.dropzone .big{font-size:2.3077rem;color:var(--text3);margin-bottom:0.9231rem;line-height:1}
+.dropzone .dz-main{font-size:1.0769rem;color:var(--text);font-weight:500}
+.dropzone .dz-sub{font-size:0.8846rem;color:var(--text3);margin-top:0.4615rem;font-family:var(--mono)}
+.dropzone .dz-btn{margin-top:1.3846rem;background:var(--blue);border:1px solid var(--blue-border);color:#0f0f0f;
+  font-weight:600;font-size:1rem;border-radius:0.5385rem;padding:0.6923rem 1.5385rem}
+.dropzone:hover .dz-btn{background:var(--blue-border);color:var(--text)}
+
+/* Special path — present for someone looking for it, quiet otherwise. */
+.ledger-import{border:1px solid var(--border);border-radius:0.7692rem;background:var(--surface);transition:border-color .15s}
+.ledger-import:hover{border-color:var(--line)}
+.ledger-import>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:0.6923rem;padding:0.9231rem 1.1538rem}
+.ledger-import>summary::-webkit-details-marker{display:none}
+.ledger-import>summary::before{content:"›";color:var(--text3);font-size:1.0769rem;line-height:1;transition:transform .15s;align-self:center}
+.ledger-import[open]>summary::before{transform:rotate(90deg)}
+.ledger-import .li-title{font-size:1rem;color:var(--text);font-weight:500}
+.ledger-import .li-sub{font-size:0.8462rem;color:var(--text3);font-family:var(--mono)}
+.ledger-import .li-body{padding:1.0769rem 1.1538rem;border-top:1px solid var(--border)}
+
+/* styled file picker reused by the ledger disclosure */
+.file-pick{display:flex;align-items:center;gap:0.7692rem;margin-bottom:1.0769rem}
+.file-pick label{background:var(--surface2);border:1px solid var(--border);border-radius:0.4615rem;
+  padding:0.5385rem 1rem;font-size:0.9231rem;color:var(--text);cursor:pointer}
+.file-pick label:hover{background:rgba(127,127,127,0.08);border-color:var(--blue-border)}
+.file-pick .fp-hint{font-size:0.8462rem;color:var(--text3);font-family:var(--mono)}
+
+/* ledger-file merge preview: tabbed sections in a fixed scroll window so a
+   large journal doesn't turn the import panel into an endless scroll */
+.lf-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin:0.4615rem 0 0}
+.lf-tabs button{background:none;border:none;border-bottom:2px solid transparent;color:var(--text3);font-size:0.9231rem;font-weight:500;padding:0.5385rem 0.9231rem;cursor:pointer;display:flex;align-items:center;gap:0.4615rem;margin-bottom:-1px}
+.lf-tabs button:hover{color:var(--text2)}
+.lf-tabs button.on{color:var(--text);border-bottom-color:var(--blue)}
+.lf-tabs button .ct{font-family:var(--mono);font-size:0.7692rem;color:var(--text3);background:var(--surface2);border-radius:0.6923rem;padding:0 0.4615rem;line-height:1.2308rem}
+.lf-tabs button.has-issues .ct{background:rgba(248,113,113,0.14);color:var(--red)}
+.lf-tabs button.on .ct{color:var(--text2)}
+.lf-scroll{max-height:26.1538rem;overflow-y:auto;border:1px solid var(--border);border-top:none;border-radius:0 0 0.6154rem 0.6154rem}
+.lf-scroll table thead th{position:sticky;top:0;z-index:1;background:var(--surface2)}
+
+/* ledger-merge draft editor (Transactions tab) */
+.lf-editor{display:flex;flex-direction:column;gap:0.7692rem;padding:0.7692rem}
+.lf-txn{border:1px solid var(--border);border-radius:0.6154rem;background:var(--surface)}
+.lf-txn-head{display:flex;align-items:center;gap:0.6154rem;padding:0.6154rem 0.7692rem;border-bottom:1px solid var(--line)}
+.lf-txn-head .lf-date{width:9.0769rem;font-family:var(--mono);font-size:0.9231rem}
+.lf-txn-head .lf-narr{flex:1;font-size:1rem}
+.lf-residual{margin-left:auto;font-family:var(--mono);font-size:0.8077rem;color:var(--text3);white-space:nowrap}
+.lf-residual.ok{color:var(--green)}
+.lf-residual.bad{color:var(--red)}
+.lf-del{border:none;background:none;color:var(--text3);font-size:1rem;cursor:pointer;padding:2px 0.4615rem}
+.lf-del:hover{color:var(--red)}
+.lf-legs{display:flex;flex-direction:column;gap:0.4615rem;padding:0.6923rem 0.7692rem}
+.lf-leg{display:flex;gap:0.4615rem;align-items:center}
+.lf-leg .lf-acct{flex:1;font-family:var(--mono);font-size:0.9231rem}
+.lf-leg .lf-amt{width:8.4615rem;font-family:var(--mono);font-size:0.9231rem;text-align:right}
+.lf-leg .lf-comm{width:4.7692rem;font-family:var(--mono);font-size:0.9231rem}
+.lf-rm{border:none;background:none;color:var(--text3);font-size:1.1538rem;line-height:1;cursor:pointer;padding:0 0.4615rem}
+.lf-rm:hover{color:var(--red)}
+.lf-addleg{align-self:flex-start;background:none;border:1px dashed var(--border);color:var(--text2);font-size:0.8846rem;border-radius:0.4615rem;padding:0.3077rem 0.7692rem;cursor:pointer}
+.lf-addleg:hover{border-color:var(--blue-border);color:var(--blue)}
+.lf-actions{display:flex;align-items:center;gap:0.7692rem;margin-top:0.9231rem}
+.lf-actions .primary{margin-left:auto}
+.lf-dirty-note{font-size:0.8846rem;color:var(--amber);font-family:var(--mono)}
+
+/* --- Scheme / symbol resolution (import review) ---------------------------
+   Sits inside a review row, so it is indented and quiet: the row's own
+   figures stay the primary content, and this is the decision attached to it. */
+.resolver {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4615rem;
+  margin: 0.4615rem 0;
+  padding: 0.6154rem 0.7692rem;
+  border-left: 2px solid var(--amber, #d19a3a);
+  background: rgba(209, 154, 58, 0.06);
+  max-width: 47.6923rem;
+}
+.resolver input[type="text"] { max-width: 32.3077rem; }
+.resolver-hits {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 16.9231rem;
+  overflow-y: auto;
+}
+.resolver-hit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 0.3846rem 0.6154rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.resolver-hit:hover:not(:disabled) { border-color: var(--line, #333); background: rgba(255, 255, 255, 0.04); }
+.resolver-hit:disabled { opacity: 0.5; cursor: default; }
+.resolver-hit-name { font-size: 0.9231rem; }
+.resolver-hit-meta { font-size: 0.8462rem; opacity: 0.6; }
+
+/* Commit bar: the button plus what is still outstanding. The note is a
+   statement of what remains, never a reason the button is disabled. */
+.commit-bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9231rem;
+  flex-wrap: wrap;
+  margin-top: 0.7692rem;
+}
+.commit-bar .note { max-width: 43.0769rem; }

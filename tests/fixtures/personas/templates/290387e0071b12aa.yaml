@@ -1,0 +1,23 @@
+# State Bank of India savings statement (.xlsx). Header at row 18; a
+# computer-generated note follows the transactions.
+fingerprint: 290387e0071b12aa
+institution: SBI
+header_row_index: 18
+date_column: Txn Date
+date_format: '%d %b %Y'
+narration_column: Description
+delimiter: ','
+debit_column: Debit
+credit_column: Credit
+balance_column: Balance
+account_marker_pattern: '^Account Number :\s+\d{6,}(\d{4})\b'
+account_marker_map:
+  '3084': Assets:Checking:SBI-3084
+  '1373': Assets:Checking:SBI-1373
+  '0726': Assets:Checking:SBI-0726
+stop_pattern: '^\*\*This is a computer generated statement'
+# The account block prints the opening beside `Balance as on <date> :`.
+opening_balance:
+  label: '^Balance as on '
+  row_offset: 0
+origin: user

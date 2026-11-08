@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-03-12",
+    "amount": "199.00",
+    "direction": "debit",
+    "raw_narration": "NETFLIX",
+    "source_account": "Liabilities:CreditCard:IDFC"
+  },
+  {
+    "date": "2026-03-13",
+    "amount": "123.45",
+    "direction": "debit",
+    "raw_narration": "UNKNOWN BOUTIQUE",
+    "source_account": "Liabilities:CreditCard:IDFC"
+  }
+]

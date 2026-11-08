@@ -1,0 +1,57 @@
+# Axis Flipkart credit card statement (PDF), card ending 9054.
+institution: Axis
+default_account: Liabilities:CreditCard:AxisFlipkart-9054
+date_format: '%d/%m/%Y'
+row_pattern: '^(?P<date>\d{2}/\d{2}/\d{4}) (?P<description>.+?)(?: (?:RESTAURANTS|GROCERY STORES|DEPT STORES|TRANSPORTATION|UTILITIES|ENTERTAINMENT|MEDICAL|MISCELLANEOUS|FUEL))? (?P<amount>[\d,]+\.\d{2}) (?:Dr|(?P<credit>Cr))$'
+section_start:
+- ^Transaction Date Transaction Details Merchant Category Amount \(Rs\.\)$
+section_end: ^\*\*\*\* End of Statement \*\*\*\*$
+continuation_pattern: null
+skip_patterns:
+- ^Page \d+ of \d+$
+manual_sections: []
+summary:
+  total_due:
+    label: Total Payment Due
+    line_offset: 1
+    date_format: null
+  minimum_due:
+    label: Minimum Payment Due
+    line_offset: 1
+    date_format: null
+  period_start:
+    label: Statement Period
+    line_offset: 1
+    date_format: '%d/%m/%Y'
+  period_end:
+    label: Statement Period
+    line_offset: 1
+    date_format: '%d/%m/%Y'
+  due_date:
+    label: Payment Due Date
+    line_offset: 1
+    date_format: '%d/%m/%Y'
+summary_rows:
+- label: ^Previous Balance Payments Credits Purchase Cash Advance Other Debit & Charges$
+  line_offset: 1
+  roles:
+  - previous_balance
+  - payments
+  - other_credits
+  - purchases_debits
+  - cash_advances
+  - other_charges
+  labels:
+  - Previous Balance
+  - Payments
+  - Credits
+  - Purchase
+  - Cash Advance
+  - Other Debit & Charges
+card_pattern: 'Card No: [\dX*]{12}(?P<last4>\d{4})'
+finance_charges_listed: false
+total_due_rounding: exact
+description_around: false
+fingerprint: 2c50100f8dff752a
+card_last4: '9054'
+origin: user

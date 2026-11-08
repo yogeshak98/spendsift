@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# Launch SpendSift on a fully-fictional demo ledger so the dashboards are
+# populated and interactive WITHOUT importing any real data.
+#
+# Regenerates demo/data/ with scripts/build_demo.py through the real pipeline
+# (PII-gated), builds the frontend, then serves the app bound to the demo dir.
+# The real storage/ dir is never touched.
+#
+# Runs on a DEDICATED port (8766, not the real app's 8765) so the demo can sit
+# alongside a running real app without colliding. Override with DEMO_PORT.
+#
+# Usage: scripts/demo [--skip-build]
+
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PYTHON_BIN="$ROOT_DIR/.venv/bin/python"
+DEMO_DATA="$ROOT_DIR/demo/data"
+DEMO_PORT="${DEMO_PORT:-8766}"
+SKIP_BUILD=0
+[[ "${1:-}" == "--skip-build" ]] && SKIP_BUILD=1
+
+if [[ ! -x "$PYTHON_BIN" ]]; then
+  echo "error: expected Python runtime at $PYTHON_BIN (run 'uv sync' first)" >&2
+  exit 1
+fi
+
+echo "==> Building fictional demo ledger (PII-gated) -> $DEMO_DATA"
+"$PYTHON_BIN" "$ROOT_DIR/scripts/build_demo.py" --data-dir "$DEMO_DATA"
+
+if [[ "$SKIP_BUILD" -eq 0 || ! -d "$ROOT_DIR/frontend/dist" ]]; then
+  if ! command -v npm >/dev/null 2>&1; then
+    echo "error: npm is not installed or not on PATH" >&2
+    exit 1
+  fi
+  echo "==> Building frontend (-> frontend/dist)"
+  npm --prefix "$ROOT_DIR/frontend" run build
+fi
+
+echo "==> Starting demo on http://127.0.0.1:$DEMO_PORT (data dir: $DEMO_DATA)"
+cd "$ROOT_DIR"
+# Use the demo factory (binds storage_dir=demo/data explicitly) on a dedicated
+# port -- not `backend.app.server.main:create_app` with SPENDSIFT_STORAGE_DIR, which
+# the environment could override.
+exec "$PYTHON_BIN" -m uvicorn backend.app.server.demo:create_demo_app --factory \
+  --host 127.0.0.1 --port "$DEMO_PORT"

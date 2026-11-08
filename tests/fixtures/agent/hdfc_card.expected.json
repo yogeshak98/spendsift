@@ -1,0 +1,16 @@
+[
+  {
+    "date": "2026-03-05",
+    "amount": "420.50",
+    "direction": "debit",
+    "raw_narration": "SWIGGY BANGALORE",
+    "source_account": "Liabilities:CreditCard:HDFC"
+  },
+  {
+    "date": "2026-03-06",
+    "amount": "1000.00",
+    "direction": "credit",
+    "raw_narration": "BPPY CC PAYMENT",
+    "source_account": "Liabilities:CreditCard:HDFC"
+  }
+]

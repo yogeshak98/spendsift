@@ -1,0 +1,10 @@
+; opening note — should be ignored, not dropped
+2024/01/05 Buy units
+    Assets:Investment:MutualFund:Groww:AcmeELSS   742.61 AcmeELSS @ 83.48 INR  ; Acme ELSS Tax Saver
+    Assets:Checking:HDFC                        -61993.0828 INR
+
+account Assets:Checking:HDFC
+
+2024/06/30 Sell units
+    Assets:Investment:MutualFund:Groww:AcmeELSS  -100.00 AcmeELSS @ 95.00 INR
+    Assets:Checking:HDFC                          9500.00 INR

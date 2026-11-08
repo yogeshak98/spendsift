@@ -1,0 +1,11 @@
+[src]
+exclude = [
+    "*.lock",
+    "tests",
+    # Nested git worktrees. `.worktrees/` is gitignored (.gitignore:80) but ty
+    # walks the filesystem, not git, so a worktree checked out here gets
+    # type-checked as part of this project -- reporting errors for whatever
+    # branch happens to be in it and failing the pre-commit hook for every
+    # commit on this branch, whatever it touched.
+    ".worktrees",
+]
