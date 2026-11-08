@@ -6,7 +6,7 @@
 
 ![Dashboard](docs/screenshots/dashboard.png)
 
-> All screenshots use a fully synthetic demo ledger (`scripts/build_demo.py`). No real financial data is in this repository.
+> Screenshots use a synthetic demo ledger (`scripts/build_demo.py`).
 
 ## Why
 
